@@ -14,48 +14,10 @@
   "gimg-logo gheader-text";
 }
 
-/*@media(min-width: 500px) {
-  .form-login {
-    align-items: center;
-    grid-template-columns: 7fr 3fr;
-    grid-template-rows: 60vh 20vh;
-    grid-template-areas: 
-    "gtext gimg-avatar"
-    "glink-button gimg-avatar";
-    margin-left: 50px;
-    margin-right: 50px;
-  }
-}
-
-@media(max-width: 500px) {
-  .form-login {
-    align-items: stretch;
-    grid-template-rows: 10vh 60vh 10vh;
-    grid-template-areas: 
-    "gtext"
-    "gimg-avatar"
-    "glink-button";
-    margin-left: 50px;
-    margin-right: 50px;
-  }
-}*/
-
-/*.form-login {
-  width: 40%;
-  position: absolute;
-  left:40%;
-	top:40%;
-	
-  height: 30%;
-  background: var(--primary-color);
-  border-radius: 8px;
-}*/
-
 .form-login {
   margin: 80px auto;
   padding: 64px;
   max-width: 730px;
-  background: var(--primary-color);
   border-radius: 8px;
 
   display: flex;

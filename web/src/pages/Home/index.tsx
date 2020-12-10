@@ -12,9 +12,26 @@ import Family from '../../components/Family';
 
 const Home = () => {
     const [component, setComponent] = useState<JSX.Element>();
+    const [button, setButton] = useState(true);
+    const [currentScreen, setCurrentScreen] = useState<JSX.Element>();
+    const [click, setClick] = useState(false);
+
+    interface Checkpoints {
+        title: string,
+        date: string
+    }
+
     useEffect(() => {
-        setComponent(Initial);
-    }, [])
+        var check: Checkpoints = {
+            title: 'Sorta Pipa',
+            date: '20/02/2021'
+        };
+        
+        setComponent(Initial('Fábio Melo', [
+            check
+        ]));
+    }, []);
+
     function handleSelectedField(componentName: string) {
         switch(componentName) {
             case 'Daily':
@@ -24,29 +41,15 @@ const Home = () => {
                 setComponent(Family);
                 break;
             case 'Home':
-                setComponent(Initial);
+                setComponent(Initial('Fábio Melo', []));
                 break;
         }
     }
-    const[click,setClick] = useState(false);
-    const [button, setButton] = useState(true);
+    
     
     const handleClick = () => setClick(!click);
     const closeMobileMenu = () => setClick(false);
 
-    const showButton = () => {
-        if (window.innerWidth <= 960) {
-          setButton(false);
-        } else {
-          setButton(true);
-        }
-      };
-
-    useEffect(() => {
-        showButton();
-    }, []);
-
-    window.addEventListener('resize', showButton);
     return (
         <div id="home-page">
             <div className="content">
@@ -66,17 +69,20 @@ const Home = () => {
                                     Home
                                 </li>
                                 <li className='nav-item' onClick={() => handleSelectedField("Daily")}>
-                                    Meu Dia
+                                    Meus Checkpoints
                                 </li>
                                 <li className='nav-item' onClick={() => handleSelectedField("Family")}>
-                                    Minha Família
+                                    Minhas Notas
+                                </li>
+                                <li className='nav-item' onClick={() => handleSelectedField("")}>
+                                    Sobre a Brain
                                 </li>
                                 <Link to="/" className="link-btn">
                                     <li className='nav-item' onClick={closeMobileMenu}>
                                         Sair
                                     </li>
                                 </Link>
-                                </ul>
+                            </ul>
                         </div>
                     </div>
                 <form>

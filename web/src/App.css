@@ -11,12 +11,12 @@
   }
   
   body {
-    background: #F0F0F5;
+    background: black;
     -webkit-font-smoothing: antialiased;
     color: var(--text-color);
   }
   
-  body, input, button {
+  body, input, button, li {
     font-family: Roboto, Arial, Helvetica, sans-serif;
   }
   

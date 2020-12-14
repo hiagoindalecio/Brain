@@ -1,0 +1,16 @@
+.btn {
+  max-width: 20%;
+}
+
+.btn-drop {
+  background-color: #ff0000;
+}
+
+.btn-drop:hover {
+  background-color: #ff0000a4;
+}
+
+.btns {
+  display: flex;
+  flex-direction: row;
+}

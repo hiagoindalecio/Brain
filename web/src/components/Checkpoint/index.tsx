@@ -25,14 +25,17 @@ const Checkpoint = (
                         <React.Fragment>
                             <h5 className="card-title">●{task.description}</h5>
                             <p className="card-text">Data limite: {task.date}</p>
-                            <button type="button" className="btn btn-primary btn-lg">Editar</button>
+                            <button type="button" className="btn btn-primary btn-sm">Editar</button>
                         </React.Fragment>
                     ))
                 }
             </div>
+            <div className="btns">
+                <button type="button" className="btn btn-primary btn-sm">Editar</button>
+                <button type="button" className="btn btn-primary btn-sm btn-drop">Excluir</button>
+            </div>
         </div>
     );
-    
 };
 
 export default Checkpoint;

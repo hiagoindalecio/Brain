@@ -1,6 +1,7 @@
 import knex from '../database/connection';
 import { Request, Response } from 'express';
 import bcrypt  from 'bcrypt';
+import { string } from '@hapi/joi';
 
 class UsersControllerr {
     async index(request: Request, response: Response){
@@ -61,31 +62,47 @@ class UsersControllerr {
     };
 
     async validateUser(request: Request, response: Response) {
+        interface User {
+            name: string,
+            points: Number,
+            password: string
+        }
         const { email, password } = request.params;
+        console.log(`Email input: ${email}\nPassword input: ${password}`);
         const userSelected = await knex('user_table').select('*').where('MAIL_USER', email);
-        const serializedUser = userSelected.map( user => {
-            return {
-                name: user.NAME_USER,
-                password: user.PASSWORD_USER
-            }; 
+        const serializedUser:User = {
+            name: 'Empty',
+            points: 1,
+            password: 'Empty'
+        }
+        userSelected.map( user => {
+            serializedUser.name = user.NAME_USER,
+            serializedUser.points = user.POINTS_USER,
+            serializedUser.password = user.PASSWORD_USER
         });
-        console.log(`Senha no database:${serializedUser[0].password}\nSenha digitada:${password}`);
-        bcrypt
-            .compare(password, serializedUser[0].password)
-            .then(res => {
-                console.log(res);
-                if (res) {
-                    const returnSerialized = {
-                        name: serializedUser[0].name,
-                        message: 'User validated successfully.'
-                    };
-                    return response.status(202).json(returnSerialized);
-                }
-                else {
-                    return response.status(400).json({ name:'Null', mensagem: `User not found.`});
-                }
-            })
-            .catch(err => {return response.status(400).json({ mensagem: `Error during the user validation. ${err.message}`});});
+        if (serializedUser.name !== 'Empty') {
+            console.log(`Senha no database:${serializedUser.password}`);
+            bcrypt
+                .compare(password, serializedUser.password)
+                .then(res => {
+                    console.log(res);
+                    if (res) {
+                        const returnSerialized = {
+                            name: serializedUser.name,
+                            points: serializedUser.points,
+                            message: 'User validated successfully.'
+                        };
+                        return response.status(202).json(returnSerialized);
+                    }
+                    else {
+                        return response.status(400).json({ name:'Empty', points:0, mensagem: `Password incorrect.`});
+                    }
+                })
+                .catch(err => {return response.status(400).json({ name:'Null', points:0, mensagem: `Error during the password validation. ${err.message}`});});
+        } else {
+            console.log(false);
+            return response.status(400).json({ name:'Empty', points:0, mensagem: `User not found.`});
+        }
         
     };
 };

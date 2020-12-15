@@ -3,22 +3,41 @@ import './styles.css';
 import '../../bootstrap-4.5.3-dist/css/bootstrap.min.css';
 import { Link } from 'react-router-dom';
 
+import api from '../../services/api';
+import axios from 'axios';
+
 import logo from '../../assets/logo.png'
 
 const Login = () => {
+    interface userValidationResponse {
+        name: string,
+        points: number,
+        message: string
+    }
+    
     const [formData, setFormData] = useState({
         email: '',
         password: ''
     });
+    const [userValidation, setUserValidation] = useState<userValidationResponse>({
+        name: '',
+        points: 0,
+        message: ''
+    });
+
+    useEffect(() => {
+        alert(`Name: ${userValidation.name}\nPoints: ${userValidation.points}\nMessage: ${userValidation.message}`);
+    }, [userValidation]);
 
     function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
         const { name, value } = event.target;
         setFormData({ ...formData, [name]: value });
     }
-    function handleSubmit(event: FormEvent) {
-        const { email, password } = formData;
-        //alert(`E-mail: ${email}\nSenha: ${password}`);
-
+    function handleSubmit() {
+        //alert(`Email: ${formData.email}\nSenha: ${formData.password}`);
+        api.get(`uservalidate/${formData.email}/${formData.password}`).then(response => {
+            setUserValidation(response.data);
+        });
     }
     return(
         <div id="login-page">

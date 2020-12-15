@@ -12,6 +12,7 @@ const usersController = new UsersControllerr();
 routes.use(express.json());
 routes.get('/users', usersController.index);
 routes.get('/users/:id', usersController.show);
+routes.get('/uservalidate/:email/:password', usersController.validateUser);
 routes.post('/users',
 celebrate({
     body: Joi.object().keys({
@@ -22,6 +23,5 @@ celebrate({
 }, {
     abortEarly: false
 }), usersController.create);
-routes.get('/uservalidate/:email/:password', usersController.validateUser);
 
 export default routes;

@@ -63,6 +63,7 @@ class UsersControllerr {
 
     async validateUser(request: Request, response: Response) {
         interface User {
+            id: number,
             name: string,
             points: Number,
             password: string
@@ -71,16 +72,18 @@ class UsersControllerr {
         console.log(`Email input: ${email}\nPassword input: ${password}`);
         const userSelected = await knex('user_table').select('*').where('MAIL_USER', email);
         const serializedUser:User = {
-            name: 'Empty',
-            points: 1,
-            password: 'Empty'
+            id: 0,
+            name: 'Vazio',
+            points: 0,
+            password: 'Vazio'
         }
         userSelected.map( user => {
+            serializedUser.id = user.COD_USER,
             serializedUser.name = user.NAME_USER,
             serializedUser.points = user.POINTS_USER,
             serializedUser.password = user.PASSWORD_USER
         });
-        if (serializedUser.name !== 'Empty') {
+        if (serializedUser.name !== 'Vazio') {
             console.log(`Senha no database:${serializedUser.password}`);
             bcrypt
                 .compare(password, serializedUser.password)
@@ -88,20 +91,21 @@ class UsersControllerr {
                     console.log(res);
                     if (res) {
                         const returnSerialized = {
+                            id: serializedUser.id,
                             name: serializedUser.name,
                             points: serializedUser.points,
-                            message: 'User validated successfully.'
+                            message: 'Usuário validado com sucesso!'
                         };
                         return response.status(202).json(returnSerialized);
                     }
                     else {
-                        return response.status(400).json({ name:'Empty', points:0, mensagem: `Password incorrect.`});
+                        return response.status(400).json({ id:'-1', name:'Vazio', points:'-1', mensagem: `Senha Incorreta.`});
                     }
                 })
-                .catch(err => {return response.status(400).json({ name:'Null', points:0, mensagem: `Error during the password validation. ${err.message}`});});
+                .catch(err => {return response.status(400).json({ id:'-1', name:'Vazio', points:'-1', mensagem: `Erro durante a validação da senha.\n${err.message}`});});
         } else {
             console.log(false);
-            return response.status(400).json({ name:'Empty', points:0, mensagem: `User not found.`});
+            return response.status(400).json({ id:'-1', name:'Vazio', points:'-1', mensagem: `Usuário não encontrado.`});
         }
         
     };

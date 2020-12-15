@@ -2,7 +2,10 @@ import React, { useEffect, useState, ChangeEvent } from 'react';
 import './styles.css';
 import '../../bootstrap-4.5.3-dist/css/bootstrap.min.css';
 import { FaBars, FaTimes } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { Link, RouteComponentProps } from 'react-router-dom';
+import { Request } from 'express';
+
+import api from '../../services/api';
 
 import logo from '../../assets/logo.png';
 
@@ -10,11 +13,29 @@ import Initial from '../../components/Initial';
 import Daily from '../../components/Daily';
 import Family from '../../components/Family';
 
-const Home = () => {
+interface MatchPropts {
+    match: { 
+        id: number, 
+        name: string, 
+        points: number 
+    };
+};
+
+const Home: React.FC<MatchPropts> = ({ match }) =>  {
+    interface User {    
+        id: number,
+        name: string,
+        points: number
+    }
     const [component, setComponent] = useState<JSX.Element>();
     const [button, setButton] = useState(true);
     const [currentScreen, setCurrentScreen] = useState<JSX.Element>();
     const [click, setClick] = useState(false);
+    const [user, setUser] = useState<User>({
+        id: match.id,
+        name: match.name,
+        points: match.points
+    });
 
     interface Checkpoints {
         title: string,
@@ -22,15 +43,19 @@ const Home = () => {
     }
 
     useEffect(() => {
+        //setUser(match);
+        alert(`Nome: ${match.name}\nId: ${match.id}\nPoints: ${match.points}`)
         var check: Checkpoints = {
             title: 'Sorta Pipa',
             date: '20/02/2021'
         };
         
-        setComponent(Initial('Fábio Melo', [
+        setComponent(Initial(user.name, [
             check
         ]));
     }, []);
+
+    
 
     function handleSelectedField(componentName: string) {
         switch(componentName) {
@@ -41,7 +66,7 @@ const Home = () => {
                 setComponent(Family);
                 break;
             case 'Home':
-                setComponent(Initial('Fábio Melo', []));
+                setComponent(Initial(user.name, []));
                 break;
         }
     }
@@ -57,6 +82,9 @@ const Home = () => {
                     <div className="header-logo">
                         <h1 className="header-text">Brain</h1>
                         <img src={logo} alt="logo" className="img-logo"/>
+                    </div>
+                    <div className="header-points">
+                        <h4>Points: {user.points}</h4>
                     </div>
                 </header>
                     <div className="navbar">

@@ -1,15 +1,15 @@
 import React, { useEffect, useState, ChangeEvent, FormEvent } from 'react';
 import './styles.css';
 import '../../bootstrap-4.5.3-dist/css/bootstrap.min.css';
-import { Link } from 'react-router-dom';
+import { Route, Link, useHistory } from 'react-router-dom';
 
 import api from '../../services/api';
-import axios from 'axios';
 
 import logo from '../../assets/logo.png'
 
-const Login = () => {
+const Login:React.FC = () => {
     interface userValidationResponse {
+        id: number,
         name: string,
         points: number,
         message: string
@@ -20,25 +20,34 @@ const Login = () => {
         password: ''
     });
     const [userValidation, setUserValidation] = useState<userValidationResponse>({
+        id: 0,
         name: '',
         points: 0,
         message: ''
     });
 
     useEffect(() => {
-        alert(`Name: ${userValidation.name}\nPoints: ${userValidation.points}\nMessage: ${userValidation.message}`);
+        if(userValidation.message === 'Usuário validado com sucesso!') {
+            //alert(`Id: ${userValidation.id}\nName: ${userValidation.name}\nPoints: ${userValidation.points}\nMessage: ${userValidation.message}`);
+            var textPath: string = `home/${userValidation.id}/${userValidation.name}/${userValidation.points}`;
+            const history = useHistory();
+            history.push(textPath);
+        } else if (userValidation.message !== '') {
+            alert(`Erro ao autenticar usuário!\n${userValidation.message}`);
+        }
     }, [userValidation]);
 
     function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
         const { name, value } = event.target;
         setFormData({ ...formData, [name]: value });
-    }
-    function handleSubmit() {
+    };
+    async function handleSubmit(event: FormEvent) {
+        event.preventDefault();
         //alert(`Email: ${formData.email}\nSenha: ${formData.password}`);
-        api.get(`uservalidate/${formData.email}/${formData.password}`).then(response => {
+        await api.get(`uservalidate/${formData.email}/${formData.password}`).then(response => {
             setUserValidation(response.data);
         });
-    }
+    };
     return(
         <div id="login-page">
             <div className="content">

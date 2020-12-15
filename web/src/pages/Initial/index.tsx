@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import Pedro from '../../assets/Pedro.png';
 import logo from '../../assets/logo.png'
 
-const Initial = () => {
+const Initial:React.FC = () => {
     return(
         <div id="initial-page">
             <div className="content">

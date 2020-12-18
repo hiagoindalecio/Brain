@@ -2,6 +2,12 @@
   margin: 1em;
 }
 
+button {
+  text-decoration: none;
+  background: none;
+  border: none;
+}
+
 .header-logo {
   display: grid;
   align-items: center;

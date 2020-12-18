@@ -8,8 +8,6 @@ import AuthContext from '../../contexts/auth';
 import logo from '../../assets/logo.png';
 
 import Initial from '../../components/Initial';
-import Daily from '../../components/Daily';
-import Family from '../../components/Family';
 
 
 const Home: React.FC = () =>  {
@@ -20,7 +18,6 @@ const Home: React.FC = () =>  {
     }
 
     const { singOut, user } = useContext(AuthContext);
-    const [points, setPoints] = useState<number>(0);
     const [component, setComponent] = useState<JSX.Element>();
     const [click, setClick] = useState(false);
 
@@ -34,9 +31,7 @@ const Home: React.FC = () =>  {
             title: 'Sorta Pipa',
             date: '20/02/2021'
         };
-        const currentUser = user as unknown as User;
-        setPoints(currentUser ? currentUser.points : 0);
-        setComponent(Initial(currentUser ? currentUser.name : '', [
+        setComponent(Initial(user ? user.name : '', [
             check
         ]));
     }, []);
@@ -45,12 +40,6 @@ const Home: React.FC = () =>  {
 
     function handleSelectedField(componentName: string) {
         switch(componentName) {
-            case 'Daily':
-                setComponent(Daily);
-                break;
-            case 'Family':
-                setComponent(Family);
-                break;
             case 'Home':
                 const currentUser = user as unknown as User;
                 setComponent(Initial(currentUser ? currentUser.name : '', []));
@@ -73,7 +62,7 @@ const Home: React.FC = () =>  {
                         <img src={logo} alt="logo" className="img-logo"/>
                     </div>
                     <div className="header-points">
-                        <h4>Pontos: {points}</h4>
+                        <h4>Pontos: {user ? user.points : '0'}</h4>
                     </div>
                 </header>
                     <div className="navbar">
@@ -85,13 +74,13 @@ const Home: React.FC = () =>  {
                                 <li className='nav-item' onClick={() => handleSelectedField("Home")}>
                                     Home
                                 </li>
-                                <li className='nav-item' onClick={() => handleSelectedField("Daily")}>
+                                <li className='nav-item' onClick={() => handleSelectedField("Checkpoints")}>
                                     Meus Checkpoints
                                 </li>
-                                <li className='nav-item' onClick={() => handleSelectedField("Family")}>
+                                <li className='nav-item' onClick={() => handleSelectedField("Notas")}>
                                     Minhas Notas
                                 </li>
-                                <li className='nav-item' onClick={() => handleSelectedField("")}>
+                                <li className='nav-item' onClick={() => handleSelectedField("Sobre")}>
                                     Sobre a Brain
                                 </li>
                                 <button className="link-btn" onClick={handleLogoff}>

@@ -6,7 +6,15 @@ import AuthRouts from './auth.routes';
 import AppRoutes from './app.routes';
 
 const Routes: React.FC = () => {
-    const { signed } = useContext(AuthContext);
+    const { signed, loading } = useContext(AuthContext);
+
+    if (loading) {
+        return (
+            <body>
+                <h3 style={{flex:1, justifyContent: 'center', alignItems: 'center'}}>Carregando...</h3>
+            </body>
+        )
+    }
 
     return signed ? <AppRoutes /> : <AuthRouts />; //se o usuário estiver logado retorna AppRoutes, se não retorna AuthRouts
 };

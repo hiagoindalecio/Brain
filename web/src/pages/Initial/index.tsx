@@ -20,7 +20,7 @@ const Initial:React.FC = () => {
                 <form className="apresentation">
                     <h4 className="text">Olá amigo! Seja bem vindo ao Brain. Vamos até o seu espaço?<br/><br/>_Pedro</h4>
                     <img src={Pedro} alt="Pedro" className="avatar-img"/>
-                    <Link to="/login" className="link-button">
+                    <Link to="/home" className="link-button">
                         <span>
                             <FiLogIn />
                         </span>

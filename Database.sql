@@ -36,14 +36,15 @@ CREATE TABLE user_checkpoint
 	COD_USER INT NOT NULL,
 	SUMMARY_CHECK VARCHAR(50) NOT NULL,
 	DESCRI_CHECK VARCHAR(3000),
+	DATA_CHECK DATE,
 	PRIMARY KEY(COD_CHECK),
 	CONSTRAINT fk_mem_user
 	FOREIGN KEY (COD_USER)
 	REFERENCES user_table(COD_USER)
 );
 
-INSERT INTO user_checkpoint(COD_USER, SUMMARY_CHECK, DESCRI_CHECK)
-	VALUES(1, 'Terminar projeto', 'Finalizar projeto em React até o fim de dezembro.');
+INSERT INTO user_checkpoint(COD_USER, SUMMARY_CHECK, DESCRI_CHECK, DATA_CHECK)
+	VALUES(1, 'Terminar projeto', 'Finalizar projeto em React até o fim de dezembro.', '2021-02-20');
 
 CREATE TABLE checkpoint_tasks
 (

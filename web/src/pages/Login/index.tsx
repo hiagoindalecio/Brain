@@ -1,41 +1,19 @@
-import React, { useEffect, useState, ChangeEvent, FormEvent } from 'react';
+import React, { useEffect, useState, ChangeEvent, FormEvent, useContext } from 'react';
 import './styles.css';
 import '../../bootstrap-4.5.3-dist/css/bootstrap.min.css';
-import { Route, Link, useHistory } from 'react-router-dom';
+import AuthContext from '../../contexts/auth';
+import { useHistory } from 'react-router-dom';
 
 import api from '../../services/api';
 
 import logo from '../../assets/logo.png'
 
 const Login:React.FC = () => {
-    interface userValidationResponse {
-        id: number,
-        name: string,
-        points: number,
-        message: string
-    }
-    
+    const { signed, user, singIn } = useContext(AuthContext);
     const [formData, setFormData] = useState({
         email: '',
         password: ''
     });
-    const [userValidation, setUserValidation] = useState<userValidationResponse>({
-        id: 0,
-        name: '',
-        points: 0,
-        message: ''
-    });
-
-    useEffect(() => {
-        if(userValidation.message === 'Usuário validado com sucesso!') {
-            //alert(`Id: ${userValidation.id}\nName: ${userValidation.name}\nPoints: ${userValidation.points}\nMessage: ${userValidation.message}`);
-            var textPath: string = `home/${userValidation.id}/${userValidation.name}/${userValidation.points}`;
-            const history = useHistory();
-            history.push(textPath);
-        } else if (userValidation.message !== '') {
-            alert(`Erro ao autenticar usuário!\n${userValidation.message}`);
-        }
-    }, [userValidation]);
 
     function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
         const { name, value } = event.target;
@@ -43,10 +21,7 @@ const Login:React.FC = () => {
     };
     async function handleSubmit(event: FormEvent) {
         event.preventDefault();
-        //alert(`Email: ${formData.email}\nSenha: ${formData.password}`);
-        await api.get(`uservalidate/${formData.email}/${formData.password}`).then(response => {
-            setUserValidation(response.data);
-        });
+        await singIn();
     };
     return(
         <div id="login-page">

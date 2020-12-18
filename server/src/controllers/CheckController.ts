@@ -6,7 +6,6 @@ class CheckController {
     async index(request: Request, response: Response) {
         const trx = await knex.transaction();
         const general = await trx ('user_chekpoint').select('*');
-        
         try{
             const serializedItems  = general.map( item => { // Percorre e reorganiza o que sera retornado
                 return {
@@ -29,13 +28,13 @@ class CheckController {
         const { userId } = request.params;
         const trx = await knex.transaction();
         const checksUser = await trx ('user_checkpoint').where('COD_USER', userId)
-        
         try{
             const serializedItems  = checksUser.map( item => { // Percorre e reorganiza o que sera retornado
                 return {
                     cod: item.COD_CHECK,
                     codUser: item.COD_USER,
                     summary: item.SUMMARY_CHECK,
+                    limitdate: item.DATA_CHECK,
                     desc: item.DESC_CHECK
                 };
             } );
@@ -45,13 +44,33 @@ class CheckController {
         }
     }
 
+    async showByDate(request: Request, response: Response) {
+        const { userId } = request.params;
+        const trx = await knex.transaction();
+        const checksUser = await trx ('user_checkpoint').where('COD_USER', userId).orderBy('DATA_CHECK').limit(3);
+        try{
+            const serializedItems  = checksUser.map( item => { // Percorre e reorganiza o que sera retornado
+                return {
+                    cod: item.COD_CHECK,
+                    codUser: item.COD_USER,
+                    summary: item.SUMMARY_CHECK,
+                    limitdate: item.DATA_CHECK,
+                    desc: item.DESC_CHECK
+                };
+            } );
+            response.status(200).send(serializedItems);    
+        } catch (e) {
+            response.status(400).json({ mensagem: `Error during the checkpoint select. ${e}`});
+        }
+    }
 
     async create(request: Request, response: Response) {
-        const { userId, summaryCheck, descCheck } = request.body;
+        const { id_user, summary, description, limitdate } = request.body;
         const checkpoint = {
-            COD_USER      : userId,
-            SUMMARY_CHECK : summaryCheck,
-            DESCRI_CHECK  : descCheck,
+            COD_USER : id_user,
+            SUMMARY_CHECK : summary,
+            DESCRI_CHECK : description,
+            DATA_CHECK : limitdate,
             POINTS_USER: 0
         }
         try{

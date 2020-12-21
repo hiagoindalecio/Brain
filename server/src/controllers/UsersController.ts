@@ -84,28 +84,47 @@ class UsersControllerr {
             serializedUser.password = user.PASSWORD_USER
         });
         if (serializedUser.name !== 'Vazio') {
-            console.log(`Senha no database:${serializedUser.password}`);
+            console.log(`Senha no database: ${serializedUser.password}`);
             bcrypt
                 .compare(password, serializedUser.password)
                 .then(res => {
                     console.log(res);
                     if (res) {
                         const returnSerialized = {
-                            id: serializedUser.id,
-                            name: serializedUser.name,
-                            points: serializedUser.points,
-                            message: 'Usuário validado com sucesso!'
+                            user: {
+                                id: serializedUser.id,
+                                name: serializedUser.name,
+                                points: serializedUser.points
+                            }
                         };
                         return response.status(202).json(returnSerialized);
                     }
                     else {
-                        return response.status(400).json({ id:'-1', name:'Vazio', points:'-1', mensagem: `Senha Incorreta.`});
+                        return response.status(400).json({ 
+                                user: {
+                                    id:-1,
+                                    name:'Vazio',
+                                    points:-1
+                                }
+                            });
                     }
                 })
-                .catch(err => {return response.status(400).json({ id:'-1', name:'Vazio', points:'-1', mensagem: `Erro durante a validação da senha.\n${err.message}`});});
+                .catch(err => {return response.status(400).json({ 
+                        user: {
+                            id:-1,
+                            name:'Vazio',
+                            points:-1
+                        }
+                    });});
         } else {
             console.log(false);
-            return response.status(400).json({ id:'-1', name:'Vazio', points:'-1', mensagem: `Usuário não encontrado.`});
+            return response.status(400).json({ 
+                    user: {
+                        id:-1, 
+                        name:'Vazio', 
+                        points:-1
+                    }
+                });
         }
         
     };

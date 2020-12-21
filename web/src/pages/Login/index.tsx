@@ -9,7 +9,7 @@ import api from '../../services/api';
 import logo from '../../assets/logo.png'
 
 const Login:React.FC = () => {
-    const { signed, user, singIn } = useContext(AuthContext);
+    const { signed, singIn } = useContext(AuthContext);
     const [formData, setFormData] = useState({
         email: '',
         password: ''
@@ -21,7 +21,11 @@ const Login:React.FC = () => {
     };
     async function handleSubmit(event: FormEvent) {
         event.preventDefault();
-        await singIn();
+        if(await singIn(formData.email, formData.password)) {
+            alert('Email ou senha digitados incorretamente');
+        } else { 
+            alert('Sucesso!');
+        };
     };
     return(
         <div id="login-page">

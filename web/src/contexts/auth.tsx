@@ -3,16 +3,16 @@ import * as auth from '../services/auth';
 import api from '../services/api';
 
 interface User {
-    id: number;
-    name: string;
-    points: number;
+    id: number | undefined;
+    name: string | undefined;
+    points: number | undefined;
 }
 
 interface AuthContextData {
     signed: boolean;
     user: User | null;
     loading: boolean;
-    singIn(): Promise<void>;
+    singIn(email: string, password: string): Promise<boolean>;
     singOut(): void;
 }
 
@@ -35,8 +35,9 @@ export const AuthProvider: React.FC = ({ children }) => {
 
     useEffect(() => {
         async function loadStorageData() {
+            setLoading(true);
             const storagedUser = await localStorage.getItem('@RNAuth:user');
-            await new Promise((resolve) => setTimeout(resolve, 2000)); //remover esse timeout
+            await new Promise((resolve) => setTimeout(resolve, 1000)); //remover esse timeout
             if (storagedUser) {
                 setUser(JSON.parse(storagedUser));
             }
@@ -45,10 +46,15 @@ export const AuthProvider: React.FC = ({ children }) => {
         loadStorageData();
     }, [])
 
-    async function singIn() {
-        const response = await auth.singIn();
-        setUser(response.user);
-        localStorage.setItem('@RNAuth:user', JSON.stringify(response.user));
+    async function singIn(email: string, password: string) {
+        setLoading(true);
+        const response = await auth.singIn(email, password);
+        if(response.user.name !== 'Vazio') {
+            setUser(response.user);
+            localStorage.setItem('@RNAuth:user', JSON.stringify(response.user));
+        }
+        setLoading(false);
+        return (user ? true : false);
     }
 
     function singOut() {

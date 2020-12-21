@@ -10,7 +10,7 @@ interface Checkpoints {
 }
 
 const Initial = (
-    name: string | null,
+    name: string | undefined,
     nextCheckpoints: Checkpoints[]
 ) => {
 

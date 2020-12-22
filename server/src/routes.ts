@@ -5,17 +5,23 @@ import { celebrate, Joi } from 'celebrate'; // Validacao de dados
 
 import UsersControllerr from './controllers/UsersController';
 import CheckController from './controllers/CheckController';
+import TaskControler from './controllers/TasksController';
 
 const routes = express.Router();
 //const upload = multer(multerConfig);
 const usersController = new UsersControllerr();
 const checkController = new CheckController();
+const taskController = new TaskControler();
 
 routes.use(express.json());
 routes.get('/users', usersController.index);
 routes.get('/users/:id', usersController.show);
 routes.get('/uservalidate/:email/:password', usersController.validateUser);
-routes.get('/checkpoint/date/:userId', checkController.showByDate);
+routes.get('/checkpoint/date/:userId', checkController.showOrderedByDate);
+routes.get('/checkpoint/:userId', checkController.show);
+routes.get('/task', taskController.index);
+routes.get('/task/:chekpointId', taskController.show);
+
 routes.post('/checkpoint/:userId',
     celebrate({
         body: Joi.object().keys({

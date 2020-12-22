@@ -10,15 +10,26 @@ class TasksController {
         try{
             const serializedItems  = general.map( item => { // Percorre e reorganiza o que sera retornado
                 return {
-                    idTask: item.COD_TASK,
-                    idCheck: item.COD_CHECK,
-                    summary: item.SUMMARY_TASK,
-                    desc: item.DESC_TASK
+                    task: {
+                        idTask: item.COD_TASK,
+                        idCheck: item.COD_CHECK,
+                        summary: item.SUMMARY_TASK,
+                        desc: item.DESCRI_TASK,
+                        status: item.STATUS_TASK
+                    }
                 };
             } );
             response.status(200).send(serializedItems);    
         } catch (e) {
-            return response.status(400).json({ mensagem: `Error during the Tasks select. ${e}`});
+            return response.status(400).json({
+                task: {
+                    idTask: 0,
+                    idCheck: 0,
+                    summary: 'Vazio',
+                    desc: 'Vazio',
+                    status: false
+                }
+            });
         }
         
 
@@ -26,22 +37,33 @@ class TasksController {
 
 
     async show(request: Request, response: Response) {
-        const { codCheck } = request.params;
+        const { chekpointId } = request.params;
         const trx = await knex.transaction();
-        const tasksCheck = await trx ('checkpoint_tasks').where('COD_CHECK', codCheck)
+        const tasksCheck = await trx ('checkpoint_tasks').where('COD_CHECK', chekpointId)
         
         try{
             const serializedItems  = tasksCheck.map( item => { // Percorre e reorganiza o que sera retornado
                 return {
-                    idTask: item.COD_TASK,
-                    idCheck: item.COD_CHECK,
-                    summary: item.SUMMARY_TASK,
-                    desc: item.DESC_TASK
+                    task: {
+                        idTask: item.COD_TASK,
+                        idCheck: item.COD_CHECK,
+                        summary: item.SUMMARY_TASK,
+                        desc: item.DESCRI_TASK,
+                        status: item.STATUS_TASK
+                    }
                 };
             } );
             response.status(200).send(serializedItems);    
         } catch (e) {
-            response.status(400).json({ mensagem: `Error during the Tasks select. ${e}`});
+            response.status(400).json({
+                task: {
+                    idTask: 0,
+                    idCheck: 0,
+                    summary: 'Vazio',
+                    desc: 'Vazio',
+                    status: false
+                }
+            });
         }
     }
 
@@ -61,7 +83,15 @@ class TasksController {
                 message: 'New Task created successfully'
             });
         } catch (e) {
-            return response.status(400).json({ mensagem: `Error during the Tasks creation. ${e.message}`});
+            return response.status(400).json({
+                task: {
+                    idTask: 0,
+                    idCheck: 0,
+                    summary: 'Vazio',
+                    desc: 'Vazio',
+                    status: false
+                }
+            });
         }
     };
 

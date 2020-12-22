@@ -2,14 +2,13 @@ import React, { useEffect, useState, ChangeEvent, FormEvent, useContext } from '
 import './styles.css';
 import '../../bootstrap-4.5.3-dist/css/bootstrap.min.css';
 import AuthContext from '../../contexts/auth';
-import { useHistory } from 'react-router-dom';
 
 import api from '../../services/api';
 
 import logo from '../../assets/logo.png'
 
 const Login:React.FC = () => {
-    const { signed, singIn } = useContext(AuthContext);
+    const { singIn } = useContext(AuthContext);
     const [formData, setFormData] = useState({
         email: '',
         password: ''
@@ -27,6 +26,7 @@ const Login:React.FC = () => {
             alert('Sucesso!');
         };
     };
+
     return(
         <div id="login-page">
             <div className="content">

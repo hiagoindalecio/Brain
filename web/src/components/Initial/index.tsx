@@ -5,16 +5,28 @@ import Ricardo from '../../assets/Ricardo.png';
 import Checkpoint from '../Checkpoint';
 
 interface Checkpoints {
-    title: string,
-    date: string
+    cod: number,
+    codUser: number,
+    summary: string,
+    limitdate: string,
+    description: string,
+    tasks: Task[];
+}
+
+interface Task {
+    task: {
+        idTask: number,
+        idCheck: number,
+        summary: String,
+        desc: String,
+        status: boolean
+    }
 }
 
 const Initial = (
     name: string | undefined,
     nextCheckpoints: Checkpoints[]
 ) => {
-
-
     return (
         <fieldset>
             <form className="apresentation">
@@ -23,7 +35,7 @@ const Initial = (
                 <img src={Ricardo} alt="Ricardo" className="avatar-img"/>
                 {
                     nextCheckpoints.map(checkpoint => (
-                        Checkpoint(checkpoint.title, checkpoint.date, [])
+                        Checkpoint(checkpoint.cod, checkpoint.codUser, checkpoint.summary, checkpoint.limitdate, checkpoint.description, checkpoint.tasks)
                     ))
                 }
             </form>

@@ -4,6 +4,7 @@ import '../../bootstrap-4.5.3-dist/css/bootstrap.min.css';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import AuthContext from '../../contexts/auth';
+import CheckpointsContext from '../../contexts/checkpoints';
 
 import logo from '../../assets/logo.png';
 
@@ -12,28 +13,24 @@ import Initial from '../../components/Initial';
 
 const Home: React.FC = () =>  {
     interface User {
-        id: number;
+        id: number | any;
         name: string;
         points: number;
     }
 
     const { singOut, user } = useContext(AuthContext);
+    const { getThreeNextCheckpoints, checkpointsResponse } = useContext(CheckpointsContext);
     const [component, setComponent] = useState<JSX.Element>();
     const [click, setClick] = useState(false);
 
-    interface Checkpoints {
+    /*interface Checkpoints {
         title: string,
         date: string
-    }
+    }*/
 
     useEffect(() => {
-        var check: Checkpoints = {
-            title: 'Sorta Pipa',
-            date: '20/02/2021'
-        };
-        setComponent(Initial(user ? user.name : '', [
-            check
-        ]));
+        getThreeNextCheckpoints(user?.id as unknown as number);
+        setComponent(Initial(user ? user.name : '', checkpointsResponse));
     }, []);
 
     

@@ -13,7 +13,7 @@ const Routes: React.FC = () => {
     if (authLoading || checkpointsLoading) {
         return (
             <body>
-                <h3 style={{flex:1, justifyContent: 'center', alignItems: 'center'}}>Carregando...</h3>
+                <h3 style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center'}}>Carregando...</h3>
             </body>
         )
     }

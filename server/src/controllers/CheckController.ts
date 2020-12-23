@@ -34,10 +34,10 @@ class CheckController {
 
     async show(request: Request, response: Response) {
         const { userId } = request.params;
-        const trx = await knex.transaction();
-        const checksUser = await trx ('user_checkpoint').where('COD_USER', userId)
+        const checksUser = knex('user_checkpoint').where('COD_USER', userId)
+        
         try{
-            const serializedItems  = checksUser.map( item => { // Percorre e reorganiza o que sera retornado
+            const serializedItems  = (await checksUser).map( item => { // Percorre e reorganiza o que sera retornado
                 return {
                     chekpoint: {
                         cod: item.COD_CHECK,
@@ -98,8 +98,7 @@ class CheckController {
             COD_USER : id_user,
             SUMMARY_CHECK : summary,
             DESCRI_CHECK : description,
-            DATA_CHECK : limitdate,
-            POINTS_USER: 0
+            DATA_CHECK : limitdate
         }
         try{
             const insertedCheckpoint = await knex('user_checkpoint').insert(checkpoint);
@@ -109,6 +108,7 @@ class CheckController {
                 message: 'New checkpoint created successfully'
             });
         } catch (e) {
+            console.log(e);
             return response.status(400).json({
                 chekpoint: {
                     cod: 0,

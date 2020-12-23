@@ -20,9 +20,9 @@ routes.get('/uservalidate/:email/:password', usersController.validateUser);
 routes.get('/checkpoint/date/:userId', checkController.showOrderedByDate);
 routes.get('/checkpoint/:userId', checkController.show);
 routes.get('/task', taskController.index);
-routes.get('/task/:chekpointId', taskController.show);
+routes.get('/task/:checkpointId', taskController.show);
 
-routes.post('/checkpoint/:userId',
+routes.post('/checkpoint',
     celebrate({
         body: Joi.object().keys({
             id_user: Joi.number().required(),

@@ -37,12 +37,11 @@ class TasksController {
 
 
     async show(request: Request, response: Response) {
-        const { chekpointId } = request.params;
-        const trx = await knex.transaction();
-        const tasksCheck = await trx ('checkpoint_tasks').where('COD_CHECK', chekpointId)
+        const { checkpointId } = request.params;
+        const tasksCheck = await knex('checkpoint_tasks').where('COD_CHECK', checkpointId)
         
         try{
-            const serializedItems  = tasksCheck.map( item => { // Percorre e reorganiza o que sera retornado
+            const serializedItems  = (await tasksCheck).map( item => { // Percorre e reorganiza o que sera retornado
                 return {
                     task: {
                         idTask: item.COD_TASK,
@@ -53,6 +52,7 @@ class TasksController {
                     }
                 };
             } );
+            console.log(serializedItems);
             response.status(200).send(serializedItems);    
         } catch (e) {
             response.status(400).json({
@@ -83,6 +83,7 @@ class TasksController {
                 message: 'New Task created successfully'
             });
         } catch (e) {
+            console.log(e);
             return response.status(400).json({
                 task: {
                     idTask: 0,

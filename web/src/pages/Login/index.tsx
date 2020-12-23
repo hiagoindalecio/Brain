@@ -1,13 +1,11 @@
-import React, { useEffect, useState, ChangeEvent, FormEvent, useContext } from 'react';
+import React, { useState, ChangeEvent, FormEvent, useContext } from 'react';
 import './styles.css';
 import '../../bootstrap-4.5.3-dist/css/bootstrap.min.css';
 import AuthContext from '../../contexts/auth';
 
-import api from '../../services/api';
-
 import logo from '../../assets/logo.png'
 
-const Login:React.FC = () => {
+const Login: React.FC = () => {
     const { singIn } = useContext(AuthContext);
     const [formData, setFormData] = useState({
         email: '',

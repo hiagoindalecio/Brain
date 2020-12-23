@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 
-import Checkpoint from '../../components/Checkpoint';
+import Checkpoint from '../../components/CheckpointObject';
 
 import AuthContext from '../../contexts/auth';
 

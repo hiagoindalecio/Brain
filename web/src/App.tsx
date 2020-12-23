@@ -5,12 +5,15 @@ import './App.css';
 // Components
 import Routes from './routes';
 import { AuthProvider } from './contexts/auth';
+import { CheckpointsProvider } from './contexts/checkpoints';
 
 function App() {
   return (
-    <AuthProvider>
-      <Routes />
-    </AuthProvider>
+    <CheckpointsProvider>
+      <AuthProvider>
+        <Routes />
+      </AuthProvider>
+    </CheckpointsProvider>
   );
 }
 

@@ -2,44 +2,27 @@ import React, { useEffect, useState, useContext } from 'react';
 import './styles.css';
 import '../../bootstrap-4.5.3-dist/css/bootstrap.min.css';
 import { FaBars, FaTimes } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+
 import AuthContext from '../../contexts/auth';
-import CheckpointsContext from '../../contexts/checkpoints';
 
 import logo from '../../assets/logo.png';
 
 import Initial from '../../components/Initial';
+import CheckpointsList from '../../components/CheckpointsList';
 
 
 const Home: React.FC = () =>  {
-    interface User {
-        id: number | any;
-        name: string;
-        points: number;
-    }
-
     const { singOut, user } = useContext(AuthContext);
-    const { getThreeNextCheckpoints, checkpointsResponse } = useContext(CheckpointsContext);
-    const [component, setComponent] = useState<JSX.Element>();
+    const [component, setComponent] = useState<React.FC>(Initial);
     const [click, setClick] = useState(false);
 
-    /*interface Checkpoints {
-        title: string,
-        date: string
-    }*/
-
-    useEffect(() => {
-        getThreeNextCheckpoints(user?.id as unknown as number);
-        setComponent(Initial(user ? user.name : '', checkpointsResponse));
-    }, []);
-
-    
-
-    function handleSelectedField(componentName: string) {
+    async function handleSelectedField(componentName: string) {
         switch(componentName) {
             case 'Home':
-                const currentUser = user as unknown as User;
-                setComponent(Initial(currentUser ? currentUser.name : '', []));
+                setComponent(Initial);
+                break;
+            case 'Checkpoints':
+                setComponent(CheckpointsList);
                 break;
         }
     }

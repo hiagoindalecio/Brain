@@ -2,11 +2,11 @@ import api from './api';
 
 interface tasksResponse {
     task: {
-        idTask: number,
-        idCheck: number,
-        summary: String,
-        desc: String,
-        status: boolean
+        idTask: number;
+        idCheck: number;
+        summary: string;
+        desc: string;
+        status: boolean;
     }
 }
 

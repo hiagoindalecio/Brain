@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import CheckpointsContext from '../../contexts/checkpoints';
 import AuthContext from '../../contexts/auth';
 
-import Checkpoint from '../CheckpointObject';
+import Checkpoint from '../../components/CheckpointObject';
 
 interface Task {
     task: {
@@ -26,7 +26,7 @@ interface CheckpointsData {
     }
 }
 
-const CheckpointsList: React.FC = () => {
+const CheckpointsList = () => {
     const { checkpointsResponse, getCheckpoints } = useContext(CheckpointsContext);
     const { user } = useContext(AuthContext);
     const [checkpoints, setCheckpoints] = useState<CheckpointsData[]>([]);

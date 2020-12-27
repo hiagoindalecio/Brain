@@ -24,7 +24,7 @@ interface CheckpointsData {
 }
 
 interface CheckpointsContextData {
-    checkpointsResponse: CheckpointsData[] | null;
+    checkpointsResponse: CheckpointsData[];
     loading: boolean;
     getCheckpoints: (idUser: number) => void;
     getThreeNextCheckpoints:(idUser: number) => void;
@@ -38,7 +38,7 @@ export const CheckpointsProvider: React.FC = ({ children }) => {
     const [checkpointsResponse, setCheckpointsResponse] = useState<CheckpointsData[]>([]);
 
     async function getCheckpoints(idUser: number) {
-        var responseArray: CheckpointsData[] = [];
+        /*var responseArray: CheckpointsData[] = [];
         setLoading(true);
         const checkpointResponse = await checkpoint.getCheckpoints(idUser);
         if(checkpointResponse[0].chekpoint.summary !== 'Vazio') {
@@ -52,26 +52,22 @@ export const CheckpointsProvider: React.FC = ({ children }) => {
             })
         }
         setCheckpointsResponse(responseArray);
-        setLoading(false);
+        setLoading(false);*/
     };
 
     async function getThreeNextCheckpoints(idUser: number) {
         var responseArray: CheckpointsData[] = [];
         setLoading(true);
-        const checkpointResponse = await checkpoint.getThreeNextCheckpoints(idUser);
-        if(checkpointResponse[0].chekpoint.summary !== 'Vazio') {
+        checkpoint.getThreeNextCheckpoints(idUser).then(checkpointResponse => {
             checkpointResponse.map(oneCheckpoint => {
                 task.getTasks(oneCheckpoint.chekpoint.cod).then(taskResponse => {
-                    if(taskResponse[0].task.summary !== 'Vazio') {
-                        setTasks(taskResponse);
-                    }
+                    setTasks(taskResponse);
                 });
                 responseArray.push({checkpoint: {...oneCheckpoint.chekpoint, tasks}});
-            })
-        }
+            });
+        });
         setCheckpointsResponse(responseArray);
         setLoading(false);
-        alert('passou')
     };
 
     return (

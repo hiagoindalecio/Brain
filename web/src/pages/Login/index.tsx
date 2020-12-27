@@ -26,28 +26,31 @@ const Login: React.FC = () => {
     };
 
     return(
-        <div id="login-page">
-            <div className="content">
-                <header className="header">
-                    <div className="header-logo">
-                        <h1 className="header-text">Brain</h1>
-                        <img src={logo} alt="logo" className="img-logo"/>
-                    </div>
-                </header>
-                <form className="form-login" onSubmit={handleSubmit}>
-                    <div className="form-group">
-                        <label htmlFor="exampleInputEmail1">Endereço de e-mail</label>
-                        <input type="email" name="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" onChange={handleInputChange} />
-                        <small id="emailHelp" className="form-text text-muted">Nós nunca iremos compartilhar seu e-mail com ninguém.</small>
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="exampleInputPassword1">Senha</label>
-                        <input type="password" name="password" className="form-control" id="exampleInputPassword1" onChange={handleInputChange} />
-                    </div>
-                    <button type="submit" className="btn btn-primary">Submeter</button>
-                </form>
+        <fieldset>
+            <div id="login-page">
+                <div className="content">
+                    <header className="header">
+                        <div className="header-logo">
+                            <h1 className="header-text">Brain</h1>
+                            <img src={logo} alt="logo" className="img-logo"/>
+                        </div>
+                    </header>
+                    <form className="form-login" onSubmit={handleSubmit}>
+                        <div className="form-group">
+                            <label htmlFor="exampleInputEmail1">Endereço de e-mail</label>
+                            <input type="email" name="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" onChange={handleInputChange} />
+                            <small id="emailHelp" className="form-text text-muted">Nós nunca iremos compartilhar seu e-mail com ninguém.</small>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="exampleInputPassword1">Senha</label>
+                            <input type="password" name="password" className="form-control" id="exampleInputPassword1" onChange={handleInputChange} />
+                        </div>
+                        <button type="submit" className="btn btn-primary">Submeter</button>
+                    </form>
+                </div>
             </div>
-        </div>
+        </fieldset>
+        
     );
 }
 

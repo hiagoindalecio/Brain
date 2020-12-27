@@ -42,6 +42,15 @@ class TasksController {
         
         try{
             const serializedItems  = (await tasksCheck).map( item => { // Percorre e reorganiza o que sera retornado
+                console.log({
+                    task: {
+                        idTask: item.COD_TASK,
+                        idCheck: item.COD_CHECK,
+                        summary: item.SUMMARY_TASK,
+                        desc: item.DESCRI_TASK,
+                        status: item.STATUS_TASK
+                    }
+                });
                 return {
                     task: {
                         idTask: item.COD_TASK,
@@ -52,7 +61,7 @@ class TasksController {
                     }
                 };
             } );
-            console.log(serializedItems);
+            
             response.status(200).send(serializedItems);    
         } catch (e) {
             response.status(400).json({

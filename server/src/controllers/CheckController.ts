@@ -38,6 +38,15 @@ class CheckController {
         
         try{
             const serializedItems  = (await checksUser).map( item => { // Percorre e reorganiza o que sera retornado
+                console.log({
+                    chekpoint: {
+                        cod: item.COD_CHECK,
+                        codUser: item.COD_USER,
+                        summary: item.SUMMARY_CHECK,
+                        limitdate: item.DATA_CHECK,
+                        description: item.DESCRI_CHECK
+                    }
+                });
                 return {
                     chekpoint: {
                         cod: item.COD_CHECK,
@@ -67,18 +76,39 @@ class CheckController {
         const trx = await knex.transaction();
         const checksUser = await trx ('user_checkpoint').where('COD_USER', userId).orderBy('DATA_CHECK').limit(3);
         try{
-            const serializedItems  = checksUser.map( item => { // Percorre e reorganiza o que sera retornado
-                return {
+            if (checksUser.length > 0) {
+                const serializedItems  = checksUser.map( item => { // Percorre e reorganiza o que sera retornado
+                    console.log({
+                        chekpoint: {
+                            cod: item.COD_CHECK,
+                            codUser: item.COD_USER,
+                            summary: item.SUMMARY_CHECK,
+                            limitdate: item.DATA_CHECK,
+                            description: item.DESCRI_CHECK
+                        }
+                    });
+                    return {
+                        chekpoint: {
+                            cod: item.COD_CHECK,
+                            codUser: item.COD_USER,
+                            summary: item.SUMMARY_CHECK,
+                            limitdate: item.DATA_CHECK,
+                            description: item.DESCRI_CHECK
+                        }
+                    };
+                } );
+                response.status(200).send(serializedItems);  
+            } else {
+                response.status(400).json({
                     chekpoint: {
-                        cod: item.COD_CHECK,
-                        codUser: item.COD_USER,
-                        summary: item.SUMMARY_CHECK,
-                        limitdate: item.DATA_CHECK,
-                        description: item.DESCRI_CHECK
+                        cod: 0,
+                        codUser: 0,
+                        summary: 'Vazio',
+                        limitdate: 'Vazio',
+                        description: 'Vazio'
                     }
-                };
-            } );
-            response.status(200).send(serializedItems);    
+                });
+            }
         } catch (e) {
             response.status(400).json({
                 chekpoint: {

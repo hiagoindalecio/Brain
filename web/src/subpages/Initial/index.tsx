@@ -26,7 +26,8 @@ interface CheckpointsData {
 }
 
 const Initial = (checkpointsResponse: CheckpointsData[], userName: string | null | undefined) => {
-
+    console.log('Checkpoints recebidos na tela inicial: ');
+    console.log(checkpointsResponse);
     return (
         <fieldset>
             <div className="apresentation" key="initalKey">

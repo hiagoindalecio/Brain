@@ -13,48 +13,48 @@ import CheckpointsList from '../../subpages/CheckpointsList';
 
 
 const Home: React.FC = () =>  {
-    const { singOut, user } = useContext(AuthContext);
-    const { checkpointsResponse, getThreeNextCheckpoints } = useContext(CheckpointsContext);
+    const { singOut, user, signed } = useContext(AuthContext);
+    const { checkpointsResponse, getThreeNextCheckpoints, getCheckpoints } = useContext(CheckpointsContext);
     const [component, setComponent] = useState<JSX.Element>();
     const [click, setClick] = useState(false);
 
     useEffect(() => {
-        loadInit().then(response => {
+        /*loadInit().then(response => {
             if (response) {
                 setComponent(Initial(checkpointsResponse, user ? user.name : null));
             } else {
                 alert('Bugou essa bosta, não encontrou nada.');
             }
-        });
-    }, [])
+        });*/
+        handleSelectedField('Home');
+    }, []);
 
     async function handleSelectedField(componentName: string) {
         switch(componentName) {
             case 'Home': {
-                loadInit().then(response => {
+                getThreeNextCheckpoints(user ? user.id as number : -1).then(response => {
                     if (response) {
                         setComponent(Initial(checkpointsResponse, user ? user.name : null));
                     } else {
-                        alert('Bugou essa bosta, não encontrou nada.');
+                        alert('Erro ao carregar checkpoints.');
                     }
-                })
+                });
                 break;
             }
-            case 'Checkpoints':
-                setComponent(CheckpointsList);
+            case 'Checkpoints': {
+                getCheckpoints(user ? user.id as number : -1).then(response => {
+                    if (response) {
+                        setComponent(Initial(checkpointsResponse, user ? user.name : null));
+                    } else {
+                        alert('Erro ao carregar checkpoints.');
+                    }
+                });
                 break;
+            }
         }
     }
     function handleLogoff() {
         singOut();
-    }
-    async function loadInit() {
-        await getThreeNextCheckpoints(user ? user.id as number : -1);
-        if (checkpointsResponse.length > 0) {
-            return true;
-        } else {
-            return false;
-        }
     }
     
     const handleClick = () => setClick(!click);

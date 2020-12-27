@@ -24,7 +24,7 @@ const Checkpoint = (
 
 
     return (
-        <div className="card">
+        <div className="card" key={cod}>
             <h5 className="card-header">{summary}</h5>
             <p className="card-text">Descrição: {description}</p>
             <p className="card-text">Data limite: {limitdate}</p>

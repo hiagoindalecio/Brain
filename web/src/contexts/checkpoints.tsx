@@ -26,48 +26,79 @@ interface CheckpointsData {
 interface CheckpointsContextData {
     checkpointsResponse: CheckpointsData[];
     loading: boolean;
-    getCheckpoints: (idUser: number) => void;
-    getThreeNextCheckpoints:(idUser: number) => void;
+    getCheckpoints: (idUser: number) => Promise<boolean>;
+    getThreeNextCheckpoints: (idUser: number) => Promise<boolean>;
 }
 
 const CheckpointsContext = createContext<CheckpointsContextData>({} as CheckpointsContextData);
 
 export const CheckpointsProvider: React.FC = ({ children }) => {
     const [loading, setLoading] = useState(false);
-    const [tasks, setTasks] = useState<Task[]>([]);
+    var tasks: Task[] = [];
     const [checkpointsResponse, setCheckpointsResponse] = useState<CheckpointsData[]>([]);
 
-    async function getCheckpoints(idUser: number) {
-        /*var responseArray: CheckpointsData[] = [];
-        setLoading(true);
-        const checkpointResponse = await checkpoint.getCheckpoints(idUser);
-        if(checkpointResponse[0].chekpoint.summary !== 'Vazio') {
-            checkpointResponse.map(oneCheckpoint => {
-                task.getTasks(oneCheckpoint.chekpoint.cod).then(taskResponse => {
-                    if(taskResponse[0].task.summary !== 'Vazio') {
-                        setTasks(taskResponse);
-                    }
+    function getCheckpoints(idUser: number): Promise<boolean> {
+        return new Promise(async (resolve) => {
+            setCheckpointsResponse([]);
+            var responseArray: CheckpointsData[] = [];
+            setLoading(true);
+            // checkpoint.getThreeNextCheckpoints(idUser).then(checkpointResponse => {
+            //     checkpointResponse.map(oneCheckpoint => {
+            //         task.getTasks(oneCheckpoint.chekpoint.cod).then(taskResponse => {
+            //             setTasks(taskResponse);
+            //         });
+            //         console.log(tasks);
+            //         responseArray.push({checkpoint: {...oneCheckpoint.chekpoint, tasks}});
+            //     });
+            // });
+            //console.log(responseArray);
+            const checkpointReply = await checkpoint.getCheckpoints(idUser);
+            checkpointReply.map(async oneCheckpoint => {
+                const tasksReply = await task.getTasks(oneCheckpoint.chekpoint.cod);
+                tasksReply.map(oneTask => {
+                    tasks.push(oneTask);
                 });
                 responseArray.push({checkpoint: {...oneCheckpoint.chekpoint, tasks}});
-            })
-        }
-        setCheckpointsResponse(responseArray);
-        setLoading(false);*/
+                tasks = [];
+            });
+            try {
+                setCheckpointsResponse(responseArray);
+                responseArray = [];
+                setLoading(false);
+                resolve(true);
+                
+            } catch {
+                setLoading(false);
+                resolve(false);
+            }
+        });
     };
 
-    async function getThreeNextCheckpoints(idUser: number) {
-        var responseArray: CheckpointsData[] = [];
-        setLoading(true);
-        checkpoint.getThreeNextCheckpoints(idUser).then(checkpointResponse => {
-            checkpointResponse.map(oneCheckpoint => {
-                task.getTasks(oneCheckpoint.chekpoint.cod).then(taskResponse => {
-                    setTasks(taskResponse);
+    async function getThreeNextCheckpoints(idUser: number): Promise<boolean> {
+        return new Promise(async (resolve) => {
+            setCheckpointsResponse([]);
+            var responseArray: CheckpointsData[] = [];
+            setLoading(true);
+            const checkpointReply = await checkpoint.getThreeNextCheckpoints(idUser);
+            checkpointReply.map(async oneCheckpoint => {
+                const tasksReply = await task.getTasks(oneCheckpoint.chekpoint.cod);
+                tasksReply.map(oneTask => {
+                    tasks.push(oneTask);
                 });
                 responseArray.push({checkpoint: {...oneCheckpoint.chekpoint, tasks}});
+                tasks = [];
             });
+            try {
+                setCheckpointsResponse(responseArray);
+                responseArray = [];
+                setLoading(false);
+                resolve(true);
+                
+            } catch {
+                setLoading(false);
+                resolve(false);
+            }
         });
-        setCheckpointsResponse(responseArray);
-        setLoading(false);
     };
 
     return (

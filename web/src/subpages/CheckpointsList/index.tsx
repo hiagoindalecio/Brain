@@ -1,8 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
 
-import CheckpointsContext from '../../contexts/checkpoints';
-import AuthContext from '../../contexts/auth';
-
 import Checkpoint from '../../components/CheckpointObject';
 
 interface Task {
@@ -26,27 +23,16 @@ interface CheckpointsData {
     }
 }
 
-const CheckpointsList = () => {
-    const { checkpointsResponse, getCheckpoints } = useContext(CheckpointsContext);
-    const { user } = useContext(AuthContext);
-    const [checkpoints, setCheckpoints] = useState<CheckpointsData[]>([]);
-
-    useEffect(() => {
-        async function loadInit() {
-            //await getCheckpoints(user ? user.id as number : -1);
-            //setCheckpoints(checkpointsResponse);
-        }
-        loadInit();
-    }, []);
+const CheckpointsList = (checkpointsResponse: CheckpointsData[]) => {
 
     return (
         <fieldset>
             <form className="presentation">
                 <h4><br/><br/> Meus Checkpoints:<br/><br/></h4>
                 {
-                    /*checkpointsResponse.map(checkpoint => (
+                    checkpointsResponse.map(checkpoint => (
                         Checkpoint(checkpoint.checkpoint.cod, checkpoint.checkpoint.codUser, checkpoint.checkpoint.summary, checkpoint.checkpoint.limitdate, checkpoint.checkpoint.description, checkpoint.checkpoint.tasks)
-                    ))*/
+                    ))
                 }
             </form>
         </fieldset>

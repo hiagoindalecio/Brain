@@ -11,7 +11,7 @@ interface tasksResponse {
 }
 
 export function getTasks(idCheckpoint: number): Promise<tasksResponse[]> {
-    return new Promise((resolve) => {
+    return new Promise(async (resolve) => {
         api.get<tasksResponse[]>(`task/${idCheckpoint}`).then(response => {
             resolve(response.data as tasksResponse[]);
         });

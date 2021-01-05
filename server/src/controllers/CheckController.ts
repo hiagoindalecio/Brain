@@ -34,7 +34,7 @@ class CheckController {
 
     async show(request: Request, response: Response) {
         const { userId } = request.params;
-        const checksUser = knex('user_checkpoint').where('COD_USER', userId)
+        const checksUser = knex('user_checkpoint').where('COD_USER', userId).orderBy('DATA_CHECK');
         
         try{
             const serializedItems  = (await checksUser).map( item => { // Percorre e reorganiza o que sera retornado

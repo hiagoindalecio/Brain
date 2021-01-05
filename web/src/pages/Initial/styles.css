@@ -10,66 +10,52 @@
   "gimg-logo gheader-text";
 }
 
-@media(min-width: 500px) {
-  .apresentation {
+@media(min-width: 600px) {
+  .cl-presentation {
+    display: grid;
     align-items: center;
-    grid-template-columns: 7fr 3fr;
-    grid-template-rows: 60vh 20vh;
+    grid-template-columns: 6fr 3fr;
     grid-template-areas: 
-    "gtext gimg-avatar"
-    "glink-button gimg-avatar";
+    "gtext-btn gavatar";
+    margin-top: 10%;
     margin-left: 50px;
     margin-right: 50px;
   }
 }
 
-@media(max-width: 500px) {
-  .apresentation {
+@media(max-width: 600px) {
+  .cl-presentation {
     align-items: stretch;
-    grid-template-rows: 10vh 60vh 10vh;
-    grid-template-areas: 
-    "gtext"
-    "gimg-avatar"
-    "glink-button";
+    margin-top: 50px;
     margin-left: 50px;
     margin-right: 50px;
   }
-}
-
-.apresentation {
-  display: grid;
 }
 
 .avatar-img {
-    grid-area: gimg-avatar;
-    max-width:600px;
-    max-height:550px;
-    width: auto;
-    height: auto;
+  max-height:550px;
+  width: auto;
+  height: auto;
+  grid-area: gavatar;
 }
 
 .img-logo {
-    max-width:50px;
-    max-height:50px;
-    width: auto;
-    height: auto;
-    grid-area: gimg-logo;
+  max-width: 50px;
+  width: auto;
+  height: auto;
+  grid-area: gimg-logo;
 }
 
 .header-text {
-    grid-area: gheader-text;
+  grid-area: gheader-text;
 }
 
-.text {
-    grid-area: gtext;
+.text-btn {
+  grid-area: gtext-btn;
 }
 
 .header {
-    grid-area: gheader;
-}
-
-.link-button {
-    grid-area: glink-button;
+  grid-area: gheader;
 }
 
 #initial-page .content form a {
@@ -112,5 +98,5 @@
 }
 
 #initial-page .content form a:hover {
-    background: #7ec8e3b7;
+  background: #7ec8e3b7;
 }

@@ -21,8 +21,7 @@ const Checkpoint = (
     description: string,
     tasks: Task[]
 ) => {
-
-
+    //console.log('CAIU')
     return (
         <div className="card" key={cod}>
             <h5 className="card-header">{summary}</h5>

@@ -11,44 +11,22 @@ import logo from '../../assets/logo.png';
 import Initial from '../../subpages/Initial';
 import CheckpointsList from '../../subpages/CheckpointsList';
 
-
 const Home: React.FC = () =>  {
-    const { singOut, user, signed } = useContext(AuthContext);
-    const { checkpointsResponse, getThreeNextCheckpoints, getCheckpoints } = useContext(CheckpointsContext);
-    const [component, setComponent] = useState<JSX.Element>();
+    const { singOut, user } = useContext(AuthContext);
+    const { getCheckpoints } = useContext(CheckpointsContext);
+    //const [component, setComponent] = useState<JSX.Element>(Initial(user ? user.name : null));
+    const [component, setComponent] = useState<JSX.Element>(<Initial userName={user ? user.name : null} />);
     const [click, setClick] = useState(false);
-
-    useEffect(() => {
-        /*loadInit().then(response => {
-            if (response) {
-                setComponent(Initial(checkpointsResponse, user ? user.name : null));
-            } else {
-                alert('Bugou essa bosta, não encontrou nada.');
-            }
-        });*/
-        handleSelectedField('Home');
-    }, []);
 
     async function handleSelectedField(componentName: string) {
         switch(componentName) {
             case 'Home': {
-                getThreeNextCheckpoints(user ? user.id as number : -1).then(response => {
-                    if (response) {
-                        setComponent(Initial(checkpointsResponse, user ? user.name : null));
-                    } else {
-                        alert('Erro ao carregar checkpoints.');
-                    }
-                });
+                setComponent(<Initial userName={user ? user.name : null} />);
                 break;
             }
             case 'Checkpoints': {
-                getCheckpoints(user ? user.id as number : -1).then(response => {
-                    if (response) {
-                        setComponent(Initial(checkpointsResponse, user ? user.name : null));
-                    } else {
-                        alert('Erro ao carregar checkpoints.');
-                    }
-                });
+                const reply = await getCheckpoints(user ? user.id as number : -1);
+                setComponent(<CheckpointsList checkpointsResponse={reply} />);
                 break;
             }
         }
@@ -79,16 +57,16 @@ const Home: React.FC = () =>  {
                                     {click ? <FaTimes /> : <FaBars />}   
                                 </div>
                                 <ul className={click ? 'nav-menu active' : 'nav-menu'} onClick={closeMobileMenu}>
-                                    <li className='nav-item' onClick={() => handleSelectedField("Home")}>
+                                    <li className='nav-item' onClick={() => handleSelectedField('Home')}>
                                         Home
                                     </li>
-                                    <li className='nav-item' onClick={() => handleSelectedField("Checkpoints")}>
+                                    <li className='nav-item' onClick={() => handleSelectedField('Checkpoints')}>
                                         Meus Checkpoints
                                     </li>
-                                    <li className='nav-item' onClick={() => handleSelectedField("Notas")}>
+                                    <li className='nav-item' onClick={() => handleSelectedField('Notas')}>
                                         Minhas Notas
                                     </li>
-                                    <li className='nav-item' onClick={() => handleSelectedField("Sobre")}>
+                                    <li className='nav-item' onClick={() => handleSelectedField('Sobre')}>
                                         Sobre a Brain
                                     </li>
                                     <button className="link-btn" onClick={handleLogoff}>

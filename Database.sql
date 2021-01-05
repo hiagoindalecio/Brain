@@ -13,7 +13,7 @@ CREATE TABLE user_table
 );
 
 INSERT INTO user_table(NAME_USER, MAIL_USER, PASSWORD_USER, POINTS_USER)
-	VALUES('Hiago Indalécio', 'hiagoindalecio@gmail.com', '123', 0);
+	VALUES('Hiago Indalécio', 'hiagoindalecio@gmail.com', '$2b$10$ZvEDr3dJ9AUFCRT6xQYhGeKbGEr0DZS.JnNocBJ.QDPYVtdQROpZ6', 0);
 
 CREATE TABLE user_notes
 (

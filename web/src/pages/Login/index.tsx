@@ -1,6 +1,7 @@
 import React, { useState, ChangeEvent, FormEvent, useContext } from 'react';
 import './styles.css';
 import '../../bootstrap-4.5.3-dist/css/bootstrap.min.css';
+
 import AuthContext from '../../contexts/auth';
 
 import logo from '../../assets/logo.png'
@@ -18,11 +19,12 @@ const Login: React.FC = () => {
     };
     async function handleSubmit(event: FormEvent) {
         event.preventDefault();
-        if(await singIn(formData.email, formData.password)) {
-            alert('Email ou senha digitados incorretamente');
-        } else { 
+        const sing = await singIn(formData.email, formData.password);
+        if(!!sing) {
             alert('Sucesso!');
-        };
+        } else {
+            alert('Email ou senha digitados incorretamente');
+        }
     };
 
     return(

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Checkpoint from '../../components/CheckpointObject';
 
@@ -23,18 +23,23 @@ interface CheckpointsData {
     }
 }
 
-const CheckpointsList = (checkpointsResponse: CheckpointsData[]) => {
+const CheckpointsList: React.FC<{checkpointsResponse: CheckpointsData[]}> = ({checkpointsResponse}) => {
+    // console.log(`Checkpoints recebidos:`);
+    // console.log(checkpointsResponse);
 
     return (
         <fieldset>
-            <form className="presentation">
+            <div className="presentation">
                 <h4><br/><br/> Meus Checkpoints:<br/><br/></h4>
-                {
-                    checkpointsResponse.map(checkpoint => (
-                        Checkpoint(checkpoint.checkpoint.cod, checkpoint.checkpoint.codUser, checkpoint.checkpoint.summary, checkpoint.checkpoint.limitdate, checkpoint.checkpoint.description, checkpoint.checkpoint.tasks)
-                    ))
-                }
-            </form>
+                    <ul>
+                        {
+                            checkpointsResponse.map((oneCheckpoint) => (
+                                console.log(oneCheckpoint.checkpoint) // descobrir pq não percorre o array com o .map
+                                //Checkpoint(checkpoint.checkpoint.cod, checkpoint.checkpoint.codUser, checkpoint.checkpoint.summary, checkpoint.checkpoint.limitdate, checkpoint.checkpoint.description, checkpoint.checkpoint.tasks)
+                            ))
+                        }
+                    </ul>
+            </div>
         </fieldset>
     )
 }

@@ -35,14 +35,18 @@ export const AuthProvider: React.FC = ({ children }) => {
     }, [])
 
     async function singIn(email: string, password: string): Promise<boolean> {
-        setLoading(true);
-        const response = await auth.singIn(email, password);
-        if(response.user.name !== 'Vazio' && response !== undefined) {
-            setUser(response.user);
-            localStorage.setItem('@RNAuth:user', JSON.stringify(response.user));
-        }
-        setLoading(false);
-        return (!!user);
+        return new Promise(async (resolve) => {
+            setLoading(true);
+            const response = await auth.singIn(email, password);
+            if(response.user.name !== 'Vazio' && response !== undefined) {
+                setUser(response.user);
+                localStorage.setItem('@RNAuth:user', JSON.stringify(response.user));
+                resolve(true);
+            } else {
+                resolve(false);
+            }
+            setLoading(false);
+        });
     }
 
     function singOut() {

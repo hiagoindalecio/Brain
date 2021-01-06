@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 
 import Checkpoint from '../../components/CheckpointObject';
 
@@ -24,19 +24,29 @@ interface CheckpointsData {
 }
 
 const CheckpointsList: React.FC<{checkpointsResponse: CheckpointsData[]}> = ({checkpointsResponse}) => {
-    // console.log(`Checkpoints recebidos:`);
-    // console.log(checkpointsResponse);
+    const [valor, setValor] = useState<CheckpointsData[]>(checkpointsResponse);
 
+    useEffect(() => {
+        setValor([...checkpointsResponse]);
+    }, []);
+    /*useEffect(() => {
+        console.log(`Checkpoints recebidos(dentro do useEffect):`);
+        console.log(checkpointsResponse);
+    }, []);
+    useLayoutEffect(() => {
+        console.log(`Checkpoints recebidos:(dentro do useLayoutEffect)`);
+        console.log(checkpointsResponse);
+    }, []);*/
+    // <div key={index}><Checkpoint cod={oneCheckpoint.checkpoint.cod} codUser={oneCheckpoint.checkpoint.codUser} summary={oneCheckpoint.checkpoint.summary} limitdate={oneCheckpoint.checkpoint.limitdate} description={oneCheckpoint.checkpoint.description} tasks={oneCheckpoint.checkpoint.tasks} /></div>
     return (
         <fieldset>
             <div className="presentation">
                 <h4><br/><br/> Meus Checkpoints:<br/><br/></h4>
                     <ul>
                         {
-                            checkpointsResponse.map((oneCheckpoint) => (
-                                console.log(oneCheckpoint.checkpoint) // descobrir pq não percorre o array com o .map
-                                //Checkpoint(checkpoint.checkpoint.cod, checkpoint.checkpoint.codUser, checkpoint.checkpoint.summary, checkpoint.checkpoint.limitdate, checkpoint.checkpoint.description, checkpoint.checkpoint.tasks)
-                            ))
+                            valor.map((oneCheckpoint: CheckpointsData, index: number) => 
+                                <div key={index}><Checkpoint cod={oneCheckpoint.checkpoint.cod} codUser={oneCheckpoint.checkpoint.codUser} summary={oneCheckpoint.checkpoint.summary} limitdate={oneCheckpoint.checkpoint.limitdate} description={oneCheckpoint.checkpoint.description} tasks={oneCheckpoint.checkpoint.tasks} /></div>
+                            )
                         }
                     </ul>
             </div>

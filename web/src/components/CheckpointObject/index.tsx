@@ -13,14 +13,21 @@ interface Task {
     }
 }
 
-const Checkpoint = (
+const Checkpoint: React.FC<{
     cod: number,
     codUser: number,
     summary: string,
     limitdate: string,
     description: string,
     tasks: Task[]
-) => {
+}> = ({
+    cod,
+    codUser,
+    summary,
+    limitdate,
+    description,
+    tasks
+}) => {
     //console.log('CAIU')
     return (
         <div className="card" key={cod}>

@@ -19,12 +19,7 @@ const Login: React.FC = () => {
     };
     async function handleSubmit(event: FormEvent) {
         event.preventDefault();
-        const sing = await singIn(formData.email, formData.password);
-        if(!!sing) {
-            alert('Sucesso!');
-        } else {
-            alert('Email ou senha digitados incorretamente');
-        }
+        await singIn(formData.email, formData.password);
     };
 
     return(

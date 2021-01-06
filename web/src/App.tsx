@@ -1,6 +1,5 @@
 import React from 'react';
 import './App.css';
-//import NavigationContainer from 'react-navigation';
 
 // Components
 import Routes from './routes';

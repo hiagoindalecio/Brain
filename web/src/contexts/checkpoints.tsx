@@ -3,29 +3,26 @@ import * as checkpoint from '../services/checkpoints';
 import * as task from '../services/tasks';
 
 interface Task {
-    task: {
-        idTask: number;
-        idCheck: number;
-        summary: string;
-        desc: string;
-        status: boolean;
-    }
+    idTask: number;
+    idCheck: number;
+    summary: string;
+    desc: string;
+    status: boolean;
 }
 
 interface CheckpointsData {
-    checkpoint: {
-        cod: number;
-        codUser: number;
-        summary: string;
-        limitdate: string;
-        description: string;
-        tasks: Task[];
-    }
+    cod: number;
+    codUser: number;
+    summary: string;
+    limitdate: string;
+    description: string;
+    tasks: Task[];
 }
+
 
 interface CheckpointsContextData {
     loading: boolean;
-    getCheckpoints: (idUser: number) => Promise<CheckpointsData[]>;
+    getCheckpoints: (idUser: number) => Promise<Array<CheckpointsData>>;
 }
 
 const CheckpointsContext = createContext<CheckpointsContextData>({} as CheckpointsContextData);
@@ -33,22 +30,20 @@ const CheckpointsContext = createContext<CheckpointsContextData>({} as Checkpoin
 export const CheckpointsProvider: React.FC = ({ children }) => {
     const [loading, setLoading] = useState(false);
     var tasks: Task[] = [];
+    let responseArray: Array<CheckpointsData> = [];
 
-    async function getCheckpoints(idUser: number): Promise<CheckpointsData[]> {
+    async function getCheckpoints(idUser: number): Promise<Array<CheckpointsData>> {
         return new Promise(async (resolve) => {
-            var responseArray: CheckpointsData[] = [];
-            //setLoading(true);
             const checkpointReply = await checkpoint.getCheckpoints(idUser);
             checkpointReply.map(async oneCheckpoint => {
-                const tasksReply = await task.getTasks(oneCheckpoint.chekpoint.cod);
+                const tasksReply = await task.getTasks(oneCheckpoint.cod);
                 tasksReply.map(oneTask => {
                     tasks.push(oneTask);
                 });
-                responseArray.push({checkpoint: {...oneCheckpoint.chekpoint, tasks}});
+                responseArray.push({...oneCheckpoint, tasks});
                 tasks = [];
             });
             resolve(responseArray);
-            //setLoading(false);
         });
     };
 

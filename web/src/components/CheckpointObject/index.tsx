@@ -4,13 +4,11 @@ import './styles.css';
 import '../../bootstrap-4.5.3-dist/css/bootstrap.min.css';
 
 interface Task {
-    task: {
-        idTask: number,
-        idCheck: number,
-        summary: String,
-        desc: String,
-        status: boolean
-    }
+    idTask: number,
+    idCheck: number,
+    summary: String,
+    desc: String,
+    status: boolean
 }
 
 const Checkpoint: React.FC<{
@@ -36,11 +34,11 @@ const Checkpoint: React.FC<{
             <p className="card-text">Data limite: {limitdate}</p>
             <div className="card-body">
                 {
-                    tasks.map(task => {if(task.task.summary !== 'Vazio') {
+                    tasks.map(task => {if(task.summary !== 'Vazio') {
                         (
                             <React.Fragment>
-                                <h5 className="card-title">●{task.task.summary}</h5>
-                                <p className="card-text">Descrição: {task.task.desc}</p>
+                                <h5 className="card-title">●{task.summary}</h5>
+                                <p className="card-text">Descrição: {task.desc}</p>
                                 <button type="button" className="btn btn-primary btn-sm">Editar</button>
                             </React.Fragment>
                         )

@@ -17,7 +17,7 @@ routes.use(express.json());
 routes.get('/users', usersController.index);
 routes.get('/users/:id', usersController.show);
 routes.get('/uservalidate/:email/:password', usersController.validateUser);
-routes.get('/checkpoint/date/:userId', checkController.showOrderedByDate);
+// routes.get('/checkpoint/date/:userId', checkController.showOrderedByDate);
 routes.get('/checkpoint/:userId', checkController.show);
 routes.get('/task', taskController.index);
 routes.get('/task/:checkpointId', taskController.show);

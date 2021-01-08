@@ -1,13 +1,11 @@
 import api from './api';
 
 interface checkpointResponse {
-    chekpoint: {
-        cod: number;
-        codUser: number;
-        summary: string;
-        limitdate: string;
-        description: string;
-    }
+    cod: number;
+    codUser: number;
+    summary: string;
+    limitdate: string;
+    description: string;
 }
 
 export function getCheckpoints(idUser: number): Promise<checkpointResponse[]> {

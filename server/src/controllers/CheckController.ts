@@ -9,25 +9,21 @@ class CheckController {
         try{
             const serializedItems  = general.map( item => { // Percorre e reorganiza o que sera retornado
                 return {
-                    chekpoint: {
-                        cod: item.COD_CHECK,
-                        codUser: item.COD_USER,
-                        summary: item.SUMMARY_CHECK,
-                        limitdate: item.DATA_CHECK,
-                        description: item.DESCRI_CHECK
-                    }
+                    cod: item.COD_CHECK,
+                    codUser: item.COD_USER,
+                    summary: item.SUMMARY_CHECK,
+                    limitdate: item.DATA_CHECK,
+                    description: item.DESCRI_CHECK
                 };
             } );
             response.status(200).send(serializedItems);    
         } catch (e) {
             return response.status(400).json({
-                    chekpoint: {
-                    cod: 0,
-                    codUser: 0,
-                    summary: 'Vazio',
-                    limitdate: 'Vazio',
-                    description: 'Vazio'
-                }
+                cod: -1,
+                codUser: -1,
+                summary: '',
+                limitdate: '',
+                description: ''
             });
         }
     } 
@@ -39,88 +35,82 @@ class CheckController {
         try{
             const serializedItems  = (await checksUser).map( item => { // Percorre e reorganiza o que sera retornado
                 console.log({
-                    chekpoint: {
-                        cod: item.COD_CHECK,
-                        codUser: item.COD_USER,
-                        summary: item.SUMMARY_CHECK,
-                        limitdate: item.DATA_CHECK,
-                        description: item.DESCRI_CHECK
-                    }
+                    cod: item.COD_CHECK,
+                    codUser: item.COD_USER,
+                    summary: item.SUMMARY_CHECK,
+                    limitdate: item.DATA_CHECK,
+                    description: item.DESCRI_CHECK
                 });
                 return {
-                    chekpoint: {
-                        cod: item.COD_CHECK,
-                        codUser: item.COD_USER,
-                        summary: item.SUMMARY_CHECK,
-                        limitdate: item.DATA_CHECK,
-                        description: item.DESCRI_CHECK
-                    }
+                    cod: item.COD_CHECK,
+                    codUser: item.COD_USER,
+                    summary: item.SUMMARY_CHECK,
+                    limitdate: item.DATA_CHECK,
+                    description: item.DESCRI_CHECK
                 };
             } );
             response.status(200).send(serializedItems);    
         } catch (e) {
             response.status(400).json({
-                chekpoint: {
-                    cod: 0,
-                    codUser: 0,
-                    summary: 'Vazio',
-                    limitdate: 'Vazio',
-                    description: 'Vazio'
-                }
+                cod: -1,
+                codUser: -1,
+                summary: '',
+                limitdate: '',
+                description: ''
             });
         }
     }
 
-    async showOrderedByDate(request: Request, response: Response) {
-        const { userId } = request.params;
-        const trx = await knex.transaction();
-        const checksUser = await trx ('user_checkpoint').where('COD_USER', userId).orderBy('DATA_CHECK').limit(3);
-        try{
-            if (checksUser.length > 0) {
-                const serializedItems  = checksUser.map( item => { // Percorre e reorganiza o que sera retornado
-                    console.log({
-                        chekpoint: {
-                            cod: item.COD_CHECK,
-                            codUser: item.COD_USER,
-                            summary: item.SUMMARY_CHECK,
-                            limitdate: item.DATA_CHECK,
-                            description: item.DESCRI_CHECK
-                        }
-                    });
-                    return {
-                        chekpoint: {
-                            cod: item.COD_CHECK,
-                            codUser: item.COD_USER,
-                            summary: item.SUMMARY_CHECK,
-                            limitdate: item.DATA_CHECK,
-                            description: item.DESCRI_CHECK
-                        }
-                    };
-                } );
-                response.status(200).send(serializedItems);  
-            } else {
-                response.status(400).json({
-                    chekpoint: {
-                        cod: 0,
-                        codUser: 0,
-                        summary: 'Vazio',
-                        limitdate: 'Vazio',
-                        description: 'Vazio'
-                    }
-                });
-            }
-        } catch (e) {
-            response.status(400).json({
-                chekpoint: {
-                    cod: 0,
-                    codUser: 0,
-                    summary: 'Vazio',
-                    limitdate: 'Vazio',
-                    description: 'Vazio'
-                }
-            });
-        }
-    }
+    // async showOrderedByDate(request: Request, response: Response) {
+    //     const { userId } = request.params;
+    //     const trx = await knex.transaction();
+    //     const checksUser = await trx ('user_checkpoint').where('COD_USER', userId).orderBy('DATA_CHECK').limit(3);
+    //     try{
+    //         if (checksUser.length > 0) {
+    //             const serializedItems  = checksUser.map( item => { // Percorre e reorganiza o que sera retornado
+    //                 console.log({
+    //                     chekpoint: {
+    //                         cod: item.COD_CHECK,
+    //                         codUser: item.COD_USER,
+    //                         summary: item.SUMMARY_CHECK,
+    //                         limitdate: item.DATA_CHECK,
+    //                         description: item.DESCRI_CHECK
+    //                     }
+    //                 });
+    //                 return {
+    //                     chekpoint: {
+    //                         cod: item.COD_CHECK,
+    //                         codUser: item.COD_USER,
+    //                         summary: item.SUMMARY_CHECK,
+    //                         limitdate: item.DATA_CHECK,
+    //                         description: item.DESCRI_CHECK
+    //                     }
+    //                 };
+    //             } );
+    //             response.status(200).send(serializedItems);  
+    //         } else {
+    //             response.status(400).json({
+    //                 chekpoint: {
+    //                     cod: 0,
+    //                     codUser: 0,
+    //                     summary: 'Vazio',
+    //                     limitdate: 'Vazio',
+    //                     description: 'Vazio'
+    //                 }
+    //             });
+    //         }
+    //     } catch (e) {
+    //         response.status(400).json({
+    //             chekpoint: {
+    //                 cod: 0,
+    //                 codUser: 0,
+    //                 summary: 'Vazio',
+    //                 limitdate: 'Vazio',
+    //                 description: 'Vazio'
+    //             }
+    //         });
+    //     }
+    // }
 
     async create(request: Request, response: Response) {
         const { id_user, summary, description, limitdate } = request.body;
@@ -141,11 +131,9 @@ class CheckController {
             console.log(e);
             return response.status(400).json({
                 chekpoint: {
-                    cod: 0,
-                    codUser: 0,
-                    summary: 'Vazio',
-                    limitdate: 'Vazio',
-                    description: 'Vazio'
+                    id: -1,
+                    name: '',
+                    message: 'A failure happened during the chekpoint creation.'
                 }
             });
         }

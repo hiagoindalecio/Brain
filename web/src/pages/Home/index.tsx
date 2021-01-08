@@ -11,10 +11,26 @@ import logo from '../../assets/logo.png';
 import Initial from '../../subpages/Initial';
 import CheckpointsList from '../../subpages/CheckpointsList';
 
+interface Task {
+    idTask: number,
+    idCheck: number,
+    summary: String,
+    desc: String,
+    status: boolean
+}
+
+interface CheckpointsData {
+    cod: number,
+    codUser: number,
+    summary: string,
+    limitdate: string,
+    description: string,
+    tasks: Task[];
+}
+
 const Home: React.FC = () =>  {
     const { singOut, user } = useContext(AuthContext);
     const { getCheckpoints } = useContext(CheckpointsContext);
-    //const [component, setComponent] = useState<JSX.Element>(Initial(user ? user.name : null));
     const [component, setComponent] = useState<JSX.Element>(<Initial userName={user ? user.name : null} />);
     const [click, setClick] = useState(false);
 
@@ -25,8 +41,27 @@ const Home: React.FC = () =>  {
                 break;
             }
             case 'Checkpoints': {
-                const reply = await getCheckpoints(user ? user.id as number : -1);
-                setComponent(<CheckpointsList checkpointsResponse={reply} />);
+                var reply = await getCheckpoints(user ? user.id as number : -1);
+                // const reply: CheckpointsData[] =
+                //     [
+                //         {
+                //             cod: 2,
+                //             codUser: 1, 
+                //             summary: "Criar Fanfic", 
+                //             limitdate: "2021-01-29", 
+                //             description: "Criar fanfic do Restart até segunda.",
+                //             tasks: [
+                //                 {
+                //                     idTask: 2,
+                //                     idCheck: 2,
+                //                     summary: "Recolher fotos do Pelanza",
+                //                     desc: "Fotos do Pelanza são as mais necessárias para a Fanfic",
+                //                     status: true
+                //                 }
+                //             ]
+                //         }
+                //     ]
+                setComponent(<CheckpointsList checkpointsResponse={ reply } />);
                 break;
             }
         }

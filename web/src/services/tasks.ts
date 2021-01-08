@@ -1,13 +1,11 @@
 import api from './api';
 
 interface tasksResponse {
-    task: {
-        idTask: number;
-        idCheck: number;
-        summary: string;
-        desc: string;
-        status: boolean;
-    }
+    idTask: number;
+    idCheck: number;
+    summary: string;
+    desc: string;
+    status: boolean;
 }
 
 export function getTasks(idCheckpoint: number): Promise<tasksResponse[]> {

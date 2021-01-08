@@ -10,25 +10,21 @@ class TasksController {
         try{
             const serializedItems  = general.map( item => { // Percorre e reorganiza o que sera retornado
                 return {
-                    task: {
-                        idTask: item.COD_TASK,
-                        idCheck: item.COD_CHECK,
-                        summary: item.SUMMARY_TASK,
-                        desc: item.DESCRI_TASK,
-                        status: item.STATUS_TASK
-                    }
+                    idTask: item.COD_TASK,
+                    idCheck: item.COD_CHECK,
+                    summary: item.SUMMARY_TASK,
+                    desc: item.DESCRI_TASK,
+                    status: item.STATUS_TASK
                 };
             } );
             response.status(200).send(serializedItems);    
         } catch (e) {
             return response.status(400).json({
-                task: {
-                    idTask: 0,
-                    idCheck: 0,
-                    summary: 'Vazio',
-                    desc: 'Vazio',
-                    status: false
-                }
+                idTask: -1,
+                idCheck: -1,
+                summary: '',
+                desc: '',
+                status: false
             });
         }
         
@@ -43,35 +39,29 @@ class TasksController {
         try{
             const serializedItems  = (await tasksCheck).map( item => { // Percorre e reorganiza o que sera retornado
                 console.log({
-                    task: {
-                        idTask: item.COD_TASK,
-                        idCheck: item.COD_CHECK,
-                        summary: item.SUMMARY_TASK,
-                        desc: item.DESCRI_TASK,
-                        status: item.STATUS_TASK
-                    }
+                    idTask: item.COD_TASK,
+                    idCheck: item.COD_CHECK,
+                    summary: item.SUMMARY_TASK,
+                    desc: item.DESCRI_TASK,
+                    status: item.STATUS_TASK
                 });
                 return {
-                    task: {
-                        idTask: item.COD_TASK,
-                        idCheck: item.COD_CHECK,
-                        summary: item.SUMMARY_TASK,
-                        desc: item.DESCRI_TASK,
-                        status: item.STATUS_TASK
-                    }
+                    idTask: item.COD_TASK,
+                    idCheck: item.COD_CHECK,
+                    summary: item.SUMMARY_TASK,
+                    desc: item.DESCRI_TASK,
+                    status: item.STATUS_TASK
                 };
             } );
             
             response.status(200).send(serializedItems);    
         } catch (e) {
             response.status(400).json({
-                task: {
-                    idTask: 0,
-                    idCheck: 0,
-                    summary: 'Vazio',
-                    desc: 'Vazio',
-                    status: false
-                }
+                idTask: 0,
+                idCheck: 0,
+                summary: '',
+                desc: ' ',
+                status: false
             });
         }
     }
@@ -94,13 +84,9 @@ class TasksController {
         } catch (e) {
             console.log(e);
             return response.status(400).json({
-                task: {
-                    idTask: 0,
-                    idCheck: 0,
-                    summary: 'Vazio',
-                    desc: 'Vazio',
-                    status: false
-                }
+                idUser: -1,
+                summary: '',
+                message: 'A failure happened during the task creation.'
             });
         }
     };

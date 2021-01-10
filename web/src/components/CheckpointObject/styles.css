@@ -10,7 +10,17 @@
   background-color: #ff0000a4;
 }
 
+.btn-drop:target {
+  background-color: #ff0000a4;
+}
+
 .btns {
   display: flex;
   flex-direction: row;
+}
+
+.card {
+  max-width: 85%;
+  margin: auto;
+  padding: 10px;
 }

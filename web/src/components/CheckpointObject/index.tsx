@@ -3,28 +3,26 @@ import './styles.css';
 
 import '../../bootstrap-4.5.3-dist/css/bootstrap.min.css';
 
-interface Task {
-    idTask: number,
-    idCheck: number,
-    summary: String,
-    desc: String,
-    status: boolean
-}
+// interface Task {
+//     idTask: number,
+//     idCheck: number,
+//     summary: String,
+//     desc: String,
+//     status: boolean
+// }
 
 const Checkpoint: React.FC<{
     cod: number,
     codUser: number,
     summary: string,
     limitdate: string,
-    description: string,
-    tasks: Task[]
+    description: string
 }> = ({
     cod,
     codUser,
     summary,
     limitdate,
-    description,
-    tasks
+    description
 }) => {
     //console.log('CAIU')
     return (
@@ -34,15 +32,15 @@ const Checkpoint: React.FC<{
             <p className="card-text">Data limite: {limitdate}</p>
             <div className="card-body">
                 {
-                    tasks.map(task => {if(task.summary !== 'Vazio') {
-                        (
-                            <React.Fragment>
-                                <h5 className="card-title">●{task.summary}</h5>
-                                <p className="card-text">Descrição: {task.desc}</p>
-                                <button type="button" className="btn btn-primary btn-sm">Editar</button>
-                            </React.Fragment>
-                        )
-                    }})
+                    // tasks.map(task => {if(task.summary !== 'Vazio') {
+                    //     (
+                    //         <React.Fragment>
+                    //             <h5 className="card-title">●{task.summary}</h5>
+                    //             <p className="card-text">Descrição: {task.desc}</p>
+                    //             <button type="button" className="btn btn-primary btn-sm">Editar</button>
+                    //         </React.Fragment>
+                    //     )
+                    // }})
                 }
             </div>
             <div className="btns">

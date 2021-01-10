@@ -16,9 +16,7 @@ interface CheckpointsData {
     summary: string;
     limitdate: string;
     description: string;
-    tasks: Task[];
 }
-
 
 interface CheckpointsContextData {
     loading: boolean;
@@ -29,23 +27,34 @@ const CheckpointsContext = createContext<CheckpointsContextData>({} as Checkpoin
 
 export const CheckpointsProvider: React.FC = ({ children }) => {
     const [loading, setLoading] = useState(false);
-    var tasks: Task[] = [];
+    // var tasks: Task[] = [];
     let responseArray: Array<CheckpointsData> = [];
 
     async function getCheckpoints(idUser: number): Promise<Array<CheckpointsData>> {
         return new Promise(async (resolve) => {
+            responseArray = [];
             const checkpointReply = await checkpoint.getCheckpoints(idUser);
             checkpointReply.map(async oneCheckpoint => {
-                const tasksReply = await task.getTasks(oneCheckpoint.cod);
-                tasksReply.map(oneTask => {
-                    tasks.push(oneTask);
-                });
-                responseArray.push({...oneCheckpoint, tasks});
-                tasks = [];
+                responseArray.push(oneCheckpoint);
             });
             resolve(responseArray);
         });
     };
+
+    // async function getCheckpoints(idUser: number): Promise<Array<CheckpointsData>> { SÓ PAU
+    //     return new Promise(async (resolve) => {
+    //         const checkpointReply = await checkpoint.getCheckpoints(idUser);
+    //         checkpointReply.map(async oneCheckpoint => {
+    //             const tasksReply = await task.getTasks(oneCheckpoint.cod);
+    //             tasksReply.map(oneTask => {
+    //                 tasks.push(oneTask);
+    //             });
+    //             responseArray.push({...oneCheckpoint, tasks});
+    //             tasks = [];
+    //         });
+    //         resolve(responseArray);
+    //     });
+    // };
 
     return (
         <CheckpointsContext.Provider value={{ loading, getCheckpoints}}>

@@ -1,0 +1,7 @@
+.btn-add {
+    display: flex;
+    flex-direction: row-reverse;
+    min-width: 100px;
+    margin-left: 5%;
+    padding: 10px;
+}

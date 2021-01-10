@@ -7,26 +7,10 @@ import AuthContext from '../../contexts/auth';
 import CheckpointsContext from '../../contexts/checkpoints';
 
 import logo from '../../assets/logo.png';
+import coin from '../../assets/coin.png';
 
 import Initial from '../../subpages/Initial';
 import CheckpointsList from '../../subpages/CheckpointsList';
-
-interface Task {
-    idTask: number,
-    idCheck: number,
-    summary: String,
-    desc: String,
-    status: boolean
-}
-
-interface CheckpointsData {
-    cod: number,
-    codUser: number,
-    summary: string,
-    limitdate: string,
-    description: string,
-    tasks: Task[];
-}
 
 const Home: React.FC = () =>  {
     const { singOut, user } = useContext(AuthContext);
@@ -41,7 +25,9 @@ const Home: React.FC = () =>  {
                 break;
             }
             case 'Checkpoints': {
-                var reply = await getCheckpoints(user ? user.id as number : -1);
+                // var reply = await getCheckpoints(user ? user.id as number : -1);
+                // console.log('Na tela Home:');
+                // console.log(reply);
                 // const reply: CheckpointsData[] =
                 //     [
                 //         {
@@ -61,7 +47,9 @@ const Home: React.FC = () =>  {
                 //             ]
                 //         }
                 //     ]
-                setComponent(<CheckpointsList checkpointsResponse={ reply } />);
+                // console.log('Home screen');
+                // console.log(reply);
+                setComponent(<CheckpointsList checkpointsResponse={ await getCheckpoints(user ? user.id as number : -1) } />);
                 break;
             }
         }
@@ -83,7 +71,8 @@ const Home: React.FC = () =>  {
                             <img src={logo} alt="logo" className="img-logo"/>
                         </div>
                         <div className="header-points">
-                            <h4>Pontos: {user ? user.points : '0'}</h4>
+                            <img src={coin} alt="logo" className="img-logo"/>
+                            <h4>Brain points: {user ? user.points : '0'}</h4>
                         </div>
                     </header>
                         <div className="navbar">

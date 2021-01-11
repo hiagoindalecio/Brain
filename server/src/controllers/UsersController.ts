@@ -35,6 +35,7 @@ class UsersControllerr {
     };
 
     async create(request: Request, response: Response) {
+        console.log('Caiu')
         const { name, email, password } = request.body;
         bcrypt
             .hash(password, 10)
@@ -47,18 +48,16 @@ class UsersControllerr {
                     POINTS_USER: 0
                 }
                 try{
-                    const insertedUser = await knex('user_table').insert(user);
+                    await knex('user_table').insert(user);
                     const serializedResponse = {
-                        id: insertedUser[0],
-                        name: insertedUser[1],
-                        message: 'New user created successfully'
+                        message: 'Novo usuário criado com sucesso.'
                     }
                     return response.status(201).json(serializedResponse);
                 } catch (e) {
-                    return response.status(400).json({ mensagem: `Error during the user creation. ${e}`});
+                    return response.status(400).json({ mensagem: `Erro durante a criação do usuário! Contacte o suporte. ${e}`});
                 }
             })
-            .catch(err => {return response.status(400).json({ mensagem: `Error during the user creation. ${err.message}`})});
+            .catch(err => {return response.status(400).json({ mensagem: `Erro durante a criação do usuário! Contacte o suporte. ${err.message}`})});
     };
 
     async validateUser(request: Request, response: Response) {

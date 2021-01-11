@@ -12,6 +12,7 @@ interface AuthContextData {
     user: User | null;
     loading: boolean;
     singIn(email: string, password: string): Promise<boolean>;
+    createUser(email: string, password: string, name: string): Promise<String>;
     singOut(): void;
 }
 
@@ -49,13 +50,22 @@ export const AuthProvider: React.FC = ({ children }) => {
         });
     }
 
+    async function createUser(email: string, password: string, name: string): Promise<String> {
+        return new Promise(async (resolve) => {
+            setLoading(true);
+            const response = await auth.createUser(email, password, name);
+            resolve(response);
+            setLoading(false);
+        });
+    }
+
     function singOut() {
         localStorage.clear();
         setUser(null);
     }
 
     return (
-        <AuthContext.Provider value={{signed: !!user, user, loading, singIn, singOut}}>
+        <AuthContext.Provider value={{signed: !!user, user, loading, singIn, createUser, singOut}}>
             {children}
         </AuthContext.Provider>
     );

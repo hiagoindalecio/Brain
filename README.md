@@ -1,4 +1,4 @@
-<img src="/web/src/assets/logo.svg">
+<img src="/web/src/assets/logo.png">
 <img src="presentation.png">
 
 # ATENÇÂO - ESTE DIRETÓRIO ESTÁ EM DESENVOLVIMENTO

@@ -1,5 +1,4 @@
 <img src="/web/src/assets/logo.png" style="max-width:53px; max-height:53px; width: auto; height: auto;">
-<h1>Brain<h1/>
 <img src="presentation.png">
 
 # ATENÇÂO - ESTE DIRETÓRIO ESTÁ EM DESENVOLVIMENTO

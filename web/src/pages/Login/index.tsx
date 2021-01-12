@@ -1,6 +1,7 @@
 import React, { useState, ChangeEvent, FormEvent, useContext } from 'react';
 import './styles.css';
 import '../../bootstrap-4.5.3-dist/css/bootstrap.min.css';
+import $ from "jquery";
 
 import AuthContext from '../../contexts/auth';
 
@@ -21,8 +22,14 @@ const Login: React.FC = () => {
     });
 
     function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
-        const { name, value } = event.target;
-        setFormData({ ...formData, [name]: value });
+        const values = {
+            nameUser: $("input[type=text][name=nameUser]").val() as string,
+            email: $("input[type=email][name=email]").val() as string,
+            email2: $("input[type=email][name=email2]").val() as string,
+            password: $("input[type=password][name=password]").val() as string,
+            password2: $("input[type=password][name=password2]").val() as string
+        }
+        setFormData({...formData, ...values});
     };
     async function handleSubmit(event: FormEvent) {
         if(action === 'Entrar') {
@@ -30,19 +37,16 @@ const Login: React.FC = () => {
             await singIn(formData.email, formData.password);
         } else if (action === 'Criar conta') {
             event.preventDefault();
-            console.log(formData);
-            // event.preventDefault();
-            // //alert(`Email 1: ${formData.email}\nEmail 2: ${formData.email2}`)
-            // if(formData.email === formData.email2 && formData.password === formData.password2 && formData.name !== '') {
-            //     const reply = await createUser(formData.email, formData.password, formData.name);
-            //     alert(reply);
-            // } else if (formData.email !== formData.email2) {
-            //     alert('Os dois endereços de e-mail devem ser indênticos!');
-            // } else if (formData.password !== formData.password2) {
-            //     alert('Os dois campos de senha devem ser idênticos!');
-            // } else if (formData.name === '') {
-            //     alert('Você deve preencher o campo de nome!');
-            // }
+            if(formData.email === formData.email2 && formData.password === formData.password2 && formData.nameUser !== '') {
+                const reply = await createUser(formData.email, formData.password, formData.nameUser);
+                alert(reply.toString());
+            } else if (formData.email !== formData.email2) {
+                alert('Os dois endereços de e-mail devem ser indênticos!');
+            } else if (formData.password !== formData.password2) {
+                alert('Os dois campos de senha devem ser idênticos!');
+            } else if (formData.nameUser === '') {
+                alert('Você deve preencher o campo de nome!');
+            }
         }
         
     };

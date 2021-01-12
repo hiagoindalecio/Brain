@@ -16,7 +16,6 @@ interface AuthContextData {
     singOut(): void;
 }
 
-
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 export const AuthProvider: React.FC = ({ children }) => {
@@ -54,7 +53,7 @@ export const AuthProvider: React.FC = ({ children }) => {
         return new Promise(async (resolve) => {
             setLoading(true);
             const response = await auth.createUser(email, password, name);
-            resolve(response);
+            resolve(response.message);
             setLoading(false);
         });
     }

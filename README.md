@@ -1,4 +1,4 @@
-<img src="/web/src/assets/logo.png">
+<img src="/web/src/assets/logo.png" style={max-width:73px; max-height:73px;}>
 <img src="presentation.png">
 
 # ATENÇÂO - ESTE DIRETÓRIO ESTÁ EM DESENVOLVIMENTO

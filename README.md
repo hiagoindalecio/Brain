@@ -9,5 +9,4 @@ Este projeto se baseia em uma aplicação desenvolvida para incentivar pessoas a
 
 # 💻 Tecnologias
 * <a href="https://nodejs.org/en/">Node.js<a/>
-* <a href="https://pt-br.reactjs.org">React<a/># Brain
-Aplicação cujo o objetivo 
+* <a href="https://pt-br.reactjs.org">React<a/>

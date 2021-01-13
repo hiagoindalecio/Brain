@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import './styles.css';
 import '../../bootstrap-4.5.3-dist/css/bootstrap.min.css';
 import { FaBars, FaTimes } from 'react-icons/fa';
@@ -11,45 +11,26 @@ import coin from '../../assets/coin.png';
 
 import Initial from '../../subpages/Initial';
 import CheckpointsList from '../../subpages/CheckpointsList';
+import AboutBrain from '../../subpages/AboutBrain';
 
 const Home: React.FC = () =>  {
     const { singOut, user } = useContext(AuthContext);
     const { getCheckpoints } = useContext(CheckpointsContext);
-    const [component, setComponent] = useState<JSX.Element>(<Initial userName={user ? user.name : null} />);
+    const [component, setComponent] = useState<JSX.Element>(<Initial userName={user ? user.name : null} pointsUser={user ? user.points : null} />);
     const [click, setClick] = useState(false);
 
     async function handleSelectedField(componentName: string) {
         switch(componentName) {
             case 'Home': {
-                setComponent(<Initial userName={user ? user.name : null} />);
+                setComponent(<Initial userName={user ? user.name : null} pointsUser={user ? user.points : null} />);
                 break;
             }
             case 'Checkpoints': {
-                // var reply = await getCheckpoints(user ? user.id as number : -1);
-                // console.log('Na tela Home:');
-                // console.log(reply);
-                // const reply: CheckpointsData[] =
-                //     [
-                //         {
-                //             cod: 2,
-                //             codUser: 1, 
-                //             summary: "Criar Fanfic", 
-                //             limitdate: "2021-01-29", 
-                //             description: "Criar fanfic do Restart até segunda.",
-                //             tasks: [
-                //                 {
-                //                     idTask: 2,
-                //                     idCheck: 2,
-                //                     summary: "Recolher fotos do Pelanza",
-                //                     desc: "Fotos do Pelanza são as mais necessárias para a Fanfic",
-                //                     status: true
-                //                 }
-                //             ]
-                //         }
-                //     ]
-                // console.log('Home screen');
-                // console.log(reply);
                 setComponent(<CheckpointsList checkpointsResponse={ await getCheckpoints(user ? user.id as number : -1) } />);
+                break;
+            }
+            case 'AboutBrain': {
+                setComponent(<AboutBrain />);
                 break;
             }
         }
@@ -90,7 +71,7 @@ const Home: React.FC = () =>  {
                                     <li className='nav-item' onClick={() => handleSelectedField('Notas')}>
                                         Minhas Notas
                                     </li>
-                                    <li className='nav-item' onClick={() => handleSelectedField('Sobre')}>
+                                    <li className='nav-item' onClick={() => handleSelectedField('AboutBrain')}>
                                         Sobre a Brain
                                     </li>
                                     <button className="link-btn" onClick={handleLogoff}>

@@ -2,12 +2,22 @@
   margin: 1em;
 }
 
+.presentation {
+  margin: auto;
+  padding: 20px;
+}
+
 .header-logo {
   display: grid;
   align-items: center;
   grid-template-columns: 10vh 25vh;
   grid-template-areas: 
   "gimg-logo gheader-text";
+}
+
+.img-level {
+  max-width: 103px;
+  min-width: 103px;
 }
 
 @media(min-width: 600px) {

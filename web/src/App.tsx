@@ -5,14 +5,17 @@ import './App.css';
 import Routes from './routes';
 import { AuthProvider } from './contexts/auth';
 import { CheckpointsProvider } from './contexts/checkpoints';
+import { NotesProvider } from './contexts/notes';
 
 function App() {
   return (
-    <CheckpointsProvider>
-      <AuthProvider>
-        <Routes />
-      </AuthProvider>
-    </CheckpointsProvider>
+    <NotesProvider>
+      <CheckpointsProvider>
+        <AuthProvider>
+          <Routes />
+        </AuthProvider>
+      </CheckpointsProvider>
+    </NotesProvider>
   );
 }
 

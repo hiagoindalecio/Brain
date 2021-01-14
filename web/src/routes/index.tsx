@@ -2,6 +2,7 @@ import React, {useContext} from 'react';
 
 import AuthContext from '../contexts/auth';
 import CheckpointsContext from '../contexts/checkpoints';
+import NotesContex from '../contexts/notes';
 
 import AuthRouts from './auth.routes';
 import AppRoutes from './app.routes';
@@ -9,8 +10,9 @@ import AppRoutes from './app.routes';
 const Routes: React.FC = () => {
     const { signed, loading: authLoading } = useContext(AuthContext);
     const { loading: checkpointsLoading } = useContext(CheckpointsContext);
+    const { loading: notesLoading } = useContext(NotesContex);
 
-    if (authLoading || checkpointsLoading) {
+    if (authLoading || checkpointsLoading || notesLoading) {
         return (
             <body>
                 <h3 style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center'}}>Carregando...</h3>

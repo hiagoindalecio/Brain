@@ -7,6 +7,7 @@
     "@testing-library/react": "^11.2.1",
     "@testing-library/user-event": "^12.2.2",
     "@types/jest": "^26.0.15",
+    "@types/jquery.ui.datetimepicker": "^0.3.29",
     "@types/node": "^12.19.6",
     "@types/react": "^16.14.0",
     "@types/react-dom": "^16.9.9",

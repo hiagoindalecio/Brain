@@ -5,6 +5,7 @@ import { FaBars, FaTimes } from 'react-icons/fa';
 
 import AuthContext from '../../contexts/auth';
 import CheckpointsContext from '../../contexts/checkpoints';
+import NotesContext from '../../contexts/notes';
 
 import logo from '../../assets/logo.png';
 import coin from '../../assets/coin.png';
@@ -12,10 +13,12 @@ import coin from '../../assets/coin.png';
 import Initial from '../../subpages/Initial';
 import CheckpointsList from '../../subpages/CheckpointsList';
 import AboutBrain from '../../subpages/AboutBrain';
+import NotesList from '../../subpages/NotesList';
 
 const Home: React.FC = () =>  {
     const { singOut, user } = useContext(AuthContext);
     const { getCheckpoints } = useContext(CheckpointsContext);
+    const { getNotes } = useContext(NotesContext);
     const [component, setComponent] = useState<JSX.Element>(<Initial userName={user ? user.name : null} pointsUser={user ? user.points : null} />);
     const [click, setClick] = useState(false);
 
@@ -31,6 +34,10 @@ const Home: React.FC = () =>  {
             }
             case 'AboutBrain': {
                 setComponent(<AboutBrain />);
+                break;
+            }
+            case 'Notes': {
+                setComponent(<NotesList notesResponse={ await getNotes(user ? user.id as number : -1) } />);
                 break;
             }
         }
@@ -68,7 +75,7 @@ const Home: React.FC = () =>  {
                                     <li className='nav-item' onClick={() => handleSelectedField('Checkpoints')}>
                                         Meus Checkpoints
                                     </li>
-                                    <li className='nav-item' onClick={() => handleSelectedField('Notas')}>
+                                    <li className='nav-item' onClick={() => handleSelectedField('Notes')}>
                                         Minhas Notas
                                     </li>
                                     <li className='nav-item' onClick={() => handleSelectedField('AboutBrain')}>

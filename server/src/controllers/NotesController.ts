@@ -51,7 +51,6 @@ class NotesController {
         }
     }
 
-
     async create(request: Request, response: Response) {//completed
         const { userId, summaryNote, descNote } = request.body;
         const note = {

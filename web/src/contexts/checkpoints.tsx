@@ -1,6 +1,5 @@
-import React, {createContext, useEffect, useState} from 'react';
+import React, {createContext, useState} from 'react';
 import * as checkpoint from '../services/checkpoints';
-import * as task from '../services/tasks';
 
 interface Task {
     idTask: number;
@@ -27,7 +26,6 @@ const CheckpointsContext = createContext<CheckpointsContextData>({} as Checkpoin
 
 export const CheckpointsProvider: React.FC = ({ children }) => {
     const [loading, setLoading] = useState(false);
-    // var tasks: Task[] = [];
     let responseArray: Array<CheckpointsData> = [];
 
     async function getCheckpoints(idUser: number): Promise<Array<CheckpointsData>> {
@@ -40,21 +38,6 @@ export const CheckpointsProvider: React.FC = ({ children }) => {
             resolve(responseArray);
         });
     };
-
-    // async function getCheckpoints(idUser: number): Promise<Array<CheckpointsData>> { SÓ PAU
-    //     return new Promise(async (resolve) => {
-    //         const checkpointReply = await checkpoint.getCheckpoints(idUser);
-    //         checkpointReply.map(async oneCheckpoint => {
-    //             const tasksReply = await task.getTasks(oneCheckpoint.cod);
-    //             tasksReply.map(oneTask => {
-    //                 tasks.push(oneTask);
-    //             });
-    //             responseArray.push({...oneCheckpoint, tasks});
-    //             tasks = [];
-    //         });
-    //         resolve(responseArray);
-    //     });
-    // };
 
     return (
         <CheckpointsContext.Provider value={{ loading, getCheckpoints}}>

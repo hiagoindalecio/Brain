@@ -6,16 +6,19 @@ import Routes from './routes';
 import { AuthProvider } from './contexts/auth';
 import { CheckpointsProvider } from './contexts/checkpoints';
 import { NotesProvider } from './contexts/notes';
+import { TasksProvider } from './contexts/tasks';
 
 function App() {
   return (
-    <NotesProvider>
-      <CheckpointsProvider>
-        <AuthProvider>
-          <Routes />
-        </AuthProvider>
-      </CheckpointsProvider>
-    </NotesProvider>
+    <TasksProvider>
+      <NotesProvider>
+        <CheckpointsProvider>
+          <AuthProvider>
+            <Routes />
+          </AuthProvider>
+        </CheckpointsProvider>
+      </NotesProvider>
+    </TasksProvider>
   );
 }
 

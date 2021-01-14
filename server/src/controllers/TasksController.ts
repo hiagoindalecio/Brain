@@ -27,17 +27,14 @@ class TasksController {
                 status: false
             });
         }
-        
-
     } 
-
 
     async show(request: Request, response: Response) {
         const { checkpointId } = request.params;
         const tasksCheck = await knex('checkpoint_tasks').where('COD_CHECK', checkpointId)
         
         try{
-            const serializedItems  = (await tasksCheck).map( item => { // Percorre e reorganiza o que sera retornado
+            const serializedItems  = tasksCheck.map( item => { // Percorre e reorganiza o que sera retornado
                 console.log({
                     idTask: item.COD_TASK,
                     idCheck: item.COD_CHECK,
@@ -66,7 +63,6 @@ class TasksController {
         }
     }
 
-
     async create(request: Request, response: Response) {//completed
         const { userCheck, summaryTask, descTask } = request.body;
         const task = {
@@ -90,7 +86,6 @@ class TasksController {
             });
         }
     };
-
 
 }
 

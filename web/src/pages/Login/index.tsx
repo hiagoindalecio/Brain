@@ -13,38 +13,21 @@ const Login: React.FC = () => {
     const [secondPassword, setSecondPassword] = useState<JSX.Element>();
     const [nameUser, setNameUser] = useState<JSX.Element>();
     const [action, setAction] = useState<String>('Entrar');
-    const [formData, setFormData] = useState({
-        nameUser: '',
-        email: '',
-        email2: '',
-        password: '',
-        password2: ''
-    });
 
-    function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
-        const values = {
-            nameUser: $("input[type=text][name=nameUser]").val() as string,
-            email: $("input[type=email][name=email]").val() as string,
-            email2: $("input[type=email][name=email2]").val() as string,
-            password: $("input[type=password][name=password]").val() as string,
-            password2: $("input[type=password][name=password2]").val() as string
-        }
-        setFormData({...formData, ...values});
-    };
     async function handleSubmit(event: FormEvent) {
         if(action === 'Entrar') {
             event.preventDefault();
-            await singIn(formData.email, formData.password);
+            await singIn($("input[type=email][name=email]").val() as string, ($("input[type=password][name=password]").val() as string));
         } else if (action === 'Criar conta') {
             event.preventDefault();
-            if(formData.email === formData.email2 && formData.password === formData.password2 && formData.nameUser !== '') {
-                const reply = await createUser(formData.email, formData.password, formData.nameUser);
+            if(($("input[type=email][name=email]").val() as string) === ($("input[type=email][name=email2]").val() as string) && ($("input[type=password][name=password]").val() as string) === ($("input[type=password][name=password2]").val() as string) && ($("input[type=text][name=nameUser]").val() as string) !== '') {
+                const reply = await createUser(($("input[type=email][name=email]").val() as string), ($("input[type=password][name=password]").val() as string), ($("input[type=text][name=nameUser]").val() as string));
                 alert(reply.toString());
-            } else if (formData.email !== formData.email2) {
+            } else if (($("input[type=email][name=email]").val() as string) !== ($("input[type=email][name=email2]").val() as string)) {
                 alert('Os dois endereços de e-mail devem ser indênticos!');
-            } else if (formData.password !== formData.password2) {
+            } else if (($("input[type=password][name=password]").val() as string) !== ($("input[type=password][name=password2]").val() as string)) {
                 alert('Os dois campos de senha devem ser idênticos!');
-            } else if (formData.nameUser === '') {
+            } else if (($("input[type=text][name=nameUser]").val() as string) === '') {
                 alert('Você deve preencher o campo de nome!');
             }
         }
@@ -62,19 +45,19 @@ const Login: React.FC = () => {
             setSecondEmail(
                 <div className="form-group">
                     <label htmlFor="InputEmail2">Confime seu e-mail:</label>
-                    <input type="email" name="email2" className="form-control" id="InputEmail2" aria-describedby="emailHelp" onChange={handleInputChange} />
+                    <input type="email" name="email2" className="form-control" id="InputEmail2" aria-describedby="emailHelp" />
                 </div>
             );
             setSecondPassword(
                 <div className="form-group">
                     <label htmlFor="InputPassword2">Confime sua senha:</label>
-                    <input type="password" name="password2" className="form-control" id="InputPassword2" onChange={handleInputChange} />
+                    <input type="password" name="password2" className="form-control" id="InputPassword2" />
                 </div>
             )
             setNameUser(
                 <div className="form-group">
                     <label htmlFor="InputName">Informe seu nome:</label>
-                    <input type="text" name="nameUser" className="form-control" id="InputName" onChange={handleInputChange} />
+                    <input type="text" name="nameUser" className="form-control" id="InputName" />
                 </div>
             )
         }
@@ -96,7 +79,7 @@ const Login: React.FC = () => {
                         }
                         <div className="form-group">
                             <label htmlFor="InputEmail1">Endereço de e-mail</label>
-                            <input type="email" name="email" className="form-control" id="InputEmail1" aria-describedby="emailHelp" onChange={handleInputChange} />
+                            <input type="email" name="email" className="form-control" id="InputEmail1" aria-describedby="emailHelp" />
                             <small id="emailHelp" className="form-text text-muted">Nós nunca iremos compartilhar seu e-mail com ninguém.</small>
                         </div>
                         {
@@ -104,7 +87,7 @@ const Login: React.FC = () => {
                         }
                         <div className="form-group">
                             <label htmlFor="InputPassword1">Senha</label>
-                            <input type="password" name="password" className="form-control" id="InputPassword1" onChange={handleInputChange} />
+                            <input type="password" name="password" className="form-control" id="InputPassword1" />
                         </div>
                         {
                             secondPassword

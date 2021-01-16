@@ -26,7 +26,6 @@ export async function createUser(email: string, password: string, name: string):
         email: email,
         password: password
     }
-    console.log(data);
     return new Promise((resolve) => {
         api.post<UserCreationResponse>('/users', data).then(response => {
             resolve(response.data as UserCreationResponse);

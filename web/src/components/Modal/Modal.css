@@ -14,3 +14,7 @@
 .modal-content{
     z-index: 5000;
 }
+
+#description{
+    height: 200px;
+}

@@ -1,16 +1,8 @@
 import React, { useLayoutEffect, useState } from 'react';
 import './styles.css';
 import Checkpoint from '../../components/CheckpointObject';
-import Modal from '../../components/Modal/Modal';
+import Modal from '../../components/ModalCheckpoint/Modal';
 import '../../bootstrap-4.5.3-dist/css/bootstrap.min.css';
-//import { Modal } from '../../bootstrap-4.5.3-dist/jss/bootstrap'
-// interface Task {
-//     idTask: number,
-//     idCheck: number,
-//     summary: String,
-//     desc: String,
-//     status: boolean
-// }
 
 interface CheckpointsData {
     cod: number,
@@ -39,9 +31,7 @@ const CheckpointsList: React.FC<{checkpointsResponse: Array<CheckpointsData>}> =
                     )
                 }
             </div>
-            
         </fieldset>
-        
     )
 }
 

@@ -1,4 +1,4 @@
-import React, { FormEvent, useContext, useEffect, useState } from 'react';
+import React, { FormEvent, useContext, useEffect, useLayoutEffect, useState } from 'react';
 import './styles.css';
 
 import TaskContext from '../../contexts/tasks';
@@ -35,6 +35,11 @@ const Checkpoint: React.FC<{
     const [buttonText2, setButtonText2] = useState<string>('+ Abrir tasks finalizadas');
     const [checkTasks, setCheckTasks] = useState<Task[]>([]);
     const [finalizedCheckTasks, setFinalizedCheckTasks] = useState<Task[]>([]);
+    const [datelimit, setDateLimit] = useState<string>('');
+
+    useEffect(() => {
+        convertData();
+    }, []);
 
     useEffect(() => {
         if(buttonText2 === '- Fechar tasks finalizadas' && finalizedCheckTasks.length >= 1) {
@@ -98,12 +103,19 @@ const Checkpoint: React.FC<{
         }
     }
 
+    function convertData(): void {
+        var converted: Array<string> = limitdate.split('-');
+        converted[2] = converted[2].split('T')[0];
+        var finalConversion: string = converted[2] + '/' + converted[1] + '/' + converted[0];
+        setDateLimit(finalConversion);
+    }
 
     return (
         <div className="card" key={cod}>
-            <h5 className="card-header">{summary}</h5>
+            <h5 className="card-header">{summary}</h5><br/>
+            <button type="button" className="btn btn-primary btn-lg">Completar Checkpoint</button><br/>
             <p className="card-text">Descrição: {description}</p>
-            <p className="card-text">Data limite: {limitdate}</p>
+            <p className="card-text">Data limite: {datelimit}</p>
             <div className="card-body">
             <button className="btn-getTasks" onClick={getAllTasks}><h6>{buttonText}</h6></button>
                 {

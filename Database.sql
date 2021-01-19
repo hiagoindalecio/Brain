@@ -37,6 +37,7 @@ CREATE TABLE user_checkpoint
 	SUMMARY_CHECK VARCHAR(50) NOT NULL,
 	DESCRI_CHECK VARCHAR(3000),
 	DATA_CHECK DATE,
+	STATUS_CHECK TINYINT(1) NOT NULL,
 	PRIMARY KEY(COD_CHECK),
 	CONSTRAINT fk_mem_user
 	FOREIGN KEY (COD_USER)
@@ -44,7 +45,7 @@ CREATE TABLE user_checkpoint
 );
 
 INSERT INTO user_checkpoint(COD_USER, SUMMARY_CHECK, DESCRI_CHECK, DATA_CHECK)
-	VALUES(1, 'Terminar projeto', 'Finalizar projeto em React até o fim de dezembro.', '2021-02-20');
+	VALUES(1, 'Terminar projeto', 'Finalizar projeto em React até o fim de dezembro.', '2021-02-20', 1);
 
 CREATE TABLE checkpoint_tasks
 (
@@ -52,7 +53,7 @@ CREATE TABLE checkpoint_tasks
 	COD_CHECK INT NOT NULL,
 	SUMMARY_TASK VARCHAR(25) NOT NULL,
 	DESCRI_TASK VARCHAR(3000),
-	STATUS_TASK TINYINT(1),
+	STATUS_TASK TINYINT(1) NOT NULL,
 	PRIMARY KEY(COD_TASK),
 	CONSTRAINT fk_task_check
 	FOREIGN KEY (COD_CHECK)

@@ -14,11 +14,17 @@ interface TasksContextData {
     getTasks: (idCheckpoint: number) => Promise<Array<Task>>;
 }
 
+interface createTasksResponse {
+    id: number,
+    name: string,
+    message: string
+}
+
 const TaskContext = createContext<TasksContextData>({} as TasksContextData);
 
 export const TasksProvider: React.FC = ({ children }) => {
     const [loading, setLoading] = useState(false);
-    const [tasks, setTasks] = useState<Task[]>([]);
+    //const [tasks, setTasks] = useState<Task[]>([]);
     let responseArray: Array<Task> = [];
     
     async function getTasks(idCheckpoint: number): Promise<Array<Task>> {
@@ -29,6 +35,13 @@ export const TasksProvider: React.FC = ({ children }) => {
                 responseArray.push(oneTask);
             });
             resolve(responseArray);
+        });
+    };
+
+    async function setTasks(id_user: number, summary: string, description: string): Promise<createTasksResponse> {
+        return new Promise(async (resolve) => {
+            var reply: createTasksResponse = await task.setTasks(id_user, summary, description);
+            resolve(reply);
         });
     };
 

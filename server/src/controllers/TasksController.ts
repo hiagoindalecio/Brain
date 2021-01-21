@@ -64,11 +64,11 @@ class TasksController {
     }
 
     async create(request: Request, response: Response) {//completed
-        const { idCheck, summaryTask, descTask } = request.body;
+        const { idCheck, summary, description } = request.body;
         const task = {
             COD_CHECK: idCheck,
-            SUMMARY_TASK: summaryTask,
-            DESCRI_TASK: descTask,
+            SUMMARY_TASK: summary,
+            DESCRI_TASK: description,
             STATUS_TASK: true
         }
         try{
@@ -86,6 +86,33 @@ class TasksController {
         }
     };
 
+    async update(request: Request, response: Response) {
+        const { idTask, summary, description } = request.body;
+        try {
+            knex('checkpoint_tasks')
+            .select('COD_TASK')
+            .where('COD_TASK', idTask)
+            .then(async row => {
+                if(!row[0]) {
+                    return response.status(400).json({
+                        message: `A task que você está tentando atualizar não existe :(`
+                    });
+                } else {
+                    await knex('checkpoint_tasks')
+                    .update('SUMMARY_TASK', summary)
+                    .update('DESCRI_TASK', description)
+                    .where('COD_TASK', idTask);
+                    return response.status(201).json({
+                        message: `A task foi atualizada com sucesso.`
+                    });
+                }
+            })
+        } catch(e) {
+            return response.status(400).json({
+                message: `Um erro ocorreu :(\n${e}`
+            });
+        }
+    }
 }
 
 export default TasksController;

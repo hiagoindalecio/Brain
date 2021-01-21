@@ -8,6 +8,7 @@ import CheckpointsContext from '../../contexts/checkpoints';
 
 interface ModalProps {
     props : {
+        id: number,
         summary: string,
         description: string,
         date: string
@@ -18,7 +19,7 @@ interface ModalProps {
     
 const Modal: React.FC<ModalProps> = ({props, onClose}) => {
     const { user } = useContext(AuthContext);
-    const { setCheckpoint } = useContext(CheckpointsContext);
+    const { setCheckpoint, updateCheckpoint } = useContext(CheckpointsContext);
 
     async function handleSubmit(event: FormEvent) {
         const formData = {
@@ -34,11 +35,15 @@ const Modal: React.FC<ModalProps> = ({props, onClose}) => {
         } else if (formData.summaryCheck === '') {
             alert('Você deve preencher o campo de Titulo!');
         } else {
-            const reply = await setCheckpoint((user ? user.id as number : -1),formData.summaryCheck,formData.descCheck,formData.dateCheck);
-            alert(reply.message);
+            if(props.id === -1) {
+                const reply = await setCheckpoint((user ? user.id as number : -1), formData.summaryCheck, formData.descCheck, formData.dateCheck);
+                alert(reply.message);
+            } else {
+                const reply = await updateCheckpoint(props.id, formData.summaryCheck, formData.descCheck, formData.dateCheck);
+                alert(reply.message);
+            }
             onClose();
         }
-        console.log("Userid: " + (user ? user.id as number : -1) + "Data:" + formData.dateCheck + "\n Desc:" + formData.descCheck + "\n Summary:" + formData.summaryCheck);
     };
 
     const overlayRef = React.useRef(null);
@@ -64,16 +69,16 @@ const Modal: React.FC<ModalProps> = ({props, onClose}) => {
                             <label htmlFor="recipient-name" className="col-form-label">
                                 Titulo do checkpoint:
                             </label>
-                            <input type="summary" name="summary" className="form-control" id="summary" value={props.summary}></input>
+                            <input type="summary" name="summary" className="form-control" id="summary" defaultValue={props.summary}></input>
 
                             <label htmlFor="message-text" className='col-form-label'>
                                 Descrição:
                             </label>
-                            <textarea id="description" name="desc" className='form-control'>{props.description}</textarea>
+                            <textarea id="description" name="desc" className='form-control' defaultValue={props.description}></textarea>
                             <label htmlFor="message-text" className='col-form-label'>
                                 Data Limite:
                             </label>
-                            <input type="date" id="dateCheck" className="form-control" value={props.date}/>
+                            <input type="date" id="dateCheck" className="form-control" defaultValue={props.date}/>
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" onClick={onClose}>Fechar</button>

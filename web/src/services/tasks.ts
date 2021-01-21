@@ -1,3 +1,4 @@
+import { response } from 'express';
 import api from './api';
 
 interface tasksResponse {
@@ -14,6 +15,10 @@ interface createTasksResponse {
     message: string
 }
 
+interface messageResponse {
+    message: string;
+}
+
 export function getTasks(idCheckpoint: number): Promise<tasksResponse[]> {
     return new Promise(async (resolve) => {
         api.get<tasksResponse[]>(`task/${idCheckpoint}`).then(response => {
@@ -22,15 +27,29 @@ export function getTasks(idCheckpoint: number): Promise<tasksResponse[]> {
     });
 }
 
-export function setTasks(id_user: number, summary: string, description: string): Promise<createTasksResponse> {
+export function setTasks(idCheck: number, summary: string, description: string): Promise<createTasksResponse> {
     const data = {
-        id_user: id_user,
-        summary: summary,
-        description: description
+        idCheck,
+        summary,
+        description
     }
     
     return new Promise((resolve) => {
         api.post<createTasksResponse>(`/tasks`, data).then(response => {
+            resolve(response.data);
+        });
+    });
+}
+
+export function updateTask(idTask: number, summary: string, description: string): Promise<messageResponse> {
+    const data = {
+        idTask,
+        summary,
+        description
+    }
+
+    return new Promise((resolve) => {
+        api.post<messageResponse>(`/tasks/update`, data).then(response => {
             resolve(response.data);
         });
     });

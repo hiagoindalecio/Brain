@@ -138,7 +138,35 @@ class CheckController {
                 });
             }
         }
-        
+    }
+
+    async update(request: Request, response: Response) {
+        const { idCheck, summary, description, limitdate } = request.body;
+        try {
+            knex('user_checkpoint')
+            .select('COD_CHECK')
+            .where('COD_CHECK', idCheck)
+            .then(async row => {
+                if(!row[0]) {
+                    return response.status(400).json({
+                        message: `O checkpoint que você está tentando atualizar não existe :(`
+                    });
+                } else {
+                    await knex('user_checkpoint')
+                    .update('SUMMARY_CHECK', summary)
+                    .update('DESCRI_CHECK', description)
+                    .update('DATA_CHECK', limitdate)
+                    .where('COD_CHECK', idCheck);
+                    return response.status(201).json({
+                        message: `O checkpoint foi atualizado com sucesso.`
+                    });
+                }
+            })
+        } catch(e) {
+            return response.status(400).json({
+                message: `Um erro ocorreu :(\n${e}`
+            });
+        }
     }
 
 }

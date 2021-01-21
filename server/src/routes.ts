@@ -19,7 +19,6 @@ routes.use(express.json());
 routes.get('/users', usersController.index);
 routes.get('/users/:id', usersController.show);
 routes.get('/uservalidate/:email/:password', usersController.validateUser);
-// routes.get('/checkpoint/date/:userId', checkController.showOrderedByDate);
 routes.get('/checkpoint/:userId', checkController.show);
 routes.get('/task', taskController.index);
 routes.get('/task/:checkpointId', taskController.show);
@@ -46,6 +45,18 @@ routes.post('/checkpoint/complete',
         abortEarly: false
     }), 
     checkController.complete);
+routes.post('/checkpoint/update',
+    celebrate({
+        body: Joi.object().keys({
+            idCheck: Joi.number().required(),
+            summary: Joi.string().required(),
+            description: Joi.string().required(),
+            limitdate: Joi.string().required()
+        })
+    }, {
+        abortEarly: false
+    }), 
+    checkController.update)
 routes.post('/users',
     celebrate({
         body: Joi.object().keys({
@@ -60,13 +71,24 @@ routes.post('/users',
 routes.post('/tasks',
     celebrate({
         body: Joi.object().keys({
-            idCheck: Joi.string().required(),
-            summaryTask: Joi.string().required(),
-            descTask: Joi.string().required()
+            idCheck: Joi.number().required(),
+            summary: Joi.string().required(),
+            description: Joi.string().required()
         })
     }, {
         abortEarly: false
     }),
     taskController.create);
+routes.post('/tasks/update',
+    celebrate({
+        body: Joi.object().keys({
+            idTask: Joi.number().required(),
+            summary: Joi.string().required(),
+            description: Joi.string().required()
+        })
+    }, {
+        abortEarly: false
+    }), 
+    taskController.update);
 
 export default routes;

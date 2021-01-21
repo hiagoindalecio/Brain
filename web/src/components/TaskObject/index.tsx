@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 
 import '../../bootstrap-4.5.3-dist/css/bootstrap.min.css';
 
+import Modal from '../../components/ModalTasks/ModalTasks';
+
 const Task: React.FC<{
     idTask: number,
     idCheck: number,
-    summary: String,
-    desc: String,
+    summary: string,
+    desc: string,
     status: boolean
 }> = ({
     idTask,
@@ -16,6 +18,7 @@ const Task: React.FC<{
     status
 }) => {
     const [taskObject, setTaskObject] = useState<JSX.Element>(<div />);
+    const [isModalVsisble, setIsModalVisible] = useState(false);
 
     useEffect(() => {
         if (status && summary !== 'Não há nada para mostrar aqui :(') {
@@ -23,7 +26,7 @@ const Task: React.FC<{
                 <div key={idTask}>
                     <h5 className="card-title">●{summary}</h5>
                     <p className="card-text">Descrição: {desc}</p>
-                    <button type="button" className="btn btn-primary btn-sm">Editar</button>
+                    <button type="button" className="btn btn-primary btn-sm" onClick={() => (setIsModalVisible(true))}>Editar</button>
                     <button type="button" className="btn btn-primary btn-sm">Concluir</button>
                 </div>
             )
@@ -37,9 +40,8 @@ const Task: React.FC<{
         }
     }, []);
 
-    
     return (
-        taskObject
+        isModalVsisble ? <Modal props={{summary, description: desc}} onClose={() => (setIsModalVisible(false))}></Modal> : taskObject
     );
 };
 

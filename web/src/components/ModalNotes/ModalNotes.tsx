@@ -61,8 +61,8 @@ const Modal: React.FC<ModalProps> = ({onClose}) => {
                             <textarea id="description" name="desc" className='form-control'></textarea>
                         </div>
                         <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" onClick={onClose}>Close</button>
-                            <button type="button" name="submit" className="btn btn-primary" onClick={handleSubmit}>Criar Nota</button>
+                            <button type="button" className="btn btn-secondary" onClick={onClose}>Fechar</button>
+                            <button type="button" name="submit" className="btn btn-primary" onClick={handleSubmit}>Salvar Nota</button>
                         </div>
                     </div>
                 </div>

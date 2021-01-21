@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import './styles.css';
 import Checkpoint from '../../components/CheckpointObject';
 import Modal from '../../components/ModalCheckpoint/Modal';
@@ -9,12 +9,13 @@ interface CheckpointsData {
     codUser: number,
     summary: string,
     limitdate: string,
-    description: string
+    description: string,
+    status: number
 }
 
 const CheckpointsList: React.FC<{checkpointsResponse: Array<CheckpointsData>}> = ({checkpointsResponse}) => {
     const [isModalVsisble, setIsModalVisible] = useState(false);
-    
+
     return (
         <fieldset>
             <div className="presentation">
@@ -23,10 +24,10 @@ const CheckpointsList: React.FC<{checkpointsResponse: Array<CheckpointsData>}> =
             <button type="button" onClick={() => (setIsModalVisible(true))} className="btn btn-primary btn-lg btn-add">
                 Adicionar Checkpoint<br/>
                 </button>
-            {isModalVsisble ? <Modal props='a' onClose={() => (setIsModalVisible(false))}></Modal> : null}
+            {isModalVsisble ? <Modal props={{summary: '', description: '', date: ''}} onClose={() => (setIsModalVisible(false))}></Modal> : null}
             <div>
                 {
-                    [...checkpointsResponse].map((oneCheckpoint, index: number) => 
+                    [...checkpointsResponse].filter(c => c.status === 1).map((oneCheckpoint, index: number) => 
                         <div key={index}><br/><Checkpoint cod={oneCheckpoint.cod} codUser={oneCheckpoint.codUser} summary={oneCheckpoint.summary} limitdate={oneCheckpoint.limitdate} description={oneCheckpoint.description} /></div>
                     )
                 }

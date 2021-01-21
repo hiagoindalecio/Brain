@@ -6,6 +6,7 @@ interface checkpointResponse {
     summary: string;
     limitdate: string;
     description: string;
+    status: number;
 }
 
 interface createCheckpointResponse {

@@ -64,25 +64,24 @@ class TasksController {
     }
 
     async create(request: Request, response: Response) {//completed
-        const { userCheck, summaryTask, descTask } = request.body;
+        const { idCheck, summaryTask, descTask } = request.body;
         const task = {
-            COD_CHECK    : userCheck,
-            SUMMARY_TASK : summaryTask,
-            DESCRI_TASK  : descTask
+            COD_CHECK: idCheck,
+            SUMMARY_TASK: summaryTask,
+            DESCRI_TASK: descTask,
+            STATUS_TASK: true
         }
         try{
             const insertedTask = await knex('checkpoint_tasks').insert(task);
             return response.status(201).json({
-                idUser: insertedTask[0],
-                summary: insertedTask[1],
-                message: 'New Task created successfully'
+                idTask: insertedTask[0],
+                message: 'Nova task criada com sucesso!'
             });
         } catch (e) {
             console.log(e);
             return response.status(400).json({
-                idUser: -1,
-                summary: '',
-                message: 'A failure happened during the task creation.'
+                idTask: -1,
+                message: 'Uma falha ocorreu durante a criação da nova task.'
             });
         }
     };

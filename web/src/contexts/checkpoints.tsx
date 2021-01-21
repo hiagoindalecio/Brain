@@ -15,6 +15,7 @@ interface CheckpointsData {
     summary: string;
     limitdate: string;
     description: string;
+    status: number;
 }
 
 interface createCheckpointResponse {

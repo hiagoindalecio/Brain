@@ -20,7 +20,8 @@ class CheckController {
                     codUser: item.COD_USER,
                     summary: item.SUMMARY_CHECK,
                     limitdate: item.DATA_CHECK,
-                    description: item.DESCRI_CHECK
+                    description: item.DESCRI_CHECK,
+                    status: item.STATUS_CHECK
                 };
             } );
             response.status(200).send(serializedItems);    
@@ -30,7 +31,8 @@ class CheckController {
                 codUser: -1,
                 summary: '',
                 limitdate: '',
-                description: ''
+                description: '',
+                status: false
             });
         }
     } 
@@ -46,14 +48,16 @@ class CheckController {
                     codUser: item.COD_USER,
                     summary: item.SUMMARY_CHECK,
                     limitdate: item.DATA_CHECK,
-                    description: item.DESCRI_CHECK
+                    description: item.DESCRI_CHECK,
+                    status: item.STATUS_CHECK
                 });
                 return {
                     cod: item.COD_CHECK,
                     codUser: item.COD_USER,
                     summary: item.SUMMARY_CHECK,
                     limitdate: item.DATA_CHECK,
-                    description: item.DESCRI_CHECK
+                    description: item.DESCRI_CHECK,
+                    status: item.STATUS_CHECK
                 };
             } );
             response.status(200).send(serializedItems);    
@@ -63,7 +67,8 @@ class CheckController {
                 codUser: -1,
                 summary: '',
                 limitdate: '',
-                description: ''
+                description: '',
+                status: false
             });
         }
     }
@@ -74,7 +79,8 @@ class CheckController {
             COD_USER : id_user,
             SUMMARY_CHECK : summary,
             DESCRI_CHECK : description,
-            DATA_CHECK : limitdate
+            DATA_CHECK : limitdate,
+            STATUS_CHECK : true
         }
         try {
             const insertedCheckpoint = await knex('user_checkpoint').insert(checkpoint);
@@ -102,7 +108,7 @@ class CheckController {
                 message: 'O checkpoint que deseja completar é inválido :('
             });
         } else {
-            const allTasks = await knex('checkpoit_tasks').select('STATUS_TASK').where('COD_CHECK', idCheck);
+            const allTasks = await knex('checkpoint_tasks').select('STATUS_TASK').where('COD_CHECK', idCheck);
             var quantas = 0;
             [...allTasks].map((task_status) => {
                 if(task_status) {
@@ -112,21 +118,25 @@ class CheckController {
             if (quantas === 0) {
                 try {
                     await knex('user_checkpoint').update({STATUS_CHECK: false}).where('COD_CHECK', idCheck);
-                    const checktwo = await knex('user_checkpoint').select('STATUS_CHECK').where('COD_CHECK', idCheck);
-                    if(!checktwo) {
-                        //var points: number = await knex('user_table').select('POINTS_USER').where('COD_USER', userId)
-                        //points += 20;
-                        //await knex('user_table').update({POINTS_USER: })
-                    }
+                    var points = await knex('user_table').select('POINTS_USER').where('COD_USER', userId);
+                    var userPoints = 0;
+                    points.map(one => {
+                        userPoints = one.POINTS_USER
+                    })
+                    await knex('user_table').update({POINTS_USER: (userPoints + 20)}).where('COD_USER', userId);
+                    return response.status(201).json({
+                        message: `O checkpoint foi completado com sucesso. \nParabéns você conquistou 20 pontos!`
+                    });
                 } catch(e) {
-                    
+                    return response.status(400).json({
+                        message: `Um erro ocorreu :(\n${e}`
+                    });
                 }
             } else {
                 return response.status(400).json({
-                    message: `Não foi possível completar o checkpoint pois existem ${quantas} tasks ainda não completadas.`
+                    message: `Não foi possível completar o checkpoint pois existem ${quantas} task(s) ainda não completadas.`
                 });
             }
-            
         }
         
     }

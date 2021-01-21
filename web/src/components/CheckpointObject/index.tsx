@@ -1,18 +1,19 @@
-import React, { FormEvent, useContext, useEffect, useLayoutEffect, useState } from 'react';
+import React, { FormEvent, useContext, useEffect, useState } from 'react';
 import './styles.css';
 
 import TaskContext from '../../contexts/tasks';
 
 import Task from '../TaskObject';
+import ModalTask from '../../components/ModalTasks/ModalTasks';
+import ModalCheck from '../../components/ModalCheckpoint/Modal';
 
 import '../../bootstrap-4.5.3-dist/css/bootstrap.min.css';
-import { event } from 'jquery';
 
 interface Task {
     idTask: number,
     idCheck: number,
-    summary: String,
-    desc: String,
+    summary: string,
+    desc: string,
     status: boolean
 }
 
@@ -30,19 +31,20 @@ const Checkpoint: React.FC<{
     description
 }) => {
     const { getTasks } = useContext(TaskContext);
-
     const [buttonText, setButtonText] = useState<string>('+ Abrir tasks');
     const [buttonText2, setButtonText2] = useState<string>('+ Abrir tasks finalizadas');
     const [checkTasks, setCheckTasks] = useState<Task[]>([]);
     const [finalizedCheckTasks, setFinalizedCheckTasks] = useState<Task[]>([]);
     const [datelimit, setDateLimit] = useState<string>('');
+    const [isModalTaskVisible, setIsModalTaskVisible] = useState(false);
+    const [isModalCheckVisible, setIsModalCheckVisible] = useState(false);
 
     useEffect(() => {
         convertData();
     }, []);
 
     useEffect(() => {
-        if(buttonText2 === '- Fechar tasks finalizadas' && finalizedCheckTasks.length >= 1) {
+        if(buttonText2 === '- Fechar tasks finalizadas') {
             var quantos = 0;
             [...finalizedCheckTasks].map((task) => {
                 if(!task.status) {
@@ -62,10 +64,10 @@ const Checkpoint: React.FC<{
     }, [finalizedCheckTasks]);
 
     useEffect(() => {
-        if(buttonText === '- Fechar tasks' && checkTasks.length >= 1) {
+        if(buttonText === '- Fechar tasks') {
             var quantos = 0;
             [...checkTasks].map((task) => {
-                if(!task.status) {
+                if(task.status) {
                     quantos++;
                 }
             })
@@ -79,7 +81,7 @@ const Checkpoint: React.FC<{
                 }])
             }
         }
-    }, [buttonText]);
+    }, [checkTasks]);
 
     async function getAllTasks(event: FormEvent) {
         event.preventDefault();
@@ -137,8 +139,10 @@ const Checkpoint: React.FC<{
                 }
             </div><br/><br/>
             <div className="btns">
-                <button type="button" className="btn btn-primary btn-sm">Editar</button>
-                <button type="button" className="btn btn-primary btn-sm">Adicionar Task</button>
+                <button type="button" className="btn btn-primary btn-sm" onClick={() => (setIsModalCheckVisible(true))}>Editar</button>
+                {isModalCheckVisible ? <ModalCheck props={{summary, description, date: limitdate}} onClose={() => (setIsModalCheckVisible(false))}></ModalCheck> : null}
+                <button type="button" className="btn btn-primary btn-sm" onClick={() => (setIsModalTaskVisible(true))}>Adicionar Task</button>
+                {isModalTaskVisible ? <ModalTask props={{summary: '', description: ''}} onClose={() => (setIsModalTaskVisible(false))}></ModalTask> : null}
                 <button type="button" className="btn btn-primary btn-sm btn-drop">Excluir</button>
             </div>
         </div>

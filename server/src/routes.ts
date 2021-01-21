@@ -37,6 +37,15 @@ routes.post('/checkpoint',
         abortEarly: false
     }), 
     checkController.create);
+routes.post('/checkpoint/complete',
+    celebrate({
+        body: Joi.object().keys({
+            idCheck: Joi.number().required()
+        })
+    }, {
+        abortEarly: false
+    }), 
+    checkController.complete);
 routes.post('/users',
     celebrate({
         body: Joi.object().keys({
@@ -48,7 +57,16 @@ routes.post('/users',
         abortEarly: false
     }), 
     usersController.create);
+routes.post('/tasks',
+    celebrate({
+        body: Joi.object().keys({
+            idCheck: Joi.string().required(),
+            summaryTask: Joi.string().required(),
+            descTask: Joi.string().required()
+        })
+    }, {
+        abortEarly: false
+    }),
+    taskController.create);
 
-
-    
 export default routes;

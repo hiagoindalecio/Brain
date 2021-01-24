@@ -6,6 +6,7 @@ import TaskContext from '../../contexts/tasks';
 import Task from '../TaskObject';
 import ModalTask from '../../components/ModalTasks/ModalTasks';
 import ModalCheck from '../../components/ModalCheckpoint/Modal';
+import ModalCompleteCheckpoint from '../../components/ModalCompleteCheckpoint/ModalCompleteCheckpoint';
 
 import '../../bootstrap-4.5.3-dist/css/bootstrap.min.css';
 
@@ -38,6 +39,7 @@ const Checkpoint: React.FC<{
     const [datelimit, setDateLimit] = useState<string>('');
     const [isModalTaskVisible, setIsModalTaskVisible] = useState(false);
     const [isModalCheckVisible, setIsModalCheckVisible] = useState(false);
+    const [isModalCompleteCheckVisible, setIsModalCompleteCheckVisible] = useState(false);
 
     useEffect(() => {
         convertData();
@@ -115,7 +117,8 @@ const Checkpoint: React.FC<{
     return (
         <div className="card" key={cod}>
             <h5 className="card-header">{summary}</h5><br/>
-            <button type="button" className="btn btn-primary btn-lg">Completar Checkpoint</button><br/>
+            <button type="button" className="btn btn-primary btn-lg" onClick={() => {setIsModalCompleteCheckVisible(true)}}>Completar Checkpoint</button><br/>
+            {isModalCompleteCheckVisible ? <ModalCompleteCheckpoint props={{idCheck: cod, title: summary}} onClose={() => {setIsModalCompleteCheckVisible(false); window.location.reload();}}></ModalCompleteCheckpoint> : null}
             <p className="card-text">Descrição: {description}</p>
             <p className="card-text">Data limite: {datelimit}</p>
             <div className="card-body">

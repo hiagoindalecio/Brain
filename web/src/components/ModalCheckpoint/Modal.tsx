@@ -1,10 +1,12 @@
-import React,{ useContext, FormEvent } from 'react'
+import React,{ useContext, FormEvent, useState } from 'react'
 import '../../bootstrap-4.5.3-dist/css/bootstrap.min.css';
 import './Modal.css'
 import $ from "jquery";
 
 import AuthContext from '../../contexts/auth';
 import CheckpointsContext from '../../contexts/checkpoints';
+
+import ModalMessage from '../../components/ModalMessages/ModalMessages';
 
 interface ModalProps {
     props : {
@@ -20,6 +22,8 @@ interface ModalProps {
 const Modal: React.FC<ModalProps> = ({props, onClose}) => {
     const { user } = useContext(AuthContext);
     const { setCheckpoint, updateCheckpoint } = useContext(CheckpointsContext);
+    const [isModalMessageVisible, setIsModalMessageVisible] = useState(false);
+    const [message, setMessage] = useState<string>('');
 
     async function handleSubmit(event: FormEvent) {
         const formData = {
@@ -29,18 +33,23 @@ const Modal: React.FC<ModalProps> = ({props, onClose}) => {
         }
 
         if (formData.dateCheck === null) {
-            alert('Data inválida!');
+            setMessage('Data inválida!');
+            setIsModalMessageVisible(true);
         } else if (formData.descCheck === '') {
-            alert('Você deve Preencher o campo de Descrição!');
+            setMessage('Você deve Preencher o campo de Descrição!');
+            setIsModalMessageVisible(true);
         } else if (formData.summaryCheck === '') {
-            alert('Você deve preencher o campo de Titulo!');
+            setMessage('Você deve preencher o campo de Titulo!');
+            setIsModalMessageVisible(true);
         } else {
             if(props.id === -1) {
                 const reply = await setCheckpoint((user ? user.id as number : -1), formData.summaryCheck, formData.descCheck, formData.dateCheck);
-                alert(reply.message);
+                setMessage(reply.message);
+                setIsModalMessageVisible(true);
             } else {
                 const reply = await updateCheckpoint(props.id, formData.summaryCheck, formData.descCheck, formData.dateCheck);
-                alert(reply.message);
+                setMessage(reply.message);
+                setIsModalMessageVisible(true);
             }
             onClose();
         }
@@ -56,7 +65,8 @@ const Modal: React.FC<ModalProps> = ({props, onClose}) => {
     return (
         <div className="form-modal-checkpoint">
             <div className="modal" id="exampleModalCenter" role="dialog">
-            <div  className={'modal-overlay'} onClick={handleOverlayClick} ref={overlayRef}/>
+            {isModalMessageVisible ? <ModalMessage props={{message}} onClose={() => {setIsModalMessageVisible(false);}}></ModalMessage> : null}
+            <div className={'modal-overlay'} onClick={handleOverlayClick} ref={overlayRef}/>
                 <div className="modal-dialog modal-dialog-centered" role="document">
                     <div className="modal-content">
                         <div className="modal-header">

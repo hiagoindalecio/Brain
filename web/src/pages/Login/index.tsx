@@ -5,6 +5,8 @@ import $ from "jquery";
 
 import AuthContext from '../../contexts/auth';
 
+import ModalMessage from '../../components/ModalMessages/ModalMessages';
+
 import logo from '../../assets/logo.png'
 
 const Login: React.FC = () => {
@@ -13,25 +15,34 @@ const Login: React.FC = () => {
     const [secondPassword, setSecondPassword] = useState<JSX.Element>();
     const [nameUser, setNameUser] = useState<JSX.Element>();
     const [action, setAction] = useState<String>('Entrar');
+    const [isModalMessageVisible, setIsModalMessageVisible] = useState(false);
+    const [message, setMessage] = useState<string>('');
 
     async function handleSubmit(event: FormEvent) {
-        if(action === 'Entrar') {
-            event.preventDefault();
-            await singIn($("input[type=email][name=email]").val() as string, ($("input[type=password][name=password]").val() as string));
-        } else if (action === 'Criar conta') {
-            event.preventDefault();
-            if(($("input[type=email][name=email]").val() as string) === ($("input[type=email][name=email2]").val() as string) && ($("input[type=password][name=password]").val() as string) === ($("input[type=password][name=password2]").val() as string) && ($("input[type=text][name=nameUser]").val() as string) !== '') {
-                const reply = await createUser(($("input[type=email][name=email]").val() as string), ($("input[type=password][name=password]").val() as string), ($("input[type=text][name=nameUser]").val() as string));
-                alert(reply.toString());
-            } else if (($("input[type=email][name=email]").val() as string) !== ($("input[type=email][name=email2]").val() as string)) {
-                alert('Os dois endereços de e-mail devem ser indênticos!');
-            } else if (($("input[type=password][name=password]").val() as string) !== ($("input[type=password][name=password2]").val() as string)) {
-                alert('Os dois campos de senha devem ser idênticos!');
-            } else if (($("input[type=text][name=nameUser]").val() as string) === '') {
-                alert('Você deve preencher o campo de nome!');
+        event.preventDefault();
+        if($("input[type=email][name=email]").val() as string !== '' && $("input[type=password][name=password]").val() as string !== '') {
+            if(action === 'Entrar') {
+                await singIn($("input[type=email][name=email]").val() as string, ($("input[type=password][name=password]").val() as string));
+            } else if (action === 'Criar conta') {
+                if(($("input[type=email][name=email]").val() as string) === ($("input[type=email][name=email2]").val() as string) && ($("input[type=password][name=password]").val() as string) === ($("input[type=password][name=password2]").val() as string) && ($("input[type=text][name=nameUser]").val() as string) !== '') {
+                    const reply = await createUser(($("input[type=email][name=email]").val() as string), ($("input[type=password][name=password]").val() as string), ($("input[type=text][name=nameUser]").val() as string));
+                    setMessage(reply.toString());
+                    setIsModalMessageVisible(true);
+                } else if (($("input[type=email][name=email]").val() as string) !== ($("input[type=email][name=email2]").val() as string)) {
+                    setMessage('Os dois endereços de e-mail devem ser indênticos!');
+                    setIsModalMessageVisible(true);
+                } else if (($("input[type=password][name=password]").val() as string) !== ($("input[type=password][name=password2]").val() as string)) {
+                    setMessage('Os dois campos de senha devem ser idênticos!');
+                    setIsModalMessageVisible(true);
+                } else if (($("input[type=text][name=nameUser]").val() as string) === '') {
+                    setMessage('Você deve preencher o campo de nome!');
+                    setIsModalMessageVisible(true);
+                }
             }
+        } else {
+            setMessage('Os campos e-mail e senha devem estar preenchidos!');
+            setIsModalMessageVisible(true);
         }
-        
     };
 
     function handleChange(actionText: String) {
@@ -67,6 +78,7 @@ const Login: React.FC = () => {
         <fieldset>
             <div id="login-page">
                 <div className="content">
+                {isModalMessageVisible ? <ModalMessage props={{message}} onClose={() => {setIsModalMessageVisible(false);}}></ModalMessage> : null}
                     <header className="header">
                         <div className="header-logo">
                             <h1 className="header-text">Brain</h1>

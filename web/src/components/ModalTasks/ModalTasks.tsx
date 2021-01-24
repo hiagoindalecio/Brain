@@ -1,10 +1,12 @@
-import React,{ useContext, FormEvent } from 'react'
+import React,{ useContext, FormEvent, useState } from 'react'
 import '../../bootstrap-4.5.3-dist/css/bootstrap.min.css';
 import './Modal.css'
 import $ from "jquery";
 
 import AuthContext from '../../contexts/auth';
 import TaskContext from '../../contexts/tasks';
+
+import ModalMessage from '../../components/ModalMessages/ModalMessages';
 
 interface ModalProps {
     props : {
@@ -19,6 +21,8 @@ interface ModalProps {
 const Modal: React.FC<ModalProps> = ({props, onClose}) => {
     const { user } = useContext(AuthContext);
     const { setTasks, updateTask } = useContext(TaskContext);
+    const [isModalMessageVisible, setIsModalMessageVisible] = useState(false);
+    const [message, setMessage] = useState<string>('');
 
     async function handleSubmit(event: FormEvent) {
         const formData = {
@@ -27,17 +31,21 @@ const Modal: React.FC<ModalProps> = ({props, onClose}) => {
         }  
         event.preventDefault();
         if (formData.descNotes === '') {
-            alert('Você deve Preencher o campo de Descrição!');
+            setMessage('Você deve Preencher o campo de Descrição!');
+            setIsModalMessageVisible(true);
         } else if (formData.summaryNotes === '') {
-            alert('Você deve preencher o campo de Titulo!');
+            setMessage('Você deve preencher o campo de Titulo!');
+            setIsModalMessageVisible(true);
         }
         else{
             if(props.id === -1) {
                 const reply = await setTasks(props.idCheck, formData.summaryNotes, formData.descNotes);
-                alert(reply.message);
+                setMessage(reply.message);
+                setIsModalMessageVisible(true);
             } else {
                 const reply = await updateTask(props.id, formData.summaryNotes, formData.descNotes);
-                alert(reply.message);
+                setMessage(reply.message);
+                setIsModalMessageVisible(true);
             }
             onClose();
         }
@@ -53,6 +61,7 @@ const Modal: React.FC<ModalProps> = ({props, onClose}) => {
     return (
         <div className="form-modal-notes">
             <div className="modal" id="exampleModalCenter" role="dialog">
+            {isModalMessageVisible ? <ModalMessage props={{message}} onClose={() => {setIsModalMessageVisible(false);}}></ModalMessage> : null}
             <div  className={'modal-overlay'} onClick={handleOverlayClick} ref={overlayRef}/>
                 <div className="modal-dialog modal-dialog-centered" role="document">
                     <div className="modal-content">

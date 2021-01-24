@@ -111,7 +111,7 @@ class CheckController {
             const allTasks = await knex('checkpoint_tasks').select('STATUS_TASK').where('COD_CHECK', idCheck);
             var quantas = 0;
             [...allTasks].map((task_status) => {
-                if(task_status) {
+                if(task_status.STATUS_TASK) {
                     quantas++;
                 }
             })
@@ -133,7 +133,7 @@ class CheckController {
                     });
                 }
             } else {
-                return response.status(400).json({
+                return response.status(203).json({
                     message: `Não foi possível completar o checkpoint pois existem ${quantas} task(s) ainda não completadas.`
                 });
             }

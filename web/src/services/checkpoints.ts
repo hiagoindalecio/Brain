@@ -53,6 +53,18 @@ export function updateCheckpoint(idCheck: number, summary: string, description: 
     return new Promise((resolve) => {
         api.post<messageResponse>(`/checkpoint/update`, data).then(response => {
             resolve(response.data);
-        })
-    })
+        });
+    });
+}
+
+export function completeCheckpoint(idCheck: number): Promise<messageResponse> {
+    const data = {
+        idCheck
+    }
+
+    return new Promise((resolve) => {
+        api.post<messageResponse>(`/checkpoint/complete`, data).then(response => {
+            resolve(response.data);
+        });
+    });
 }

@@ -1,10 +1,12 @@
-import React,{ useContext, FormEvent } from 'react'
+import React,{ useContext, FormEvent, useState } from 'react'
 import '../../bootstrap-4.5.3-dist/css/bootstrap.min.css';
 import './Modal.css'
 import $ from "jquery";
-import { setNotes } from '../../services/notes';
 
 import AuthContext from '../../contexts/auth';
+import NotesContext from '../../contexts/notes';
+
+import ModalMessage from '../../components/ModalMessages/ModalMessages';
 
 interface ModalProps {
     props : any;
@@ -13,6 +15,10 @@ interface ModalProps {
 
 const Modal: React.FC<ModalProps> = ({onClose}) => {
     const { user } = useContext(AuthContext);
+    const { setNotes } = useContext(NotesContext);
+    const [isModalMessageVisible, setIsModalMessageVisible] = useState(false);
+    const [message, setMessage] = useState<string>('');
+
     async function handleSubmit(event: FormEvent) {
         const formData = {
             summaryNotes: $("input[type=summary][name=summary]").val() as string,
@@ -20,9 +26,11 @@ const Modal: React.FC<ModalProps> = ({onClose}) => {
         }  
         event.preventDefault();
         if (formData.descNotes === '') {
-            alert('Você deve Preencher o campo de Descrição!');
+            setMessage('Você deve Preencher o campo de Descrição!');
+            setIsModalMessageVisible(true);
         } else if (formData.summaryNotes === '') {
-            alert('Você deve preencher o campo de Titulo!');
+            setMessage('Você deve preencher o campo de Titulo!');
+            setIsModalMessageVisible(true);
         }
         else{
             const reply = await setNotes((user ? user.id as number : -1),formData.summaryNotes,formData.descNotes);
@@ -40,6 +48,7 @@ const Modal: React.FC<ModalProps> = ({onClose}) => {
 
     return (
         <div className="form-modal-notes">
+            {isModalMessageVisible ? <ModalMessage props={{message}} onClose={() => {setIsModalMessageVisible(false);}}></ModalMessage> : null}
             <div className="modal" id="exampleModalCenter" role="dialog">
             <div  className={'modal-overlay'} onClick={handleOverlayClick} ref={overlayRef}/>
                 <div className="modal-dialog modal-dialog-centered" role="document">

@@ -21,7 +21,7 @@ const NotesList: React.FC<{notesResponse: Array<NotesData>}> = ({notesResponse})
             <button type="button" onClick={() => (setIsModalVisible(true))} className="btn btn-primary btn-lg btn-add">
                 Adicionar Nota<br/>
                 </button>
-            {isModalVsisble ? <Modal props='a' onClose={() => (setIsModalVisible(false))}></Modal> : null}
+            {isModalVsisble ? <Modal props={{id: -1, summary:'', description:''}} onClose={() => (setIsModalVisible(false))}></Modal> : null}
             <div>
                 {
                     [...notesResponse].map((oneNote, index: number) => 

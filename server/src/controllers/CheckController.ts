@@ -43,14 +43,6 @@ class CheckController {
         
         try {
             const serializedItems  = (await checksUser).map( item => { // Percorre e reorganiza o que sera retornado
-                console.log({
-                    cod: item.COD_CHECK,
-                    codUser: item.COD_USER,
-                    summary: item.SUMMARY_CHECK,
-                    limitdate: item.DATA_CHECK,
-                    description: item.DESCRI_CHECK,
-                    status: item.STATUS_CHECK
-                });
                 return {
                     cod: item.COD_CHECK,
                     codUser: item.COD_USER,
@@ -125,15 +117,18 @@ class CheckController {
                     })
                     await knex('user_table').update({POINTS_USER: (userPoints + 20)}).where('COD_USER', userId);
                     return response.status(201).json({
-                        message: `O checkpoint foi completado com sucesso. \nParabéns você conquistou 20 pontos!`
+                        done: 1,
+                        message: `O checkpoint foi completado com sucesso. Parabéns você conquistou 20 pontos!`
                     });
                 } catch(e) {
                     return response.status(400).json({
+                        done: 0,
                         message: `Um erro ocorreu :(\n${e}`
                     });
                 }
             } else {
                 return response.status(203).json({
+                    done: 1,
                     message: `Não foi possível completar o checkpoint pois existem ${quantas} task(s) ainda não completadas.`
                 });
             }

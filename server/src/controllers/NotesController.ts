@@ -3,7 +3,6 @@ import knex from '../database/connection'
 
 
 class NotesController {
-
     async index(request: Request, response: Response) {
         const trx = await knex.transaction();
         const general = await trx ('user_notes').select('*');
@@ -51,25 +50,52 @@ class NotesController {
         }
     }
 
-    async create(request: Request, response: Response) {//completed
+    async create(request: Request, response: Response) {
         const { userId, summaryNote, descNote } = request.body;
         const note = {
-            COD_USER      : userId,
-            SUMMARY_NOTE : summaryNote,
-            DESCRI_NOTE  : descNote,
-            POINTS_USER: 0
+            COD_USER: userId,
+            SUMMARY_NOTE: summaryNote,
+            DESCRI_NOTE: descNote
         }
         try{
             const insertedNote = await knex('user_notes').insert(note);
             return response.status(201).json({
-                idUser: insertedNote[0],
-                summary: insertedNote[1],
-                message: 'New Note created successfully'
+                idNote: insertedNote[0],
+                message: 'Nova nova criada com sucesso!'
             });
         } catch (e) {
-            return response.status(400).json({ mensagem: `Error during the Notes creation. ${e.message}`});
+            return response.status(400).json({ idNote: -1, mensagem: `Erro durante a criação da nota.  ${e.message}`});
         }
     };
+    
+    async update(request: Request, response: Response) {
+        const { idNote, summaryNote, descNote } = request.body;
+        try {
+            knex('user_notes')
+            .select('COD_NOTE')
+            .where('COD_NOTE', idNote)
+            .then(async row => {
+                if(!row[0]) {
+                    return response.status(400).json({
+                        message: `A nota que você está tentando atualizar não existe :(`
+                    });
+                } else {
+                    await knex('user_notes')
+                    .update('SUMMARY_NOTE', summaryNote)
+                    .update('DESCRI_NOTE', descNote)
+                    .where('COD_NOTE', idNote);
+                    return response.status(201).json({
+                        message: `A nota foi atualizada com sucesso.`
+                    });
+                }
+            })
+        } catch(e) {
+            return response.status(400).json({
+                message: `Um erro ocorreu :(\n${e}`
+            });
+        }
+    }
+
 }
 
 export default NotesController;

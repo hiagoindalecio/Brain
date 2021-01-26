@@ -28,12 +28,17 @@ interface messageResponse {
     message: string
 }
 
+interface completeResponse {
+    done: number,
+    message: string
+}
+
 interface CheckpointsContextData {
     loading: boolean;
     getCheckpoints: (idUser: number) => Promise<Array<CheckpointsData>>;
     setCheckpoint: (id_user: number, summary: string, description: string, limitdate: string) => Promise<createCheckpointResponse>;
     updateCheckpoint: (idCheck: number, summary: string, description: string, limitdate: string) => Promise<messageResponse>;
-    completeCheckpoint: (idCheck: number) => Promise<messageResponse>;
+    completeCheckpoint: (idCheck: number) => Promise<completeResponse>;
 }
 
 const CheckpointsContext = createContext<CheckpointsContextData>({} as CheckpointsContextData);
@@ -64,15 +69,15 @@ export const CheckpointsProvider: React.FC = ({ children }) => {
         return new Promise(async (resolve) => {
             var reply: messageResponse = await checkpoint.updateCheckpoint(idCheck, summary, description, limitdate);
             resolve(reply);
-        })
-    }
+        });
+    };
 
-    async function completeCheckpoint(idCheck: number): Promise<messageResponse> {
+    async function completeCheckpoint(idCheck: number): Promise<completeResponse> {
         return new Promise(async (resolve) => {
-            var reply: messageResponse = await checkpoint.completeCheckpoint(idCheck);
+            var reply: completeResponse = await checkpoint.completeCheckpoint(idCheck);
             resolve(reply);
-        })
-    }
+        });
+    };
 
     return (
         <CheckpointsContext.Provider value={{ loading, getCheckpoints, setCheckpoint, updateCheckpoint, completeCheckpoint }}>

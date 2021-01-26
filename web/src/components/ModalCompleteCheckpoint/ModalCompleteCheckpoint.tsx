@@ -3,6 +3,7 @@ import '../../bootstrap-4.5.3-dist/css/bootstrap.min.css';
 import './Modal.css'
 
 import CheckpointsContext from '../../contexts/checkpoints';
+import AuthContext from '../../contexts/auth';
 
 import ModalMessage from '../../components/ModalMessages/ModalMessages';
 
@@ -16,12 +17,17 @@ interface ModalProps {
 
 const ModalCompleteCheckpoint: React.FC<ModalProps> = ({props, onClose}) => {
     const { completeCheckpoint } = useContext(CheckpointsContext);
+    const { setUserAtribut, user } = useContext(AuthContext);
     const [isModalMessageVisible, setIsModalMessageVisible] = useState(false);
     const [message, setMessage] = useState<string>('');
 
     async function completeCheck() {
         var reply = await completeCheckpoint(props.idCheck);
         setMessage(reply.message);
+        if(reply.done === 1) {
+            var currentPoints = user ? user.points : '0';
+            setUserAtribut(user ? user.id as number: -1, user ? user.name as string: '', currentPoints as number + 20);
+        }
         setIsModalMessageVisible(true);
     }
 

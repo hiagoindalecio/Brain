@@ -34,7 +34,6 @@ const Modal: React.FC<ModalProps> = ({props, onClose}) => {
 
         if (formData.dateCheck === null) {
             setMessage('Data inválida!');
-            setIsModalMessageVisible(true);
         } else if (formData.descCheck === '') {
             setMessage('Você deve Preencher o campo de Descrição!');
             setIsModalMessageVisible(true);
@@ -45,12 +44,11 @@ const Modal: React.FC<ModalProps> = ({props, onClose}) => {
             if(props.id === -1) {
                 const reply = await setCheckpoint((user ? user.id as number : -1), formData.summaryCheck, formData.descCheck, formData.dateCheck);
                 setMessage(reply.message);
-                setIsModalMessageVisible(true);
             } else {
                 const reply = await updateCheckpoint(props.id, formData.summaryCheck, formData.descCheck, formData.dateCheck);
                 setMessage(reply.message);
-                setIsModalMessageVisible(true);
             }
+            setIsModalMessageVisible(true);
             onClose();
         }
     };
@@ -65,10 +63,10 @@ const Modal: React.FC<ModalProps> = ({props, onClose}) => {
     return (
         <div className="form-modal-checkpoint">
             <div className="modal" id="exampleModalCenter" role="dialog">
-            {isModalMessageVisible ? <ModalMessage props={{message}} onClose={() => {setIsModalMessageVisible(false);}}></ModalMessage> : null}
             <div className={'modal-overlay'} onClick={handleOverlayClick} ref={overlayRef}/>
                 <div className="modal-dialog modal-dialog-centered" role="document">
                     <div className="modal-content">
+                    {isModalMessageVisible ? <ModalMessage props={{message}} onClose={() => {setIsModalMessageVisible(false);}}></ModalMessage> : null}
                         <div className="modal-header">
                             <h5 className="modal-title" id="exampleModalLongTitle">Checkpoint</h5>
                             <button type="button" className="close" onClick={onClose}>

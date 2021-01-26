@@ -19,6 +19,11 @@ interface messageResponse {
     message: string
 }
 
+interface completeResponse {
+    done: number,
+    message: string
+}
+
 export function getCheckpoints(idUser: number): Promise<checkpointResponse[]> {
     return new Promise((resolve) => {
         api.get<checkpointResponse[]>(`/checkpoint/${idUser}`).then(response => {
@@ -57,13 +62,13 @@ export function updateCheckpoint(idCheck: number, summary: string, description: 
     });
 }
 
-export function completeCheckpoint(idCheck: number): Promise<messageResponse> {
+export function completeCheckpoint(idCheck: number): Promise<completeResponse> {
     const data = {
         idCheck
     }
 
     return new Promise((resolve) => {
-        api.post<messageResponse>(`/checkpoint/complete`, data).then(response => {
+        api.post<completeResponse>(`/checkpoint/complete`, data).then(response => {
             resolve(response.data);
         });
     });

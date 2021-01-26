@@ -14,6 +14,7 @@ interface AuthContextData {
     singIn(email: string, password: string): Promise<boolean>;
     createUser(email: string, password: string, name: string): Promise<String>;
     singOut(): void;
+    setUserAtribut(id: number, name: string, points: number):void;
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
@@ -58,13 +59,24 @@ export const AuthProvider: React.FC = ({ children }) => {
         });
     }
 
+    function setUserAtribut(id: number, name: string, points: number) {
+        console.log('Points:')
+        setUser({
+            id,
+            name,
+            points
+        });
+        console.log(points)
+        localStorage.setItem('@RNAuth:user', JSON.stringify(user));
+    }
+
     function singOut() {
         localStorage.clear();
         setUser(null);
     }
 
     return (
-        <AuthContext.Provider value={{signed: !!user, user, loading, singIn, createUser, singOut}}>
+        <AuthContext.Provider value={{signed: !!user, user, loading, singIn, createUser, singOut, setUserAtribut}}>
             {children}
         </AuthContext.Provider>
     );

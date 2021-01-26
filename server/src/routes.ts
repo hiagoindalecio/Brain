@@ -16,6 +16,7 @@ const taskController = new TaskControler();
 const notesController = new NotesController();
 
 routes.use(express.json());
+
 routes.get('/users', usersController.index);
 routes.get('/users/:id', usersController.show);
 routes.get('/uservalidate/:email/:password', usersController.validateUser);
@@ -79,16 +80,27 @@ routes.post('/tasks',
         abortEarly: false
     }),
     taskController.create);
-routes.post('/tasks/update',
+routes.post('/notes',
     celebrate({
         body: Joi.object().keys({
-            idTask: Joi.number().required(),
-            summary: Joi.string().required(),
-            description: Joi.string().required()
+            userId: Joi.number().required(),
+            summaryNote: Joi.string().required(),
+            descNote: Joi.string().required()
         })
     }, {
         abortEarly: false
     }), 
-    taskController.update);
+    notesController.create);
+routes.post('/notes/update',
+    celebrate({
+        body: Joi.object().keys({
+            idNote: Joi.number().required(),
+            descNote: Joi.string().required(),
+            summaryNote: Joi.string().required()
+        })
+    }, {
+        abortEarly: false
+    }),
+    notesController.update);
 
 export default routes;

@@ -6,7 +6,7 @@
     height: 100vh;
     background-color: black;
     opacity: 0.8;
-    z-index: 1000;
+    z-index: 2000;
     outline: 0;
     overflow: hidden;
 }

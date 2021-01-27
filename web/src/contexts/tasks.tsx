@@ -14,6 +14,7 @@ interface TasksContextData {
     getTasks: (idCheckpoint: number) => Promise<Array<Task>>;
     setTasks: (idCheck: number, summary: string, description: string) => Promise<createTasksResponse>;
     updateTask: (idTask: number, summary: string, description: string) => Promise<messageResponse>;
+    completeTask: (idTask: number) => Promise<completeResponse>
 }
 
 interface createTasksResponse {
@@ -26,11 +27,15 @@ interface messageResponse {
     message: string;
 }
 
+interface completeResponse {
+    done: number,
+    message: string
+}
+
 const TaskContext = createContext<TasksContextData>({} as TasksContextData);
 
 export const TasksProvider: React.FC = ({ children }) => {
     const [loading, setLoading] = useState(false);
-    //const [tasks, setTasks] = useState<Task[]>([]);
     let responseArray: Array<Task> = [];
     
     async function getTasks(idCheckpoint: number): Promise<Array<Task>> {
@@ -58,8 +63,15 @@ export const TasksProvider: React.FC = ({ children }) => {
         });
     };
 
+    async function completeTask(idTask: number): Promise<completeResponse> {
+        return new Promise(async (resolve) => {
+            var reply: completeResponse = await task.completeTask(idTask);
+            resolve(reply);
+        });
+    }
+
     return (
-        <TaskContext.Provider value={{ loading, getTasks, setTasks, updateTask }}>
+        <TaskContext.Provider value={{ loading, getTasks, setTasks, updateTask, completeTask }}>
             {children}
         </TaskContext.Provider>
     );

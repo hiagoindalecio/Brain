@@ -8,6 +8,7 @@ import AuthContext from '../../contexts/auth';
 import ModalMessage from '../../components/ModalMessages/ModalMessages';
 
 import logo from '../../assets/logo.png'
+import userEvent from '@testing-library/user-event';
 
 const Login: React.FC = () => {
     const { singIn, createUser } = useContext(AuthContext);
@@ -22,7 +23,11 @@ const Login: React.FC = () => {
         event.preventDefault();
         if($("input[type=email][name=email]").val() as string !== '' && $("input[type=password][name=password]").val() as string !== '') {
             if(action === 'Entrar') {
-                await singIn($("input[type=email][name=email]").val() as string, ($("input[type=password][name=password]").val() as string));
+                var done = await singIn($("input[type=email][name=email]").val() as string, ($("input[type=password][name=password]").val() as string));
+                if(done !== 'Sucesso!') {
+                    alert(done.toString());
+                }
+                //setIsModalMessageVisible(true);
             } else if (action === 'Criar conta') {
                 if(($("input[type=email][name=email]").val() as string) === ($("input[type=email][name=email2]").val() as string) && ($("input[type=password][name=password]").val() as string) === ($("input[type=password][name=password2]").val() as string) && ($("input[type=text][name=nameUser]").val() as string) !== '') {
                     const reply = await createUser(($("input[type=email][name=email]").val() as string), ($("input[type=password][name=password]").val() as string), ($("input[type=text][name=nameUser]").val() as string));

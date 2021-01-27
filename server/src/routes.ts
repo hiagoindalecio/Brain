@@ -17,14 +17,19 @@ const notesController = new NotesController();
 
 routes.use(express.json());
 
+//user
 routes.get('/users', usersController.index);
 routes.get('/users/:id', usersController.show);
 routes.get('/uservalidate/:email/:password', usersController.validateUser);
+//checkpoint
 routes.get('/checkpoint/:userId', checkController.show);
+//task
 routes.get('/task', taskController.index);
 routes.get('/task/:checkpointId', taskController.show);
+//note
 routes.get('/notes/:userId', notesController.show);
 
+//checkpoint
 routes.post('/checkpoint',
     celebrate({
         body: Joi.object().keys({
@@ -57,7 +62,8 @@ routes.post('/checkpoint/update',
     }, {
         abortEarly: false
     }), 
-    checkController.update)
+    checkController.update);
+//user
 routes.post('/users',
     celebrate({
         body: Joi.object().keys({
@@ -69,6 +75,7 @@ routes.post('/users',
         abortEarly: false
     }), 
     usersController.create);
+//task
 routes.post('/tasks',
     celebrate({
         body: Joi.object().keys({
@@ -80,6 +87,27 @@ routes.post('/tasks',
         abortEarly: false
     }),
     taskController.create);
+routes.post('/tasks/complete',
+    celebrate({
+        body: Joi.object().keys({
+            idTask: Joi.number().required()
+        })
+    }, {
+        abortEarly: false
+    }),
+    taskController.complete);
+routes.post('/tasks/update',
+    celebrate({
+        body: Joi.object().keys({
+            idTask: Joi.number().required(),
+            summary: Joi.string().required(),
+            description: Joi.string().required()
+        })
+    }, {
+        abortEarly: false
+    }),
+    taskController.update);
+//note
 routes.post('/notes',
     celebrate({
         body: Joi.object().keys({
@@ -91,6 +119,15 @@ routes.post('/notes',
         abortEarly: false
     }), 
     notesController.create);
+routes.post('/notes/drop',
+    celebrate({
+        body: Joi.object().keys({
+            idNote: Joi.number().required()
+        })
+    }, {
+        abortEarly: false
+    }), 
+    notesController.drop);
 routes.post('/notes/update',
     celebrate({
         body: Joi.object().keys({

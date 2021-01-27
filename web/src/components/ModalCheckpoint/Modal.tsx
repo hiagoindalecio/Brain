@@ -23,17 +23,19 @@ const Modal: React.FC<ModalProps> = ({props, onClose}) => {
     const { user } = useContext(AuthContext);
     const { setCheckpoint, updateCheckpoint } = useContext(CheckpointsContext);
     const [isModalMessageVisible, setIsModalMessageVisible] = useState(false);
+    const [done, setDone] = useState(false);
     const [message, setMessage] = useState<string>('');
 
     async function handleSubmit(event: FormEvent) {
+        event.preventDefault();
         const formData = {
             summaryCheck: $("input[type=summary][name=summary]").val() as string,
             descCheck: $("textarea[id=description][name=desc]").val() as string,
             dateCheck: $("input[type=date][id=dateCheck]").val() as string
         }
-
-        if (formData.dateCheck === null) {
+        if (formData.dateCheck.toString() === '') {
             setMessage('Data inválida!');
+            setIsModalMessageVisible(true);
         } else if (formData.descCheck === '') {
             setMessage('Você deve Preencher o campo de Descrição!');
             setIsModalMessageVisible(true);
@@ -49,7 +51,7 @@ const Modal: React.FC<ModalProps> = ({props, onClose}) => {
                 setMessage(reply.message);
             }
             setIsModalMessageVisible(true);
-            onClose();
+            setDone(true);
         }
     };
 
@@ -66,7 +68,7 @@ const Modal: React.FC<ModalProps> = ({props, onClose}) => {
             <div className={'modal-overlay'} onClick={handleOverlayClick} ref={overlayRef}/>
                 <div className="modal-dialog modal-dialog-centered" role="document">
                     <div className="modal-content">
-                    {isModalMessageVisible ? <ModalMessage props={{message}} onClose={() => {setIsModalMessageVisible(false);}}></ModalMessage> : null}
+                    {isModalMessageVisible ? <ModalMessage props={{message}} onClose={() => {setIsModalMessageVisible(false); if(done) {onClose();}}}></ModalMessage> : null}
                         <div className="modal-header">
                             <h5 className="modal-title" id="exampleModalLongTitle">Checkpoint</h5>
                             <button type="button" className="close" onClick={onClose}>

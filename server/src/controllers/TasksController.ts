@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { json, Request, Response } from 'express';
 import knex from '../database/connection'
 
 
@@ -35,13 +35,6 @@ class TasksController {
         
         try{
             const serializedItems  = tasksCheck.map( item => { // Percorre e reorganiza o que sera retornado
-                console.log({
-                    idTask: item.COD_TASK,
-                    idCheck: item.COD_CHECK,
-                    summary: item.SUMMARY_TASK,
-                    desc: item.DESCRI_TASK,
-                    status: item.STATUS_TASK
-                });
                 return {
                     idTask: item.COD_TASK,
                     idCheck: item.COD_CHECK,
@@ -89,7 +82,7 @@ class TasksController {
     async update(request: Request, response: Response) {
         const { idTask, summary, description } = request.body;
         try {
-            knex('checkpoint_tasks')
+            await knex('checkpoint_tasks')
             .select('COD_TASK')
             .where('COD_TASK', idTask)
             .then(async row => {
@@ -109,6 +102,38 @@ class TasksController {
             })
         } catch(e) {
             return response.status(400).json({
+                message: `Um erro ocorreu :(\n${e}`
+            });
+        }
+    }
+
+    async complete(request: Request, response: Response) {
+        const { idTask } = request.body;
+
+        try {
+            await knex('checkpoint_tasks')
+            .update('STATUS_TASK', 0)
+            .where('COD_TASK', idTask);
+            const checkId = await knex('checkpoint_tasks')
+            .select('COD_CHECK')
+            .where('COD_TASK', idTask);
+            var cod_check = checkId.map(task => { return task.COD_CHECK});
+            const userId = await knex('user_checkpoint')
+            .select('COD_USER')
+            .where('COD_CHECK', cod_check[0]);
+            var cod_user = userId.map(check => {return check.COD_USER});
+            var points = await knex('user_table')
+            .select('POINTS_USER')
+            .where('COD_USER', cod_user[0]);
+            var userPoints: Array<number> = points.map(one => {return one.POINTS_USER as number})
+            await knex('user_table').update({POINTS_USER: (userPoints[0] + 10)}).where('COD_USER', cod_user[0]);
+            return response.status(201).json({
+                done:1,
+                message: `Task completa com sucesso. Parabéns você conquistou 10 pontos!`
+            });
+        } catch(e) {
+            return response.status(400).json({
+                done:0,
                 message: `Um erro ocorreu :(\n${e}`
             });
         }

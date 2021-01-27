@@ -21,7 +21,7 @@ class UsersControllerr {
         const { id } = request.params;
         const user = await knex('user_table').where('COD_USER', id).first();
         if(!user) {
-            return response.status(400).json({ message: 'User not found.'});
+            return response.status(203).json({ message: 'User not found.'});
         } else {
             const serialized = {
                 cod: user.COD_USER,
@@ -99,7 +99,7 @@ class UsersControllerr {
                         return response.status(202).json(returnSerialized);
                     }
                     else {
-                        return response.status(400).json({ 
+                        return response.status(203).json({ 
                                 user: {
                                     id:-1,
                                     name:'Vazio',
@@ -117,7 +117,7 @@ class UsersControllerr {
                     });});
         } else {
             console.log(false);
-            return response.status(400).json({ 
+            return response.status(203).json({ 
                     user: {
                         id:-1, 
                         name:'Vazio', 

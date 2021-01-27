@@ -19,6 +19,11 @@ interface messageResponse {
     message: string;
 }
 
+interface completeResponse {
+    done: number,
+    message: string
+}
+
 export function getTasks(idCheckpoint: number): Promise<tasksResponse[]> {
     return new Promise(async (resolve) => {
         api.get<tasksResponse[]>(`task/${idCheckpoint}`).then(response => {
@@ -50,6 +55,14 @@ export function updateTask(idTask: number, summary: string, description: string)
 
     return new Promise((resolve) => {
         api.post<messageResponse>(`/tasks/update`, data).then(response => {
+            resolve(response.data);
+        });
+    });
+}
+
+export function completeTask(idTask: number): Promise<completeResponse> {
+    return new Promise((resolve) => {
+        api.post<completeResponse>(`/tasks/complete`, {idTask}).then(response => {
             resolve(response.data);
         });
     });

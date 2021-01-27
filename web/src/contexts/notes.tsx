@@ -22,6 +22,7 @@ interface NotesContexData {
     getNotes: (idUser: number) => Promise<Array<NotesData>>;
     setNotes: (id: number, name: string, message: string) => Promise<createNotesResponse>;
     updateNotes: (idNote: number, summary: string, description: string) => Promise<messageResponse>;
+    drop: (idNote: number) => Promise<messageResponse>
 }
 
 const NotesContext = createContext<NotesContexData>({} as NotesContexData);
@@ -40,6 +41,7 @@ export const NotesProvider: React.FC = ({ children }) => {
             resolve(responseArray);
         });
     };
+
     async function setNotes(userId: number, summaryNote: string, descNote: string): Promise<createNotesResponse> {
         return new Promise(async (resolve) => {
             var reply: createNotesResponse = await note.setNotes(userId, summaryNote, descNote);
@@ -51,11 +53,18 @@ export const NotesProvider: React.FC = ({ children }) => {
         return new Promise(async (resolve) => {
             var reply: messageResponse = await note.updateNote(idNote, summaryNote, descNote);
             resolve(reply);
-        })
-    }
+        });
+    };
+
+    async function drop(idNote: number): Promise<messageResponse> {
+        return new Promise(async (resolve) => {
+            var reply: messageResponse = await note.drop(idNote);
+            resolve(reply);
+        });
+    };
 
     return (
-        <NotesContext.Provider value={{ loading, getNotes, setNotes, updateNotes }}>
+        <NotesContext.Provider value={{ loading, getNotes, setNotes, updateNotes, drop }}>
             {children}
         </NotesContext.Provider>
     );

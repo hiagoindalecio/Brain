@@ -3,6 +3,7 @@ import './styles.css';
 
 import '../../bootstrap-4.5.3-dist/css/bootstrap.min.css';
 import ModalNotes from '../../components/ModalNotes/ModalNotes';
+import ModalDropNotes from '../../components/ModalDropNote/ModalDropNote';
 
 const Note: React.FC<{
     idNote: number,
@@ -16,7 +17,7 @@ const Note: React.FC<{
     desc
 }) => {
     const [ isModalNoteVisible, setIsModalNotesVisible ] = useState(false);
-
+    const [ isModalDropNotesVisible, setIsModalDropNotesVisible ] = useState(false);
 
     return (
         <div className="card" key={idNote}>
@@ -25,7 +26,8 @@ const Note: React.FC<{
             <div className="btns">
                 <button type="button" className="btn btn-primary btn-sm" onClick={() => (setIsModalNotesVisible(true))}>Editar</button>
                 {isModalNoteVisible ? <ModalNotes props={{id: idNote, summary: summary, description: desc}} onClose={() => {setIsModalNotesVisible(false); window.location.reload();}}></ModalNotes> : null}
-                <button type="button" className="btn btn-primary btn-sm btn-drop">Excluir</button>
+                <button type="button" className="btn btn-primary btn-sm btn-drop" onClick={() => (setIsModalDropNotesVisible(true))}>Excluir</button>
+                {isModalDropNotesVisible ? <ModalDropNotes props={{idNote, title: summary}} onClose={() => {setIsModalDropNotesVisible(false); window.location.reload();}}></ModalDropNotes> : null}
             </div>
         </div>
     );

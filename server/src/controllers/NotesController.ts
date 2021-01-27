@@ -96,6 +96,22 @@ class NotesController {
         }
     }
 
+    async drop(request: Request, response: Response) {
+        const { idNote } = request.body;
+        try {
+            await knex('user_notes')
+            .where('COD_NOTE', idNote)
+            .del();
+            return response.status(200).json({
+                message: 'Nota excluída com sucesso.'
+            });
+        } catch(e) {
+            return response.status(400).json({
+                message: `Um erro ocorrreu. ${e}`
+            });
+        }
+    }
+
 }
 
 export default NotesController;

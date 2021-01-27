@@ -47,6 +47,14 @@ export function updateNote(idNote: number, summaryNote: string, descNote: string
     return new Promise((resolve) => {
         api.post<messageResponse>(`/notes/update`, data).then(response => {
             resolve(response.data);
-        })
-    })
+        });
+    });
+}
+
+export function drop(idNote: number): Promise<messageResponse> {
+    return new Promise((resolve) => {
+        api.post<messageResponse>(`/notes/drop`, { idNote }).then(response => {
+            resolve(response.data);
+        });
+    });
 }

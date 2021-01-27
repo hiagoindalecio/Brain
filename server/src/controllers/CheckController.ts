@@ -118,7 +118,7 @@ class CheckController {
                     await knex('user_table').update({POINTS_USER: (userPoints + 20)}).where('COD_USER', userId);
                     return response.status(201).json({
                         done: 1,
-                        message: `O checkpoint foi completado com sucesso. Parabéns você conquistou 20 pontos!`
+                        message: `Checkpoint completo com sucesso. Parabéns você conquistou 20 pontos!`
                     });
                 } catch(e) {
                     return response.status(400).json({

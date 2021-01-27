@@ -23,6 +23,7 @@ const Modal: React.FC<ModalProps> = ({props, onClose}) => {
     const { setTasks, updateTask } = useContext(TaskContext);
     const [isModalMessageVisible, setIsModalMessageVisible] = useState(false);
     const [message, setMessage] = useState<string>('');
+    const [done, setDone] = useState(false);
 
     async function handleSubmit(event: FormEvent) {
         const formData = {
@@ -36,18 +37,16 @@ const Modal: React.FC<ModalProps> = ({props, onClose}) => {
         } else if (formData.summaryNotes === '') {
             setMessage('Você deve preencher o campo de Titulo!');
             setIsModalMessageVisible(true);
-        }
-        else{
+        } else {
             if(props.id === -1) {
                 const reply = await setTasks(props.idCheck, formData.summaryNotes, formData.descNotes);
                 setMessage(reply.message);
-                setIsModalMessageVisible(true);
             } else {
                 const reply = await updateTask(props.id, formData.summaryNotes, formData.descNotes);
                 setMessage(reply.message);
-                setIsModalMessageVisible(true);
             }
-            onClose();
+            setDone(true);
+            setIsModalMessageVisible(true);
         }
         console.log("Userid: " + (user ? user.id as number : -1) + "\n Desc:" + formData.descNotes + "\n Summary:" + formData.summaryNotes);
     };
@@ -64,7 +63,7 @@ const Modal: React.FC<ModalProps> = ({props, onClose}) => {
                 <div  className={'modal-overlay'} onClick={handleOverlayClick} ref={overlayRef}/>
                     <div className="modal-dialog modal-dialog-centered" role="document">
                         <div className="modal-content">
-                        {isModalMessageVisible ? <ModalMessage props={{message}} onClose={() => {setIsModalMessageVisible(false);}}></ModalMessage> : null}
+                        {isModalMessageVisible ? <ModalMessage props={{message}} onClose={() => {setIsModalMessageVisible(false); if(done) {onClose();}}}></ModalMessage> : null}
                             <div className="modal-header">
                                 <h5 className="modal-title" id="exampleModalLongTitle">Task</h5>
                                 <button type="button" className="close" onClick={onClose}>

@@ -2,33 +2,29 @@ import React, { useContext, useState } from 'react'
 import '../../bootstrap-4.5.3-dist/css/bootstrap.min.css';
 import './Modal.css'
 
-import CheckpointsContext from '../../contexts/checkpoints';
-import AuthContext from '../../contexts/auth';
+import NotesContex from '../../contexts/notes';
 
 import ModalMessage from '../../components/ModalMessages/ModalMessages';
 
 interface ModalProps {
     props : {
-        idCheck: number;
+        idNote: number;
         title: string;
     };
     onClose: () => void;
 }
 
-const ModalCompleteCheckpoint: React.FC<ModalProps> = ({props, onClose}) => {
-    const { completeCheckpoint } = useContext(CheckpointsContext);
-    const { setPoints, user } = useContext(AuthContext);
+const ModalDropNote: React.FC<ModalProps> = ({props, onClose}) => {
+    const { drop } = useContext(NotesContex);
     const [isModalMessageVisible, setIsModalMessageVisible] = useState(false);
     const [message, setMessage] = useState<string>('');
+    const [done, setDone] = useState(false);
 
-    async function completeCheck() {
-        var reply = await completeCheckpoint(props.idCheck);
+    async function dropNote() {
+        var reply = await drop(props.idNote);
         setMessage(reply.message);
-        if(reply.done === 1) {
-            var currentPoints = user ? user.points : '0';
-            setPoints(currentPoints as number + 20);
-        }
         setIsModalMessageVisible(true);
+        setDone(true);
     }
 
     const overlayRef = React.useRef(null);
@@ -44,19 +40,19 @@ const ModalCompleteCheckpoint: React.FC<ModalProps> = ({props, onClose}) => {
             <div  className={'modal-overlay'} onClick={handleOverlayClick} ref={overlayRef}/>
                 <div className="modal-dialog modal-dialog-centered" role="document">
                     <div className="modal-content">
-                    {isModalMessageVisible ? <ModalMessage props={{message}} onClose={() => {setIsModalMessageVisible(false); onClose();}}></ModalMessage> : null}
+                    {isModalMessageVisible ? <ModalMessage props={{message}} onClose={() => {setIsModalMessageVisible(false); if(done) {onClose();}}}></ModalMessage> : null}
                         <div className="modal-header">
-                            <h5 className="modal-title" id="exampleModalLongTitle">Completar Checkpoint</h5>
+                            <h5 className="modal-title" id="exampleModalLongTitle">Excluir Nota</h5>
                             <button type="button" className="close" onClick={onClose}>
                             <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div className="modal-body">
-                            <h5>Tem certeza de que deseja completar o checkpoint "{props.title}"?</h5>
+                            <h5>Tem certeza de que deseja excluir a nota "{props.title}"?</h5>
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" onClick={onClose}>Cancelar</button>
-                            <button type="button" className="btn btn-secondary" onClick={completeCheck}>Completar</button>
+                            <button type="button" className="btn btn-secondary" onClick={dropNote}>Excluir</button>
                         </div>
                     </div>
                 </div>
@@ -64,4 +60,4 @@ const ModalCompleteCheckpoint: React.FC<ModalProps> = ({props, onClose}) => {
         </div>
     )
 }
-export default ModalCompleteCheckpoint
+export default ModalDropNote

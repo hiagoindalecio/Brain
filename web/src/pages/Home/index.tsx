@@ -8,7 +8,7 @@ import CheckpointsContext from '../../contexts/checkpoints';
 import NotesContext from '../../contexts/notes';
 
 import logo from '../../assets/logo.png';
-import coin from '../../assets/coin.png';
+import pointsImage from '../../assets/point.png';
 
 import Initial from '../../subpages/Initial';
 import CheckpointsList from '../../subpages/CheckpointsList';
@@ -59,7 +59,7 @@ const Home: React.FC = () =>  {
                             <img src={logo} alt="logo" className="img-logo"/>
                         </div>
                         <div className="header-points">
-                            <img src={coin} alt="logo" className="img-logo"/>
+                            <img src={pointsImage} alt="logo" className="img-logo"/>
                             <h4>Brain points: {user ? user.points : '0'}</h4>
                         </div>
                     </header>

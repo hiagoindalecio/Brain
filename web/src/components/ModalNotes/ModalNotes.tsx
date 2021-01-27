@@ -22,6 +22,7 @@ const Modal: React.FC<ModalProps> = ({props, onClose}) => {
     const { setNotes, updateNotes } = useContext(NotesContext);
     const [isModalMessageVisible, setIsModalMessageVisible] = useState(false);
     const [message, setMessage] = useState<string>('');
+    const [done, setDone] = useState(false);
 
     async function handleSubmit() {
         const formData = {
@@ -43,6 +44,7 @@ const Modal: React.FC<ModalProps> = ({props, onClose}) => {
                 setMessage(reply.message);
             }
             setIsModalMessageVisible(true);
+            setDone(true);
         }
     };
 
@@ -59,7 +61,7 @@ const Modal: React.FC<ModalProps> = ({props, onClose}) => {
             <div  className={'modal-overlay'} onClick={handleOverlayClick} ref={overlayRef}/>
                 <div className="modal-dialog modal-dialog-centered" role="document">
                     <div className="modal-content">
-                    {isModalMessageVisible ? <ModalMessage props={{message}} onClose={() => {setIsModalMessageVisible(false); onClose();}}></ModalMessage> : null}
+                    {isModalMessageVisible ? <ModalMessage props={{message}} onClose={() => {setIsModalMessageVisible(false); if(done) {onClose();}}}></ModalMessage> : null}
                         <div className="modal-header">
                             <h5 className="modal-title" id="exampleModalLongTitle">Modal title</h5>
                             <button type="button" className="close" onClick={onClose}>

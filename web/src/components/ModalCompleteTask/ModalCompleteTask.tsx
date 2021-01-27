@@ -2,31 +2,31 @@ import React, { useContext, useState } from 'react'
 import '../../bootstrap-4.5.3-dist/css/bootstrap.min.css';
 import './Modal.css'
 
-import CheckpointsContext from '../../contexts/checkpoints';
+import TaskContex from '../../contexts/tasks';
 import AuthContext from '../../contexts/auth';
 
 import ModalMessage from '../../components/ModalMessages/ModalMessages';
 
 interface ModalProps {
     props : {
-        idCheck: number;
+        idTask: number;
         title: string;
     };
     onClose: () => void;
 }
 
 const ModalCompleteCheckpoint: React.FC<ModalProps> = ({props, onClose}) => {
-    const { completeCheckpoint } = useContext(CheckpointsContext);
+    const { completeTask } = useContext(TaskContex);
     const { setPoints, user } = useContext(AuthContext);
     const [isModalMessageVisible, setIsModalMessageVisible] = useState(false);
     const [message, setMessage] = useState<string>('');
 
-    async function completeCheck() {
-        var reply = await completeCheckpoint(props.idCheck);
+    async function complete() {
+        var reply = await completeTask(props.idTask);
         setMessage(reply.message);
         if(reply.done === 1) {
             var currentPoints = user ? user.points : '0';
-            setPoints(currentPoints as number + 20);
+            setPoints(currentPoints as number + 10);
         }
         setIsModalMessageVisible(true);
     }
@@ -46,17 +46,17 @@ const ModalCompleteCheckpoint: React.FC<ModalProps> = ({props, onClose}) => {
                     <div className="modal-content">
                     {isModalMessageVisible ? <ModalMessage props={{message}} onClose={() => {setIsModalMessageVisible(false); onClose();}}></ModalMessage> : null}
                         <div className="modal-header">
-                            <h5 className="modal-title" id="exampleModalLongTitle">Completar Checkpoint</h5>
+                            <h5 className="modal-title" id="exampleModalLongTitle">Completar Task</h5>
                             <button type="button" className="close" onClick={onClose}>
                             <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div className="modal-body">
-                            <h5>Tem certeza de que deseja completar o checkpoint "{props.title}"?</h5>
+                            <h5>Tem certeza de que deseja completar a task "{props.title}"?</h5>
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" onClick={onClose}>Cancelar</button>
-                            <button type="button" className="btn btn-secondary" onClick={completeCheck}>Completar</button>
+                            <button type="button" className="btn btn-secondary" onClick={complete}>Completar</button>
                         </div>
                     </div>
                 </div>

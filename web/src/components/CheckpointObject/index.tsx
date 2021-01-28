@@ -7,6 +7,7 @@ import Task from '../TaskObject';
 import ModalTask from '../../components/ModalTasks/ModalTasks';
 import ModalCheck from '../../components/ModalCheckpoint/Modal';
 import ModalCompleteCheckpoint from '../../components/ModalCompleteCheckpoint/ModalCompleteCheckpoint';
+import ModalDeleteCheckpoint from '../../components/ModalDeleteCheckpoint/ModalDeleteCheckpoint';
 
 import '../../bootstrap-4.5.3-dist/css/bootstrap.min.css';
 
@@ -40,6 +41,7 @@ const Checkpoint: React.FC<{
     const [isModalTaskVisible, setIsModalTaskVisible] = useState(false);
     const [isModalCheckVisible, setIsModalCheckVisible] = useState(false);
     const [isModalCompleteCheckVisible, setIsModalCompleteCheckVisible] = useState(false);
+    const [isModalDeleteVisible, setIsModalDeleteVisible] = useState(false);
 
     useEffect(() => {
         convertData();
@@ -146,7 +148,8 @@ const Checkpoint: React.FC<{
                 {isModalCheckVisible ? <ModalCheck props={{id: cod, summary, description, date: limitdate}} onClose={() => {setIsModalTaskVisible(false); window.location.reload();}}></ModalCheck> : null}
                 <button type="button" className="btn btn-primary btn-sm" onClick={() => (setIsModalTaskVisible(true))}>Adicionar Task</button>
                 {isModalTaskVisible ? <ModalTask props={{id: -1, idCheck: cod, summary: '', description: ''}} onClose={() => {setIsModalTaskVisible(false); window.location.reload();}}></ModalTask> : null}
-                <button type="button" className="btn btn-primary btn-sm btn-drop">Excluir</button>
+                <button type="button" className="btn btn-primary btn-sm btn-drop" onClick={() => (setIsModalDeleteVisible(true))}>Excluir</button>
+                {isModalDeleteVisible ? <ModalDeleteCheckpoint props={{idCheck: cod, title: summary}} onClose={() => {setIsModalDeleteVisible(false); window.location.reload();}}></ModalDeleteCheckpoint> : null}
             </div>
         </div>
     );

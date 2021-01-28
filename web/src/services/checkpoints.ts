@@ -73,3 +73,11 @@ export function completeCheckpoint(idCheck: number): Promise<completeResponse> {
         });
     });
 }
+
+export function deleteCheckpoint(idCheck: number): Promise<messageResponse> {
+    return new Promise((resolve) => {
+        api.post<messageResponse>('/checkpoint/delete', { idCheck }).then(response => {
+            resolve(response.data);
+        });
+    });
+}

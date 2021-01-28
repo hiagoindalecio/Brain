@@ -63,6 +63,15 @@ routes.post('/checkpoint/update',
         abortEarly: false
     }), 
     checkController.update);
+routes.post('/checkpoint/delete',
+    celebrate({
+        body: Joi.object().keys({
+            idCheck: Joi.number().required()
+        })
+    }, {
+        abortEarly:false
+    }),
+    checkController.delete);
 //user
 routes.post('/users',
     celebrate({

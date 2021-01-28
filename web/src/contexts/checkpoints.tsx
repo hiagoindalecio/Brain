@@ -39,6 +39,7 @@ interface CheckpointsContextData {
     setCheckpoint: (id_user: number, summary: string, description: string, limitdate: string) => Promise<createCheckpointResponse>;
     updateCheckpoint: (idCheck: number, summary: string, description: string, limitdate: string) => Promise<messageResponse>;
     completeCheckpoint: (idCheck: number) => Promise<completeResponse>;
+    deleteCheckpoint: (idCheck: number) => Promise<messageResponse>
 }
 
 const CheckpointsContext = createContext<CheckpointsContextData>({} as CheckpointsContextData);
@@ -79,8 +80,15 @@ export const CheckpointsProvider: React.FC = ({ children }) => {
         });
     };
 
+    async function deleteCheckpoint(idCheck: number): Promise<messageResponse> {
+        return new Promise(async (resolve) => {
+            var reply: messageResponse = await checkpoint.deleteCheckpoint(idCheck);
+            resolve(reply);
+        });
+    };
+
     return (
-        <CheckpointsContext.Provider value={{ loading, getCheckpoints, setCheckpoint, updateCheckpoint, completeCheckpoint }}>
+        <CheckpointsContext.Provider value={{ loading, getCheckpoints, setCheckpoint, updateCheckpoint, completeCheckpoint, deleteCheckpoint }}>
             {children}
         </CheckpointsContext.Provider>
     );

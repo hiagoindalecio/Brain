@@ -164,6 +164,22 @@ class CheckController {
         }
     }
 
+    async delete(request: Request, response: Response) {
+        const { idCheck } = request.body;
+
+        try {
+            await knex('checkpoint_tasks').delete().where('COD_CHECK', idCheck);
+            await knex('user_checkpoint').delete().where('COD_CHECK', idCheck);
+            return response.status(201).json({
+                message: `O checkpoint foi excluído com sucesso.`
+            });
+        } catch (e) {
+            return response.status(400).json({
+                message: `Um erro ocorreu, verifique o id e tente novamente. ${e}`
+            });
+        }
+    }
+
 }
 
 export default CheckController;

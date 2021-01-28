@@ -24,7 +24,7 @@ const CheckpointsList: React.FC<{checkpointsResponse: Array<CheckpointsData>}> =
             <button type="button" onClick={() => (setIsModalVisible(true))} className="btn btn-primary btn-lg btn-add">
                 Adicionar Checkpoint<br/>
                 </button>
-            {isModalVsisble ? <Modal props={{id: -1, summary: '', description: '', date: ''}} onClose={() => (setIsModalVisible(false))}></Modal> : null}
+            {isModalVsisble ? <Modal props={{id: -1, summary: '', description: '', date: ''}} onClose={() => {setIsModalVisible(false); window.location.reload();}}></Modal> : null}
             <div>
                 {
                     [...checkpointsResponse].filter(c => c.status === 1).map((oneCheckpoint, index: number) => 

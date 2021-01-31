@@ -1,9 +1,39 @@
 import React from 'react';
 import './styles.css';
 
+import styled, { keyframes } from 'styled-components'
+
+import logo from '../../assets/logo.png';
+
+const rotate = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+`;
+
+const Rotate = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: ${rotate} 2s linear infinite;
+  padding: 2rem 1rem;
+  font-size: 1.2rem;
+  .img-logo {
+    max-width:123px;
+    max-height:123px;
+    width: auto;
+    height: auto;
+  }
+`;
+
 const AboutBrain: React.FC = () =>  {
     return (
         <fieldset>
+            <Rotate><img src={logo} alt="logo" className="img-logo"/></Rotate>
             <div className="aboutpage">
                 <div className="texts">
                     <h4>A Brain</h4>

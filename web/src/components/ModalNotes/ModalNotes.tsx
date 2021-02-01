@@ -43,8 +43,8 @@ const Modal: React.FC<ModalProps> = ({props, onClose}) => {
                 const reply = await updateNotes(props.id ,formData.summaryNotes, formData.descNotes);
                 setMessage(reply.message);
             }
-            setIsModalMessageVisible(true);
             setDone(true);
+            setIsModalMessageVisible(true);
         }
     };
 

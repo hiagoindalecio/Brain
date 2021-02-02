@@ -119,7 +119,7 @@ const Checkpoint: React.FC<{
     return (
         <div className="card" key={cod}>
             <h5 className="card-header">{summary}</h5><br/>
-            <button type="button" className="btn btn-primary btn-lg" onClick={() => {setIsModalCompleteCheckVisible(true)}}>Completar Checkpoint</button><br/>
+            <button type="button" className="btn btn-primary btn-sm" onClick={() => {setIsModalCompleteCheckVisible(true)}}>Completar Checkpoint</button><br/>
             {isModalCompleteCheckVisible ? <ModalCompleteCheckpoint props={{idCheck: cod, title: summary}} onClose={() => {setIsModalCompleteCheckVisible(false); window.location.reload();}}></ModalCompleteCheckpoint> : null}
             <p className="card-text">Descrição: {description}</p>
             <p className="card-text">Data limite: {datelimit}</p>

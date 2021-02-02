@@ -1,4 +1,4 @@
-import React, {createContext, useEffect, useState, SetStateAction, Dispatch } from 'react';
+import React, {createContext, useEffect, useState } from 'react';
 import * as auth from '../services/auth';
 
 interface User {
@@ -11,10 +11,12 @@ interface AuthContextData {
     signed: boolean;
     user: User | null;
     loading: boolean;
+    currentScreen: string;
     singIn(email: string, password: string): Promise<string>;
     createUser(email: string, password: string, name: string): Promise<String>;
     singOut(): void;
     setPoints(pointsUser: number): void;
+    selectScreen(eleme: string): void;
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
@@ -22,13 +24,18 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 export const AuthProvider: React.FC = ({ children }) => {
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
+    const [currentScreen, setCurrentScreen] = useState<string>('Home');
 
     useEffect(() => {
         async function loadStorageData() {
             setLoading(true);
-            const storagedUser = await localStorage.getItem('@RNAuth:user');
+            const storagedUser = localStorage.getItem('@RNAuth:user');
             if (storagedUser) {
                 setUser(JSON.parse(storagedUser));
+            }
+            const current = localStorage.getItem('@RNAuth:currentScreen');
+            if (current) {
+                setCurrentScreen(current);
             }
             setLoading(false);
         }
@@ -62,6 +69,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     function singOut() {
         localStorage.clear();
         setUser(null);
+        setCurrentScreen('Home');
     }
 
     function setPoints(pointsUser: number) {
@@ -75,8 +83,15 @@ export const AuthProvider: React.FC = ({ children }) => {
         setUser(userAll);
     }
 
+    function selectScreen(eleme: string) {
+        setLoading(true);
+        setCurrentScreen(eleme);
+        localStorage.setItem('@RNAuth:currentScreen', eleme);
+        setLoading(false);
+    }
+
     return (
-        <AuthContext.Provider value={{signed: !!user, user, loading, singIn, createUser, singOut, setPoints}}>
+        <AuthContext.Provider value={{signed: !!user, user, loading, currentScreen, singIn, createUser, singOut, setPoints, selectScreen}}>
             {children}
         </AuthContext.Provider>
     );

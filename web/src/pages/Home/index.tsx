@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useLayoutEffect } from 'react';
 import './styles.css';
 import '../../bootstrap-4.5.3-dist/css/bootstrap.min.css';
 import { FaBars, FaTimes } from 'react-icons/fa';
@@ -16,13 +16,18 @@ import AboutBrain from '../../subpages/AboutBrain';
 import NotesList from '../../subpages/NotesList';
 
 const Home: React.FC = () =>  {
-    const { singOut, user } = useContext(AuthContext);
+    const { singOut, user, currentScreen, selectScreen } = useContext(AuthContext);
     const { getCheckpoints } = useContext(CheckpointsContext);
     const { getNotes } = useContext(NotesContext);
-    const [component, setComponent] = useState<JSX.Element>(<Initial userName={user ? user.name : null} pointsUser={user ? user.points : null} />);
+    const [component, setComponent] = useState<JSX.Element>(<div />);
     const [click, setClick] = useState(false);
 
+    useLayoutEffect(() => {
+        handleSelectedField(currentScreen);
+    }, []);
+
     async function handleSelectedField(componentName: string) {
+        selectScreen(componentName);
         switch(componentName) {
             case 'Home': {
                 setComponent(<Initial userName={user ? user.name : null} pointsUser={user ? user.points : null} />);
@@ -60,7 +65,7 @@ const Home: React.FC = () =>  {
                         </div>
                         <div className="header-points">
                             <img src={pointsImage} alt="logo" className="img-logo"/>
-                            <h4>Brain points: {user ? user.points : '0'}</h4>
+                            <h4>&nbsp;{user ? user.points : '0'}</h4>
                         </div>
                     </header>
                         <div className="navbar">

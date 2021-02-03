@@ -23,6 +23,7 @@
     "react-html-parser": "^2.0.2",
     "react-icons": "^3.11.0",
     "react-navigation": "^4.4.3",
+    "react-responsive-carousel": "^3.2.11",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^2.1.8",
     "styled-components": "^5.2.1",

@@ -8,7 +8,6 @@ import AuthContext from '../../contexts/auth';
 import ModalMessage from '../../components/ModalMessages/ModalMessages';
 
 import logo from '../../assets/logo.png'
-import userEvent from '@testing-library/user-event';
 
 const Login: React.FC = () => {
     const { singIn, createUser } = useContext(AuthContext);

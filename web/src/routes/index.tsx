@@ -45,12 +45,12 @@ const Routes: React.FC = () => {
 
     if (authLoading || checkpointsLoading || notesLoading || tasksLoading) {
         return (
-            <body>
+            <div>
                 <Rotate>
                     <img src={logo} alt="logo" className="img-logo"/>
                 </Rotate>
                 <h3 style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center'}}>Carregando...</h3>
-            </body>
+            </div>
         )
     }
 

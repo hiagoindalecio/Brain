@@ -1,7 +1,6 @@
 import knex from '../database/connection';
 import { Request, Response } from 'express';
 import bcrypt  from 'bcrypt';
-import { string } from '@hapi/joi';
 
 class UsersControllerr {
     async index(request: Request, response: Response){
@@ -35,9 +34,14 @@ class UsersControllerr {
     };
 
     async create(request: Request, response: Response) {
-        console.log('Caiu')
         const { name, email, password } = request.body;
-        bcrypt
+        const findEmail = await knex('user_table').where('MAIL_USER', email);
+        var achou = false;
+        findEmail.map( one => {
+            achou = true;
+        });
+        if(!achou) {
+            bcrypt
             .hash(password, 10)
             .then(async hash => {
                 console.log(`Hash: ${hash}`);
@@ -54,10 +58,14 @@ class UsersControllerr {
                     }
                     return response.status(201).json(serializedResponse);
                 } catch (e) {
-                    return response.status(400).json({ mensagem: `Erro durante a criação do usuário! Contacte o suporte. ${e}`});
+                    return response.status(400).json({ message: `Erro durante a criação do usuário! Contacte o suporte. ${e}`});
                 }
             })
-            .catch(err => {return response.status(400).json({ mensagem: `Erro durante a criação do usuário! Contacte o suporte. ${err.message}`})});
+            .catch(err => {return response.status(400).json({ message: `Erro durante a criação do usuário! Contacte o suporte. ${err.message}`})});
+        } else {
+            return response.status(203).json({ message: 'O e-mail informado já existe! Por favor utilize um novo endereço de e-mail.' });
+        }
+        
     };
 
     async validateUser(request: Request, response: Response) {

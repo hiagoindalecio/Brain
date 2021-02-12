@@ -25,13 +25,13 @@ const Login: React.FC = () => {
                 var done = await singIn($("input[type=email][name=email]").val() as string, ($("input[type=password][name=password]").val() as string));
                 if(done !== 'Sucesso!') {
                     alert(done.toString());
+                    //setIsModalMessageVisible(true);
                 }
-                //setIsModalMessageVisible(true);
             } else if (action === 'Criar conta') {
                 if(($("input[type=email][name=email]").val() as string) === ($("input[type=email][name=email2]").val() as string) && ($("input[type=password][name=password]").val() as string) === ($("input[type=password][name=password2]").val() as string) && ($("input[type=text][name=nameUser]").val() as string) !== '') {
                     const reply = await createUser(($("input[type=email][name=email]").val() as string), ($("input[type=password][name=password]").val() as string), ($("input[type=text][name=nameUser]").val() as string));
-                    setMessage(reply.toString());
-                    setIsModalMessageVisible(true);
+                    alert(reply.toString());
+                    //setIsModalMessageVisible(true);
                 } else if (($("input[type=email][name=email]").val() as string) !== ($("input[type=email][name=email2]").val() as string)) {
                     setMessage('Os dois endereços de e-mail devem ser indênticos!');
                     setIsModalMessageVisible(true);

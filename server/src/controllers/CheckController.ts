@@ -128,7 +128,7 @@ class CheckController {
                 }
             } else {
                 return response.status(203).json({
-                    done: 1,
+                    done: 0,
                     message: `Não foi possível completar o checkpoint pois existem ${quantas} task(s) ainda não completadas.`
                 });
             }

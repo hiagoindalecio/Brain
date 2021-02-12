@@ -13,6 +13,25 @@ interface NotesData {
 
 const NotesList: React.FC<{notesResponse: Array<NotesData>}> = ({notesResponse}) => {
     const [isModalVsisble, setIsModalVisible] = useState(false);
+    const [screen, setScreen] = useState<Array<JSX.Element>>([
+        <div style={{ padding: 50 }}>
+            <h1>
+                Parece que você ainda não possui notas salvas :( <br/>
+                Vamos lá, adicione uma nova nota!
+            </h1>
+        </div>
+    ]);
+
+    useLayoutEffect(() => {
+        if(notesResponse.length > 0) {
+            setScreen(
+                [...notesResponse].map((oneNote) => 
+                    <Note idNote={oneNote.idNote} idUser={oneNote.idUser} summary={oneNote.summary} desc={oneNote.desc} />
+                )
+            );
+        }
+    }, []);
+
     return (
         <fieldset>
             <div className="presentation">
@@ -24,8 +43,8 @@ const NotesList: React.FC<{notesResponse: Array<NotesData>}> = ({notesResponse})
             {isModalVsisble ? <Modal props={{id: -1, summary:'', description:''}} onClose={() => {setIsModalVisible(false); window.location.reload();}}></Modal> : null}
             <div>
                 {
-                    [...notesResponse].map((oneNote, index: number) => 
-                        <div key={index}><br/><Note idNote={oneNote.idNote} idUser={oneNote.idUser} summary={oneNote.summary} desc={oneNote.desc} /></div>
+                    [...screen].map((elem,  index: number)=> 
+                        <div key={index}><br/>{elem}</div>
                     )
                 }
             </div>

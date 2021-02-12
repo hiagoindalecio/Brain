@@ -1,6 +1,5 @@
-import { json, Request, Response } from 'express';
-import knex from '../database/connection'
-
+import { Request, Response } from 'express';
+import knex from '../database/connection';
 
 class TasksController {
     async index(request: Request, response: Response) {

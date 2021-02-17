@@ -1,6 +1,6 @@
 import express from 'express';
-//import multer from 'multer'; // Lib de upload de imagem
-//import multerConfig from './config/multer'; // Config de upload de imagem
+import multer from 'multer'; // Lib de upload de imagem
+import multerConfig from './config/multer'; // Config de upload de imagem
 import { celebrate, Joi } from 'celebrate'; // Validacao de dados 
 
 import UsersControllerr from './controllers/UsersController';
@@ -9,7 +9,7 @@ import TaskControler from './controllers/TasksController';
 import NotesController from './controllers/NotesController';
 
 const routes = express.Router();
-//const upload = multer(multerConfig);
+const upload = multer(multerConfig);
 const usersController = new UsersControllerr();
 const checkController = new CheckController();
 const taskController = new TaskControler();
@@ -74,6 +74,7 @@ routes.post('/checkpoint/delete',
     checkController.delete);
 //user
 routes.post('/users',
+    upload.single('image'),
     celebrate({
         body: Joi.object().keys({
             name: Joi.string().required(),

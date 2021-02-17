@@ -13,7 +13,7 @@ interface AuthContextData {
     loading: boolean;
     currentScreen: string;
     singIn(email: string, password: string): Promise<string>;
-    createUser(email: string, password: string, name: string): Promise<String>;
+    createUser(email: string, password: string, name: string, image: File): Promise<String>;
     singOut(): void;
     setPoints(pointsUser: number): void;
     selectScreen(eleme: string): void;
@@ -59,10 +59,10 @@ export const AuthProvider: React.FC = ({ children }) => {
         });
     }
 
-    async function createUser(email: string, password: string, name: string): Promise<String> {
+    async function createUser(email: string, password: string, name: string, image: File): Promise<String> {
         return new Promise(async (resolve) => {
             setLoading(true);
-            const response = await auth.createUser(email, password, name);
+            const response = await auth.createUser(email, password, name, image);
             resolve(response.message);
             setLoading(false);
         });

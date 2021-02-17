@@ -7,6 +7,8 @@ import AuthContext from '../../contexts/auth';
 
 import ModalMessage from '../../components/ModalMessages/ModalMessages';
 
+import Dropzone from '../../components/Dropzone';
+
 import logo from '../../assets/logo.png'
 
 const Login: React.FC = () => {
@@ -17,6 +19,7 @@ const Login: React.FC = () => {
     const [action, setAction] = useState<String>('Entrar');
     const [isModalMessageVisible, setIsModalMessageVisible] = useState(false);
     const [message, setMessage] = useState<string>('');
+    const [selectedFile, setSelectedfile] = useState<File>();
 
     async function handleSubmit(event: FormEvent) {
         event.preventDefault();
@@ -29,7 +32,7 @@ const Login: React.FC = () => {
                 }
             } else if (action === 'Criar conta') {
                 if(($("input[type=email][name=email]").val() as string) === ($("input[type=email][name=email2]").val() as string) && ($("input[type=password][name=password]").val() as string) === ($("input[type=password][name=password2]").val() as string) && ($("input[type=text][name=nameUser]").val() as string) !== '') {
-                    const reply = await createUser(($("input[type=email][name=email]").val() as string), ($("input[type=password][name=password]").val() as string), ($("input[type=text][name=nameUser]").val() as string));
+                    const reply = await createUser(($("input[type=email][name=email]").val() as string), ($("input[type=password][name=password]").val() as string), ($("input[type=text][name=nameUser]").val() as string), selectedFile as File);
                     alert(reply.toString());
                     //setIsModalMessageVisible(true);
                 } else if (($("input[type=email][name=email]").val() as string) !== ($("input[type=email][name=email2]").val() as string)) {
@@ -71,6 +74,9 @@ const Login: React.FC = () => {
             )
             setNameUser(
                 <div className="form-group">
+                    <label htmlFor="">Foto de perfil:</label>
+                    <Dropzone onFileUploaded={setSelectedfile} />
+                    <br/>
                     <label htmlFor="InputName">Informe seu nome:</label>
                     <input type="text" name="nameUser" className="form-control" id="InputName" />
                 </div>

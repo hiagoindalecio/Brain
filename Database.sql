@@ -9,11 +9,12 @@ CREATE TABLE user_table
 	NAME_USER VARCHAR(60) NOT NULL,
 	PASSWORD_USER VARCHAR(200) NOT NULL,
 	POINTS_USER INT NOT NULL,
+	IMAGE VARCHAR(200),
 	PRIMARY KEY(COD_USER)
 );
 
 INSERT INTO user_table(NAME_USER, MAIL_USER, PASSWORD_USER, POINTS_USER)
-	VALUES('Hiago Indalécio', 'hiagoindalecio@gmail.com', '$2b$10$ZvEDr3dJ9AUFCRT6xQYhGeKbGEr0DZS.JnNocBJ.QDPYVtdQROpZ6', 0);
+	VALUES('Hiago Indalécio', 'hiagoindalecio@gmail.com', '$2b$10$ZvEDr3dJ9AUFCRT6xQYhGeKbGEr0DZS.JnNocBJ.QDPYVtdQROpZ6', 0, 'blank-profile.webp');
 
 CREATE TABLE user_notes
 (

@@ -44,12 +44,18 @@ class UsersControllerr {
             bcrypt
             .hash(password, 10)
             .then(async hash => {
-                console.log(`Hash: ${hash}`);
+                var img;
+                try {
+                    img = request.file.filename
+                } catch {
+                    img = 'blank-profile.webp'
+                }
                 const user = {
                     NAME_USER: name,
                     MAIL_USER: email,
                     PASSWORD_USER: hash,
-                    POINTS_USER: 0
+                    POINTS_USER: 0,
+                    IMAGE: img
                 }
                 try{
                     await knex('user_table').insert(user);

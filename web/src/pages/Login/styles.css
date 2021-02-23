@@ -18,6 +18,10 @@ nav{
   "gimg-logo gheader-text";
 }
 
+.back-button {
+  margin: 30px 30px;
+}
+
 .form-login {
   margin: 80px auto;
   padding: 64px;

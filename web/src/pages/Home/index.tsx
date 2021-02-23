@@ -14,6 +14,7 @@ import Initial from '../../subpages/Initial';
 import CheckpointsList from '../../subpages/CheckpointsList';
 import AboutBrain from '../../subpages/AboutBrain';
 import NotesList from '../../subpages/NotesList';
+import SMenu from '../../components/StyledMenu';
 
 const Home: React.FC = () =>  {
     const { singOut, user, currentScreen, selectScreen } = useContext(AuthContext);
@@ -63,8 +64,9 @@ const Home: React.FC = () =>  {
                             <h1 className="header-text">Brain</h1>
                             <img src={logo} alt="logo" className="img-logo"/>
                         </div>
-                        <div className="header-points">
-                            <img src={pointsImage} alt="logo" className="img-logo"/>
+                        <div className="header-information">
+                            <SMenu />
+                            &nbsp;&nbsp;<img src={pointsImage} alt="score" className="img-logo"/>
                             <h4>&nbsp;{user ? user.points : '0'}</h4>
                         </div>
                     </header>

@@ -5,6 +5,7 @@ interface userValidationResponse {
         id: number;
         name: string;
         points: number;
+        image_url: string;
     }
 }
 

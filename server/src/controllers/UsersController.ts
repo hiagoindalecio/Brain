@@ -27,7 +27,8 @@ class UsersControllerr {
                 name: user.NAME_USER,
                 email: user.MAIL_USER,
                 password: user.PASSWORD_USER,
-                points: user.POINTS_USER
+                points: user.POINTS_USER,
+                image_url: `http://localhost:3334/uploads/${user.IMAGE}`
             }
             return response.status(200).json(serialized);
         }
@@ -79,7 +80,8 @@ class UsersControllerr {
             id: number,
             name: string,
             points: Number,
-            password: string
+            password: string,
+            image_url: string
         }
         const { email, password } = request.params;
         console.log(`Email input: ${email}\nPassword input: ${password}`);
@@ -88,16 +90,18 @@ class UsersControllerr {
             id: 0,
             name: 'Vazio',
             points: 0,
-            password: 'Vazio'
+            password: 'Vazio',
+            image_url: 'Vazio'
         }
         userSelected.map( user => {
             serializedUser.id = user.COD_USER,
             serializedUser.name = user.NAME_USER,
             serializedUser.points = user.POINTS_USER,
-            serializedUser.password = user.PASSWORD_USER
+            serializedUser.password = user.PASSWORD_USER,
+            serializedUser.image_url = `http://localhost:3334/uploads/${user.IMAGE}`
         });
         if (serializedUser.name !== 'Vazio') {
-            console.log(`Senha no database: ${serializedUser.password}`);
+            //console.log(`Senha no database: ${serializedUser.password}`);
             bcrypt
                 .compare(password, serializedUser.password)
                 .then(res => {
@@ -107,7 +111,8 @@ class UsersControllerr {
                             user: {
                                 id: serializedUser.id,
                                 name: serializedUser.name,
-                                points: serializedUser.points
+                                points: serializedUser.points,
+                                image_url: serializedUser.image_url
                             }
                         };
                         return response.status(202).json(returnSerialized);
@@ -115,27 +120,30 @@ class UsersControllerr {
                     else {
                         return response.status(203).json({ 
                                 user: {
-                                    id:-1,
-                                    name:'Vazio',
-                                    points:-1
+                                    id: -1,
+                                    name: 'Vazio',
+                                    points: -1,
+                                    image_url: 'Vazio'
                                 }
                             });
                     }
                 })
                 .catch(err => {return response.status(400).json({ 
                         user: {
-                            id:-1,
-                            name:'Vazio',
-                            points:-1
+                            id: -1,
+                            name: 'Vazio',
+                            points: -1,
+                            image_url: 'Vazio'
                         }
                     });});
         } else {
             console.log(false);
             return response.status(203).json({ 
                     user: {
-                        id:-1, 
-                        name:'Vazio', 
-                        points:-1
+                        id: -1, 
+                        name: 'Vazio', 
+                        points: -1,
+                        image_url: 'Vazio'
                     }
                 });
         }

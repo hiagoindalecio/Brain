@@ -1,4 +1,5 @@
-import React, { useState, ChangeEvent, FormEvent, useContext } from 'react';
+import React, { useState, useContext } from 'react';
+import { useHistory } from "react-router-dom";
 import './styles.css';
 import '../../bootstrap-4.5.3-dist/css/bootstrap.min.css';
 import $ from "jquery";
@@ -11,6 +12,8 @@ import Dropzone from '../../components/Dropzone';
 
 import logo from '../../assets/logo.png'
 
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+
 const Login: React.FC = () => {
     const { singIn, createUser } = useContext(AuthContext);
     const [secondEmail, setSecondEmail] = useState<JSX.Element>();
@@ -20,9 +23,9 @@ const Login: React.FC = () => {
     const [isModalMessageVisible, setIsModalMessageVisible] = useState(false);
     const [message, setMessage] = useState<string>('');
     const [selectedFile, setSelectedfile] = useState<File>();
+    let history = useHistory();
 
-    async function handleSubmit(event: FormEvent) {
-        event.preventDefault();
+    async function handleSubmit() {
         if($("input[type=email][name=email]").val() as string !== '' && $("input[type=password][name=password]").val() as string !== '') {
             if(action === 'Entrar') {
                 var done = await singIn($("input[type=email][name=email]").val() as string, ($("input[type=password][name=password]").val() as string));
@@ -50,7 +53,11 @@ const Login: React.FC = () => {
             setMessage('Os campos e-mail e senha devem estar preenchidos!');
             setIsModalMessageVisible(true);
         }
-    };
+    }
+
+    function back() {
+        history.push("/");
+    }
 
     function handleChange(actionText: String) {
         if(actionText === 'option1') {
@@ -95,7 +102,8 @@ const Login: React.FC = () => {
                             <img src={logo} alt="logo" className="img-logo"/>
                         </div>
                     </header>
-                    <form className="form-login" onSubmit={handleSubmit}>
+                    <ArrowBackIcon fontSize="default" className="back-button" onClick={back}/>
+                    <form className="form-login">
                         {
                             nameUser
                         }
@@ -114,7 +122,7 @@ const Login: React.FC = () => {
                         {
                             secondPassword
                         }
-                        <button type="submit" className="btn btn-primary">{action}</button>
+                        <button type="button" className="btn btn-primary" onClick={() => handleSubmit()}>{action}</button>
                         <nav className="navbar-light bg-light">
                                 <button className="btn btn-sm btn-outline-secondary" type="button" onClick={() => handleChange('option1')}>Tenho um conta</button>
                                 <button className="btn btn-sm btn-outline-secondary" type="button" onClick={() => handleChange('option2')}>Não tenho uma conta</button>

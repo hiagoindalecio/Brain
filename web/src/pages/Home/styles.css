@@ -16,10 +16,18 @@ button {
   "gimg-logo gheader-text";
 }
 
-.header-points {
+.header-information {
   display: flex;
   flex-direction: row;
   align-items: center;
+}
+
+.profile-picture {
+  max-width:93px;
+  max-height:93px;
+  width: auto;
+  height: auto;
+  border-radius: 50%;
 }
 
 .header {

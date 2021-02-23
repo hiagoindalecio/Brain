@@ -5,6 +5,7 @@ interface User {
     id: number | undefined;
     name: string | undefined;
     points: number | undefined;
+    image_url: string | undefined;
 }
 
 interface AuthContextData {
@@ -78,7 +79,8 @@ export const AuthProvider: React.FC = ({ children }) => {
         var userAll = {
             id: user ? user.id as number : -1,
             name: user ? user.name as string : '',
-            points: pointsUser
+            points: pointsUser,
+            image_url: user ? user.image_url as string : ''
         }
         localStorage.setItem('@RNAuth:user', JSON.stringify(userAll));
         console.log(userAll.points);

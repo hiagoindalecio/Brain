@@ -1,12 +1,8 @@
-#login-page .content header {
+#config-page .content header {
   margin: 1em;
 }
 
-nav {
-  padding: 10px;
-}
-
-#login-page .content {
+#config-page .content {
   width: 100%;
 }
 
@@ -22,10 +18,10 @@ nav {
   margin: 30px 30px;
 }
 
-.form-login {
+.form-config {
   margin: 60px auto;
-  padding: 64px;
-  max-width: 930px;
+  padding: 24px;
+  max-width: 1030px;
   border-radius: 8px;
   display: flex;
   flex-direction: column;

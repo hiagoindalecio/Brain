@@ -1,7 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { useHistory } from "react-router-dom";
 import './styles.css';
-import '../../bootstrap-4.5.3-dist/css/bootstrap.min.css';
 import $ from "jquery";
 
 import AuthContext from '../../contexts/auth';
@@ -10,7 +9,7 @@ import ModalMessage from '../../components/ModalMessages/ModalMessages';
 
 import Dropzone from '../../components/Dropzone';
 
-import logo from '../../assets/logo.png'
+import logo from '../../assets/logo.png';
 
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
@@ -124,8 +123,8 @@ const Login: React.FC = () => {
                         }
                         <button type="button" className="btn btn-primary" onClick={() => handleSubmit()}>{action}</button>
                         <nav className="navbar-light bg-light">
-                                <button className="btn btn-sm btn-outline-secondary" type="button" onClick={() => handleChange('option1')}>Tenho um conta</button>
-                                <button className="btn btn-sm btn-outline-secondary" type="button" onClick={() => handleChange('option2')}>Não tenho uma conta</button>
+                            <button className="btn btn-sm btn-outline-secondary" type="button" onClick={() => handleChange('option1')}>Tenho um conta</button>
+                            <button className="btn btn-sm btn-outline-secondary" type="button" onClick={() => handleChange('option2')}>Não tenho uma conta</button>
                         </nav>
                     </form>
                 </div>

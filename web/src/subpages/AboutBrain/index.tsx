@@ -9,6 +9,25 @@ import imageTwo from '../../assets/imageTwo.jpg';
 import imageThree from '../../assets/imageThree.jpg';
 import imageFour from '../../assets/imageFour.jpg';
 
+/*<Carousel>
+    <div>
+        <img src={imageOne} />
+        <p className="legend">Na sociedade atual somos sufocados com informações diáriamente.</p>
+    </div>
+    <div>
+        <img src={imageTwo} />
+        <p className="legend">Nós sabemos que seu dia é extremamente ocupado.</p>
+    </div>
+    <div>
+        <img src={imageThree} />
+        <p className="legend">E quase sempre fica difícil se organizar para alcançar seus objetivos.</p>
+    </div>
+    <div>
+        <img src={imageFour} />
+        <p className="legend">A Brain está aqui para auxiliá-lo a se organizar e alcançar seus objetivos.</p>
+    </div>
+</Carousel>*/
+
 const AboutBrain: React.FC = () =>  {
     return (
         <fieldset>
@@ -28,24 +47,7 @@ const AboutBrain: React.FC = () =>  {
                     </p>
                 </div>
             </div>
-            <Carousel>
-                <div>
-                    <img src={imageOne} />
-                    <p className="legend">Na sociedade atual somos sufocados com informações diáriamente.</p>
-                </div>
-                <div>
-                    <img src={imageTwo} />
-                    <p className="legend">Nós sabemos que seu dia é extremamente ocupado.</p>
-                </div>
-                <div>
-                    <img src={imageThree} />
-                    <p className="legend">E quase sempre fica difícil se organizar para alcançar seus objetivos.</p>
-                </div>
-                <div>
-                    <img src={imageFour} />
-                    <p className="legend">A Brain está aqui para auxiliá-lo a se organizar e alcançar seus objetivos.</p>
-                </div>
-            </Carousel>
+            
         </fieldset>
     );
 }

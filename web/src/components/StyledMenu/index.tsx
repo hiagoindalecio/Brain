@@ -9,7 +9,9 @@ import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
 
 import AuthContext from '../../contexts/auth';
 
-const StyledMenu= withStyles({
+import { useHistory } from 'react-router-dom';
+
+const StyledMenu = withStyles({
   paper: {
     border: '1px solid #d3d4d5',
   },
@@ -29,19 +31,9 @@ const StyledMenu= withStyles({
   />
 ));
 
-const StyledMenuItem = withStyles((theme: { palette: { primary: { main: any; }; common: { white: any; }; }; }) => ({
-  root: {
-    '&:focus': {
-      backgroundColor: theme.palette.primary.main,
-      '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
-        color: theme.palette.common.white,
-      },
-    },
-  },
-}))(MenuItem);
-
 export default function CustomizedMenus() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  let history = useHistory();
 
   const { user } = useContext(AuthContext);
 
@@ -52,6 +44,10 @@ export default function CustomizedMenus() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  function goConfig() {
+    history.push("/config");
+  }
 
   return (
     <div>
@@ -67,7 +63,7 @@ export default function CustomizedMenus() {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem >
+        <MenuItem onClick={goConfig}>
           <ListItemIcon>
             <AssignmentIndIcon fontSize="small" />
           </ListItemIcon>

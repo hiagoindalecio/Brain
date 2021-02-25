@@ -79,6 +79,7 @@ class UsersControllerr {
         interface User {
             id: number,
             name: string,
+            email: string,
             points: Number,
             password: string,
             image_url: string
@@ -87,8 +88,9 @@ class UsersControllerr {
         console.log(`Email input: ${email}\nPassword input: ${password}`);
         const userSelected = await knex('user_table').select('*').where('MAIL_USER', email);
         const serializedUser:User = {
-            id: 0,
+            id: -1,
             name: 'Vazio',
+            email: 'Vazio',
             points: 0,
             password: 'Vazio',
             image_url: 'Vazio'
@@ -96,12 +98,12 @@ class UsersControllerr {
         userSelected.map( user => {
             serializedUser.id = user.COD_USER,
             serializedUser.name = user.NAME_USER,
+            serializedUser.email = user.MAIL_USER,
             serializedUser.points = user.POINTS_USER,
             serializedUser.password = user.PASSWORD_USER,
             serializedUser.image_url = `http://localhost:3334/uploads/${user.IMAGE}`
         });
         if (serializedUser.name !== 'Vazio') {
-            //console.log(`Senha no database: ${serializedUser.password}`);
             bcrypt
                 .compare(password, serializedUser.password)
                 .then(res => {
@@ -111,7 +113,9 @@ class UsersControllerr {
                             user: {
                                 id: serializedUser.id,
                                 name: serializedUser.name,
+                                email: serializedUser.email,
                                 points: serializedUser.points,
+                                password: password,
                                 image_url: serializedUser.image_url
                             }
                         };
@@ -122,7 +126,9 @@ class UsersControllerr {
                                 user: {
                                     id: -1,
                                     name: 'Vazio',
+                                    email: 'Vazio',
                                     points: -1,
+                                    password: 'Vazio',
                                     image_url: 'Vazio'
                                 }
                             });
@@ -132,7 +138,9 @@ class UsersControllerr {
                         user: {
                             id: -1,
                             name: 'Vazio',
+                            email: 'Vazio',
                             points: -1,
+                            password: 'Vazio',
                             image_url: 'Vazio'
                         }
                     });});
@@ -141,8 +149,10 @@ class UsersControllerr {
             return response.status(203).json({ 
                     user: {
                         id: -1, 
-                        name: 'Vazio', 
+                        name: 'Vazio',
+                        email: 'Vazio',
                         points: -1,
+                        password: 'Vazio',
                         image_url: 'Vazio'
                     }
                 });

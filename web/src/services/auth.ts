@@ -4,7 +4,9 @@ interface userValidationResponse {
     user: {
         id: number;
         name: string;
+        email: string;
         points: number;
+        password: string;
         image_url: string;
     }
 }

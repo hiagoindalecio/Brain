@@ -16,7 +16,7 @@
     color: var(--text-color);
   }
   
-  body, input, button, li, p {
+  body, input, button, li, p, label {
     font-family: Roboto, Arial, Helvetica, sans-serif;
   }
   

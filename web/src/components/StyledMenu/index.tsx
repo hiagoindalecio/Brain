@@ -5,7 +5,9 @@ import Menu, { MenuProps } from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+
 import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 import AuthContext from '../../contexts/auth';
 
@@ -35,7 +37,7 @@ export default function CustomizedMenus() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   let history = useHistory();
 
-  const { user } = useContext(AuthContext);
+  const { user, singOut } = useContext(AuthContext);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -68,6 +70,12 @@ export default function CustomizedMenus() {
             <AssignmentIndIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText primary="Meu perfil" />
+        </MenuItem >
+        <MenuItem onClick={singOut}>
+          <ListItemIcon>
+            <ExitToAppIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="Sair" />
         </MenuItem >
       </StyledMenu>
     </div>

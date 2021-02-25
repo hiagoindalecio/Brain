@@ -4,7 +4,9 @@ import * as auth from '../services/auth';
 interface User {
     id: number | undefined;
     name: string | undefined;
+    email: string | undefined;
     points: number | undefined;
+    password: string | undefined;
     image_url: string | undefined;
 }
 
@@ -79,7 +81,9 @@ export const AuthProvider: React.FC = ({ children }) => {
         var userAll = {
             id: user ? user.id as number : -1,
             name: user ? user.name as string : '',
+            email: user ? user.email as string : '',
             points: pointsUser,
+            password: user ? user.password as string : '',
             image_url: user ? user.image_url as string : ''
         }
         localStorage.setItem('@RNAuth:user', JSON.stringify(userAll));

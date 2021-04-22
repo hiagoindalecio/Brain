@@ -10,5 +10,5 @@ export default {
             const fileName = `${hash}-${file.originalname}`;
             callback(null, fileName);
         }
-    }),
+    })
 };

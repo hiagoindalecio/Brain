@@ -16,7 +16,8 @@ interface AuthContextData {
     loading: boolean;
     currentScreen: string;
     singIn(email: string, password: string): Promise<string>;
-    createUser(email: string, password: string, name: string, image: File): Promise<String>;
+    createUser(email: string, password: string, name: string, image: File): Promise<string>;
+    updateUser(id: number, name: string | null, password: string | null, image: File | null): Promise<string>;
     singOut(): void;
     setPoints(pointsUser: number): void;
     selectScreen(eleme: string): void;
@@ -62,10 +63,24 @@ export const AuthProvider: React.FC = ({ children }) => {
         });
     }
 
-    async function createUser(email: string, password: string, name: string, image: File): Promise<String> {
+    async function createUser(email: string, password: string, name: string, image: File): Promise<string> {
         return new Promise(async (resolve) => {
             setLoading(true);
             const response = await auth.createUser(email, password, name, image);
+            resolve(response.message);
+            setLoading(false);
+        });
+    }
+
+    async function updateUser(id: number, name: string | null, password: string | null, image: File | null): Promise<string> {
+        setLoading(true);
+        const response = await auth.updateUser(id, name, password, image);
+        response.userReply.password = password as string;
+        if(response.message === 'The user has been modified') {
+            setUser({...response.userReply, email: user? user.email : '', points: user ? user.points : 0});
+            localStorage.setItem('@RNAuth:user', JSON.stringify(user));
+        }
+        return new Promise(async (resolve) => {
             resolve(response.message);
             setLoading(false);
         });
@@ -99,7 +114,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     }
 
     return (
-        <AuthContext.Provider value={{signed: !!user, user, loading, currentScreen, singIn, createUser, singOut, setPoints, selectScreen}}>
+        <AuthContext.Provider value={{signed: !!user, user, loading, currentScreen, singIn, createUser, updateUser, singOut, setPoints, selectScreen}}>
             {children}
         </AuthContext.Provider>
     );

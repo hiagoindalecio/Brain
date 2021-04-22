@@ -14,13 +14,17 @@ import AuthContext from '../../contexts/auth';
 
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
+import ModalMessage from '../../components/ModalMessages/ModalMessages';
+
 const ConfigScreen: React.FC = () => {
-    const { user } = useContext(AuthContext);
+    const { user, updateUser } = useContext(AuthContext);
     let history = useHistory();
     const [selectedFile, setSelectedfile] = useState<File>();
     const [btnPic, setBtnPic] = useState('Editar foto');
     const [btnName, setBtnName] = useState('Editar nome');
     const [btnPassword, setBtnPassword] = useState('Editar senha');
+    const [isModalMessageVisible, setIsModalMessageVisible] = useState(false);
+    const [message, setMessage] = useState<string>('');
     const [profilePic, setProfilePic] = useState<JSX.Element>(
         <div className="profPic">
             <img src={user ? user.image_url as string : ''} alt="Profile picture"/>
@@ -34,7 +38,7 @@ const ConfigScreen: React.FC = () => {
         history.push("/");
     }
 
-    function handleChange(actionText: String) {
+    async function handleChange(actionText: String) {
         switch (actionText) {
             case 'profilePic':
                 if(btnPic === 'Editar foto') {
@@ -43,9 +47,8 @@ const ConfigScreen: React.FC = () => {
                     )
                     $("button[type=button][id=cancelPic]").css("visibility", "visible");
                     setBtnPic('Salvar foto');
-
                 } else if(btnPic === 'Salvar foto') {
-                    alert('Salvo com sucesso!');
+                    var result = await updateUser(user ? user.id as number : -1, null, null, selectedFile as File);
                     setProfilePic(
                         <div className="profPic">
                             <img src={user ? user.image_url as string : ''} alt="Profile picture"/>
@@ -53,11 +56,22 @@ const ConfigScreen: React.FC = () => {
                     );
                     $("button[type=button][id=cancelPic]").css("visibility", "hidden");
                     setBtnPic('Editar foto');
+                    setMessage(result);
+                    setIsModalMessageVisible(true);
                 }
             break;
             case 'name':
                 if(btnName === 'Editar nome') {
-
+                    setBtnName('Salvar nome');
+                    $("input[type=text][id=InputName]").prop("disabled", false);
+                    $("button[type=button][id=cancelName]").css("visibility", "visible");
+                } else if (btnName === 'Salvar nome') {
+                    var result = await updateUser(user ? user.id as number : -1, $("input[type=text][id=InputName]").val() as string, null, null);
+                    setBtnName('Editar nome');
+                    $("input[type=text][id=InputName]").prop("disabled", true);
+                    $("button[type=button][id=cancelName]").css("visibility", "hidden");
+                    setMessage(result);
+                    setIsModalMessageVisible(true);
                 }
             break;
             case 'password':
@@ -71,15 +85,17 @@ const ConfigScreen: React.FC = () => {
                     )
                     setBtnPassword('Salvar senha');
                     $("button[type=button][id=cancelPassword]").css("visibility", "visible");
-                    $("input[type=password][id=InputPassword]").css("disabled", "false");
+                    $("input[type=password][id=InputPassword]").prop("disabled", false);
                 } else if(btnPassword === "Salvar senha") {
-                    alert('Salvo com sucesso!');
+                    var result = await updateUser(user ? user.id as number : -1, null, $("input[type=password][id=InputPassword]").val() as string, null);
                     setSecondPassword(
                         <div></div>
                     );
                     $("button[type=button][id=cancelPassword]").css("visibility", "hidden");
-                    $("input[type=password][id=InputPassword]").css("disabled", "true");
+                    $("input[type=password][id=InputPassword]").prop("disabled", true);
                     setBtnPassword('Editar senha');
+                    setMessage(result);
+                    setIsModalMessageVisible(true);
                 }
             break;
         }
@@ -96,12 +112,19 @@ const ConfigScreen: React.FC = () => {
                 $("button[type=button][id=cancelPic]").css("visibility", "hidden");
                 setBtnPic('Editar foto');
             break;
+            case 'name':
+                $("input[type=text][id=InputName]").prop("disabled", true);
+                $("input[type=text][id=InputName]").prop("value", user ? user.name as string : '' );
+                $("button[type=button][id=cancelName]").css("visibility", "hidden");
+                setBtnName('Editar nome');
+            break;
             case 'password':
                 setSecondPassword(
                     <div></div>
                 );
                 $("button[type=button][id=cancelPassword]").css("visibility", "hidden");
-                $("input[type=password][id=InputPassword]").css("disabled", "true");
+                $("input[type=password][id=InputPassword]").prop("disabled", true);
+                $("input[type=password][id=InputPassword]").prop("value", user ? user.password as string : '' );
                 setBtnPassword('Editar senha');
             break;
         }
@@ -120,6 +143,7 @@ const ConfigScreen: React.FC = () => {
                     <h4>&nbsp;{user ? user.points : '0'}</h4>
                 </div>
             </header>
+            {isModalMessageVisible ? <ModalMessage props={{message}} onClose={() => {setIsModalMessageVisible(false);}}></ModalMessage> : null}
             <ArrowBackIcon fontSize="default" className="back-button" onClick={back}/>
             <form className="form-config">
                 <div className="form-group">

@@ -85,6 +85,18 @@ routes.post('/users',
         abortEarly: false
     }), 
     usersController.create);
+routes.put('/users/update',
+    upload.single('image'),
+    celebrate({
+        body: Joi.object().keys({
+            id: Joi.number().required(),
+            name: Joi.string().allow(null, ''),
+            password: Joi.string().allow(null, '')
+        })
+    }, {
+        abortEarly: false
+    }), 
+    usersController.update);
 //task
 routes.post('/tasks',
     celebrate({

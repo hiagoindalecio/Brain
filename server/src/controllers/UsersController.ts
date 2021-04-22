@@ -75,6 +75,114 @@ class UsersControllerr {
         
     };
 
+    async update(request: Request, response: Response) {
+        interface User {
+            id: number,
+            name: string,
+            password: string,
+            image_url: string
+        }
+        var userReply: User = {
+            id: -1,
+            name: '',
+            password: '',
+            image_url: ''
+        };
+        const { id, name, password } = request.body;
+        const fs = require('fs');
+        //Verify user
+        const userSel = await knex('user_table').select('*').where('COD_USER', id);
+        var user_id = -1;
+        var current_img: string = '';
+        userSel.map(user => {
+            user_id = user.COD_USER,
+            current_img = user.IMAGE;
+        });
+        if(user_id === id as unknown as number) {
+            var img: string;
+            try {
+                img = request.file.filename;
+                if(current_img != 'blank-profile.webp') {
+                    fs.unlink(`./uploads/${current_img}`, (err: string) => {
+                        if (err) {
+                            console.error(err)
+                            return
+                        }
+                        //file removed
+                    });
+                }
+            } catch {
+                img = current_img
+            }
+            try {
+                if(password != null) {
+                    bcrypt
+                    .hash(password, 10)
+                    .then(async hash => {
+                        if(name != null) {
+                            await knex('user_table')
+                            .where('COD_USER', id)
+                            .update({
+                                NAME_USER: name,
+                                PASSWORD_USER: hash,
+                                IMAGE: img
+                            });
+                        } else {
+                            await knex('user_table')
+                            .where('COD_USER', id)
+                            .update({
+                                PASSWORD_USER: hash,
+                                IMAGE: img
+                            });
+                        }
+                    })
+                    .catch(err => {
+                        return response.status(400).json({
+                            message: `Password conversion error. ${err}`,
+                            user: {
+                                userReply
+                            }
+                        });
+                    });
+                } else if (name != null) {
+                    await knex('user_table')
+                    .where('COD_USER', id)
+                    .update({
+                        NAME_USER: name,
+                        IMAGE: img
+                    });
+                } else {
+                    await knex('user_table')
+                    .where('COD_USER', id)
+                    .update({
+                        IMAGE: img
+                    });
+                }
+                const reply = await knex('user_table').select('*').where('COD_USER', id);
+                reply.map(user => {
+                    userReply.id = user.COD_USER,
+                    userReply.name = user.NAME_USER,
+                    userReply.password = user.PASSWORD_USER,
+                    userReply.image_url = `http://localhost:3334/uploads/${user.IMAGE}`
+                });
+                return response.status(200).json({
+                    message: 'The user has been modified',
+                    userReply
+                });
+            } catch {
+                return response.status(500).json({
+                        message: 'Queries error',
+                        userReply
+                });
+            }
+        } else {
+            return response.status(400).json({
+                message: 'User not found',
+                userReply
+            });
+        }
+    }
+
     async validateUser(request: Request, response: Response) {
         interface User {
             id: number,
@@ -94,7 +202,7 @@ class UsersControllerr {
             points: 0,
             password: 'Vazio',
             image_url: 'Vazio'
-        }
+        };
         userSelected.map( user => {
             serializedUser.id = user.COD_USER,
             serializedUser.name = user.NAME_USER,
@@ -147,15 +255,15 @@ class UsersControllerr {
         } else {
             console.log(false);
             return response.status(203).json({ 
-                    user: {
-                        id: -1, 
-                        name: 'Vazio',
-                        email: 'Vazio',
-                        points: -1,
-                        password: 'Vazio',
-                        image_url: 'Vazio'
-                    }
-                });
+                user: {
+                    id: -1, 
+                    name: 'Vazio',
+                    email: 'Vazio',
+                    points: -1,
+                    password: 'Vazio',
+                    image_url: 'Vazio'
+                }
+            });
         }
         
     };

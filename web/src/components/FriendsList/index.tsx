@@ -9,19 +9,16 @@ import Collapse from '@material-ui/core/Collapse';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
+import ContactsIcon from '@material-ui/icons/Contacts';
 //import FriendsContex from '../../contexts/friends';
+
+import './styles.css';
 
 interface FriendsData {
     cod_friend: number,
     name_friend: string,
     pic_friend: string,
     accepted: number
-}
-
-interface ModalProps {
-    props : {
-        friends: Array<FriendsData>
-    };
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -37,39 +34,40 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-export default function NestedList(props: ModalProps) {
+const NestedList: React.FC<{friends: Array<FriendsData>}> = ({friends}) => {
   const classes = useStyles();
-  const [open, setOpen] = useState(true);
-  //const { getFriends } = useContext(FriendsContex);
-  
-  const [screen, setScreen] = useState<Array<JSX.Element>>([
-    <ListItem button className={classes.nested} key="none">
-        <ListItemIcon>
-        </ListItemIcon>
-        <ListItemText primary="Parece que você ainda não possui amigos :(" />
-    </ListItem>
-  ]);
+  const [open, setOpen] = useState(false);
+
+  const [screen, setScreen] = useState<Array<JSX.Element>>([]);
 
   useLayoutEffect(() => {
-    setFriends();
-  }, []);
-
-  async function setFriends() {
-    if (props.props.friends.length as number > 0) {
-        //var friends = await getFriends(props.props.userId as number);
-        setScreen([<div />]);
-        props.props.friends.map((oneFriend) => {
-            console.log(oneFriend.name_friend);
-            setScreen([ ...screen,
-                <ListItem button className={classes.nested} key={oneFriend.cod_friend}>
-                    <ListItemIcon>
-                    </ListItemIcon>
-                    <ListItemText primary={oneFriend.name_friend} />
-                </ListItem>
-            ])
-        })
+    if (friends.length > 0) {
+      friends.map((oneFriend) => {
+        setScreen([ ...screen,
+            <ListItem button className={classes.nested} key={oneFriend.cod_friend}>
+                <ListItemIcon>
+                  <img src={oneFriend.pic_friend} alt="Friend Image" className='profile-friend-picture'/>
+                </ListItemIcon>
+                <ListItemText primary={oneFriend.name_friend} />
+            </ListItem>
+        ])
+      });
+      /*setScreen( FILTRAR ONLINE E ACERTAR ISSO NO BANCO QUANDO LOGA E FILTRAR POR SÓ ATIVOS
+        [...friends].fiter()
+      )*/
     }
-  }
+    else{
+      setScreen([
+        <ListItem button className={classes.nested} key="none">
+          <ListItemIcon>
+          </ListItemIcon>
+          <ListItemText primary="Parece que você ainda não possui amigos :(" />
+        </ListItem>
+      ]);
+    }
+
+
+  }, []);
 
   const handleClick = () => {
     setOpen(!open);
@@ -85,10 +83,11 @@ export default function NestedList(props: ModalProps) {
         </ListSubheader>
       }
       className={classes.root}
+      id='lista-amigos'
     >
       <ListItem button onClick={handleClick} key="button">
         <ListItemIcon>
-          <InboxIcon />
+          <ContactsIcon />
         </ListItemIcon>
         <ListItemText primary="Todos Amigos" />
         {open ? <ExpandLess /> : <ExpandMore />}
@@ -101,3 +100,5 @@ export default function NestedList(props: ModalProps) {
     </List>
   );
 }
+
+export default NestedList;

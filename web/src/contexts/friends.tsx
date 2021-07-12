@@ -26,6 +26,7 @@ export const FriendsProvider: React.FC = ({ children }) => {
             friendsReply.map(async oneFriend => {
                 responseArray.push(oneFriend);
             });
+            //console.log(responseArray);
             resolve(responseArray);
         });
     };

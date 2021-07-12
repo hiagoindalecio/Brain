@@ -2,6 +2,13 @@ import knex from '../database/connection';
 import { Request, Response } from 'express';
 import bcrypt  from 'bcrypt';
 
+interface friends{
+    cod_friend: number,
+    name_friend: string,
+    pic_friend: string,
+    accepted: number
+}
+
 class FriendsController {
     async index(request: Request, response: Response){
         const friends = await knex('friends_user').select('*'); //Select no banco SELECT * FROM tb_items
@@ -17,30 +24,33 @@ class FriendsController {
 
     async show(request: Request, response: Response) {
         const { userId } = request.params;
-        const trx = await knex.transaction();
-        const friendsUser = await trx ('friends_user').where('COD_USER', userId)
+        const friendsUser = knex ('friends_user').where('COD_USER', userId)
         try {
-            const serializedItems  = friendsUser.map( async item => { // Percorre e reorganiza o que sera retornado
-                var nameFriend = "";
-                var profPic = "";
-                (await knex('user_table').where('COD_USER', item.COD_FRIEND)).map( async oneFriend => {
-                    nameFriend = oneFriend.NAME_USER as string;
-                    profPic = oneFriend.IMAGE as string;
-                });
-                
-                const objReturn = {
+            const serializedItems = (await friendsUser).map( item => { // Percorre e reorganiza o que sera retornado
+                return {
                     cod_friend: item.COD_FRIEND,
-                    name_friend: nameFriend,
-                    pic_friend: profPic,
                     accepted: item.ACCEPTED
-                }
-                return objReturn;
-            } );
-            response.status(200).send(serializedItems);    
+                };
+            });
+            let allFriends: Array<friends> = [];
+            for (var i = 0;i < serializedItems.length; i++) {
+                allFriends.push(await knex('user_table').where('COD_USER', serializedItems[i].cod_friend).first().then(user => {
+                    return {
+                        cod_friend: serializedItems[i].cod_friend,
+                        name_friend: user.NAME_USER as string,
+                        pic_friend: `http://localhost:3334/uploads/${user.IMAGE as string}`,
+                        accepted: serializedItems[i].accepted
+                    };
+                }));
+            }
+
+            response.status(200).send(allFriends);    
         } catch (e) {
             response.status(400).json({
                 cod_friend: -1,
+                name_friend: '',
                 cod_user: -1,
+                pic_friend: '',
                 accepted: -1
             });
         }

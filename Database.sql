@@ -2,6 +2,7 @@ DROP DATABASE IF EXISTS WEB_PROJECT_DW;
 CREATE DATABASE IF NOT EXISTS WEB_PROJECT_DW;
 USE WEB_PROJECT_DW;
 
+DROP TABLE IF EXISTS user_table;
 CREATE TABLE user_table
 (
 	COD_USER INT NOT NULL AUTO_INCREMENT,
@@ -11,12 +12,13 @@ CREATE TABLE user_table
 	POINTS_USER INT NOT NULL,
 	IMAGE VARCHAR(200),
 	ACTIVE TINYINT,
+	USER_ONLINE TINYINT,
 	PRIMARY KEY(COD_USER)
 );
 
-INSERT INTO user_table(NAME_USER, MAIL_USER, PASSWORD_USER, POINTS_USER, IMAGE, ACTIVE) /*encripted default password (qwe123) and default black profile picture*/
-	VALUES('Hiago Indalécio', 'hiagoindalecio@gmail.com', '$2b$10$ZvEDr3dJ9AUFCRT6xQYhGeKbGEr0DZS.JnNocBJ.QDPYVtdQROpZ6', 0, 'blank-profile.webp', 1),
-		  ('Felipe Ricardo', 'felipemelo@gmail.com', '$2b$10$ZvEDr3dJ9AUFCRT6xQYhGeKbGEr0DZS.JnNocBJ.QDPYVtdQROpZ6', 0, 'blank-profile.webp', 1);
+INSERT INTO user_table(NAME_USER, MAIL_USER, PASSWORD_USER, POINTS_USER, IMAGE, ACTIVE, USER_ONLINE) /*encripted default password (qwe123) and default black profile picture*/
+	VALUES('Hiago Indalécio', 'hiagoindalecio@gmail.com', '$2b$10$ZvEDr3dJ9AUFCRT6xQYhGeKbGEr0DZS.JnNocBJ.QDPYVtdQROpZ6', 0, 'blank-profile.webp', 1, 0),
+		  ('Felipe Ricardo', 'felipemelo@gmail.com', '$2b$10$ZvEDr3dJ9AUFCRT6xQYhGeKbGEr0DZS.JnNocBJ.QDPYVtdQROpZ6', 0, 'blank-profile.webp', 1, 0);
 
 CREATE TABLE user_notes
 (

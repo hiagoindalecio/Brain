@@ -66,7 +66,7 @@ const Initial: React.FC<{friends: Array<FriendsData>, userName: string | null | 
                         <h6><br/><br/>Conquiste mais pontos e suba de nível!</h6>
                     </div>
                 </div>
-                <ModalFriendsList props={{friends}}></ModalFriendsList>
+                <ModalFriendsList friends={friends}></ModalFriendsList>
             </div>
         </fieldset>
     );

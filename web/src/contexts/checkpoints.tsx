@@ -55,6 +55,7 @@ export const CheckpointsProvider: React.FC = ({ children }) => {
             checkpointReply.map(async oneCheckpoint => {
                 responseArray.push(oneCheckpoint);
             });
+            //console.log(responseArray);
             resolve(responseArray);
         });
     };

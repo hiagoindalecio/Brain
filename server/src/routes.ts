@@ -7,6 +7,7 @@ import UsersControllerr from './controllers/UsersController';
 import CheckController from './controllers/CheckController';
 import TaskControler from './controllers/TasksController';
 import NotesController from './controllers/NotesController';
+import FriendsController from './controllers/FriendsController';
 
 const routes = express.Router();
 const upload = multer(multerConfig);
@@ -14,6 +15,7 @@ const usersController = new UsersControllerr();
 const checkController = new CheckController();
 const taskController = new TaskControler();
 const notesController = new NotesController();
+const friendsController = new FriendsController();
 
 routes.use(express.json());
 
@@ -28,6 +30,9 @@ routes.get('/task', taskController.index);
 routes.get('/task/:checkpointId', taskController.show);
 //note
 routes.get('/notes/:userId', notesController.show);
+//friend
+routes.get('/friends', friendsController.index);
+routes.get('/friends/:userId', friendsController.show);
 
 //checkpoint
 routes.post('/checkpoint',

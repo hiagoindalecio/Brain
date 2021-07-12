@@ -7,6 +7,7 @@ import { AuthProvider } from './contexts/auth';
 import { CheckpointsProvider } from './contexts/checkpoints';
 import { NotesProvider } from './contexts/notes';
 import { TasksProvider } from './contexts/tasks';
+import { FriendsProvider } from './contexts/friends';
 
 function App() {
   return (
@@ -14,7 +15,9 @@ function App() {
       <NotesProvider>
         <CheckpointsProvider>
           <AuthProvider>
-            <Routes />
+            <FriendsProvider>
+              <Routes />
+            </FriendsProvider>
           </AuthProvider>
         </CheckpointsProvider>
       </NotesProvider>

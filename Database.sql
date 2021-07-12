@@ -14,8 +14,9 @@ CREATE TABLE user_table
 	PRIMARY KEY(COD_USER)
 );
 
-INSERT INTO user_table(NAME_USER, MAIL_USER, PASSWORD_USER, POINTS_USER, ACTIVE)
-	VALUES('Hiago Indalécio', 'hiagoindalecio@gmail.com', '$2b$10$ZvEDr3dJ9AUFCRT6xQYhGeKbGEr0DZS.JnNocBJ.QDPYVtdQROpZ6', 0, 'blank-profile.webp', 1);
+INSERT INTO user_table(NAME_USER, MAIL_USER, PASSWORD_USER, POINTS_USER, IMAGE, ACTIVE) /*encripted default password (qwe123) and default black profile picture*/
+	VALUES('Hiago Indalécio', 'hiagoindalecio@gmail.com', '$2b$10$ZvEDr3dJ9AUFCRT6xQYhGeKbGEr0DZS.JnNocBJ.QDPYVtdQROpZ6', 0, 'blank-profile.webp', 1),
+		  ('Felipe Ricardo', 'felipemelo@gmail.com', '$2b$10$ZvEDr3dJ9AUFCRT6xQYhGeKbGEr0DZS.JnNocBJ.QDPYVtdQROpZ6', 0, 'blank-profile.webp', 1);
 
 CREATE TABLE user_notes
 (
@@ -79,3 +80,20 @@ CREATE TABLE memory_user
 
 INSERT INTO memory_user(COD_USER, SUMMARY_MEMORY, DESCRI_MEMORY)
 	VALUES(1, 'Minha mãe.', 'Minha mãe se chama Carmen Lúcia Lima e sempre foi muito dedicada em me fazer feliz.');
+	
+CREATE TABLE friends_user
+(
+	COD_FRIEND INT NOT NULL,
+	COD_USER INT NOT NULL,
+	ACCEPTED TINYINT(1) NOT NULL,
+	PRIMARY KEY (COD_FRIEND),
+	CONSTRAINT fk_friend_user
+	FOREIGN KEY (COD_FRIEND)
+	REFERENCES user_table(COD_USER),
+	CONSTRAINT fk_user_friend
+	FOREIGN KEY (COD_USER)
+	REFERENCES user_table(COD_USER)
+);
+
+INSERT INTO friends_user(COD_FRIEND, COD_USER, ACCEPTED)
+	VALUES(2, 1, 1);

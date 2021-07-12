@@ -6,6 +6,7 @@ import { FaBars, FaTimes } from 'react-icons/fa';
 import AuthContext from '../../contexts/auth';
 import CheckpointsContext from '../../contexts/checkpoints';
 import NotesContext from '../../contexts/notes';
+import FriendsContex from '../../contexts/friends';
 
 import logo from '../../assets/logo.png';
 import pointsImage from '../../assets/point.png';
@@ -19,6 +20,7 @@ import SMenu from '../../components/StyledMenu';
 const Home: React.FC = () =>  {
     const { singOut, user, currentScreen, selectScreen } = useContext(AuthContext);
     const { getCheckpoints } = useContext(CheckpointsContext);
+    const { getFriends } = useContext(FriendsContex);
     const { getNotes } = useContext(NotesContext);
     const [component, setComponent] = useState<JSX.Element>(<div />);
     const [click, setClick] = useState(false);
@@ -31,7 +33,8 @@ const Home: React.FC = () =>  {
         selectScreen(componentName);
         switch(componentName) {
             case 'Home': {
-                setComponent(<Initial userName={user ? user.name : null} pointsUser={user ? user.points : null} />);
+                setComponent(<Initial friends={ await getFriends(user ? user.id as number : -1) } userName={user ? user.name : null} pointsUser={user ? user.points : null} />);
+                //setComponent(<Initial userId={user ? user.id : null} userName={user ? user.name : null} pointsUser={user ? user.points : null} />);
                 break;
             }
             case 'Checkpoints': {
@@ -76,16 +79,16 @@ const Home: React.FC = () =>  {
                                     {click ? <FaTimes /> : <FaBars />}   
                                 </div>
                                 <ul className={click ? 'nav-menu active' : 'nav-menu'} onClick={closeMobileMenu}>
-                                    <li className='nav-item' onClick={() => handleSelectedField('Home')}>
+                                    <li className='nav-item' onClick={() => handleSelectedField('Home')} key="btnHome">
                                         Home
                                     </li>
-                                    <li className='nav-item' onClick={() => handleSelectedField('Checkpoints')}>
+                                    <li className='nav-item' onClick={() => handleSelectedField('Checkpoints')} key="btnCheckpoints">
                                         Meus Checkpoints
                                     </li>
-                                    <li className='nav-item' onClick={() => handleSelectedField('Notes')}>
+                                    <li className='nav-item' onClick={() => handleSelectedField('Notes')} key="btnNotes">
                                         Minhas Notas
                                     </li>
-                                    <li className='nav-item' onClick={() => handleSelectedField('AboutBrain')}>
+                                    <li className='nav-item' onClick={() => handleSelectedField('AboutBrain')} key="btnAbout">
                                         Sobre a Brain
                                     </li>
                                     <button className="link-btn" onClick={handleLogoff}>

@@ -6,9 +6,18 @@ import Medium from '../../assets/medium-level.png';
 import Master from '../../assets/master-level.png';
 import MasterBlaster from '../../assets/masterblaster-level.png';
 
+import ModalFriendsList from '../../components/FriendsList/index';
+
 import './styles.css';
 
-const Initial: React.FC<{userName: string | null | undefined, pointsUser: number | null | undefined}> = ({userName, pointsUser}) => {
+interface FriendsData {
+    cod_friend: number,
+    name_friend: string,
+    pic_friend: string,
+    accepted: number
+}
+
+const Initial: React.FC<{friends: Array<FriendsData>, userName: string | null | undefined, pointsUser: number | null | undefined}> = ({friends, userName, pointsUser}) => {
     const [level, setLevel] = useState<JSX.Element>(<div />);
     
     useLayoutEffect(() => {
@@ -57,6 +66,7 @@ const Initial: React.FC<{userName: string | null | undefined, pointsUser: number
                         <h6><br/><br/>Conquiste mais pontos e suba de nível!</h6>
                     </div>
                 </div>
+                <ModalFriendsList props={{friends}}></ModalFriendsList>
             </div>
         </fieldset>
     );

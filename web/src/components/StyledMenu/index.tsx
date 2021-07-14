@@ -51,6 +51,10 @@ export default function CustomizedMenus() {
     history.push("/config");
   }
 
+  function handleLogoff() {
+    singOut(user? user.email as string : '', user? user.password as string : '');
+  }
+
   return (
     <div>
       <Button
@@ -71,7 +75,7 @@ export default function CustomizedMenus() {
           </ListItemIcon>
           <ListItemText primary="Meu perfil" />
         </MenuItem >
-        <MenuItem onClick={singOut}>
+        <MenuItem onClick={() => handleLogoff()}>
           <ListItemIcon>
             <ExitToAppIcon fontSize="small" />
           </ListItemIcon>

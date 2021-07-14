@@ -14,7 +14,8 @@ interface FriendsData {
     cod_friend: number,
     name_friend: string,
     pic_friend: string,
-    accepted: number
+    accepted: number,
+    user_online: number
 }
 
 const Initial: React.FC<{friends: Array<FriendsData>, userName: string | null | undefined, pointsUser: number | null | undefined}> = ({friends, userName, pointsUser}) => {

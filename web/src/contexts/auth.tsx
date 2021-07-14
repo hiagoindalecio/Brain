@@ -18,7 +18,7 @@ interface AuthContextData {
     singIn(email: string, password: string): Promise<string>;
     createUser(email: string, password: string, name: string, image: File): Promise<string>;
     updateUser(id: number, name: string | null, password: string | null, image: File | null): Promise<string>;
-    singOut(): void;
+    singOut(email: string, password: string): Promise<string>;
     setPoints(pointsUser: number): void;
     selectScreen(eleme: string): void;
 }
@@ -86,10 +86,22 @@ export const AuthProvider: React.FC = ({ children }) => {
         });
     }
 
-    function singOut() {
-        localStorage.clear();
-        setUser(null);
-        setCurrentScreen('Home');
+    function singOut(email: string, password: string): Promise<string> {
+        return new Promise(async (resolve) => {
+            setLoading(true);
+            const response = await auth.singOut(email, password);
+            
+            if(response.message == 'Usuário deslogado.' && response !== undefined) {
+                localStorage.clear();
+                setUser(null);
+                setCurrentScreen('Home');
+                setLoading(false);
+                resolve('Sucesso!');
+            } else {
+                setLoading(false);
+                resolve('E-mail ou senha digitados incorretamente.');
+            }
+        });
     }
 
     function setPoints(pointsUser: number) {

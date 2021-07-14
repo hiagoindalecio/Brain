@@ -193,7 +193,7 @@ class UsersControllerr {
             image_url: string
         }
         const { email, password } = request.params;
-        console.log(`Email input: ${email}\nPassword input: ${password}`);
+        //console.log(`Email input: ${email}\nPassword input: ${password}`);
         const userSelected = await knex('user_table').select('*').where('MAIL_USER', email);
         const serializedUser:User = {
             id: -1,
@@ -211,11 +211,17 @@ class UsersControllerr {
             serializedUser.password = user.PASSWORD_USER,
             serializedUser.image_url = `http://localhost:3334/uploads/${user.IMAGE}`
         });
+        
         if (serializedUser.name !== 'Vazio') {
+            await knex('user_table')
+                .where('COD_USER', serializedUser.id)
+                .update({
+                    USER_ONLINE: 1
+                });
             bcrypt
                 .compare(password, serializedUser.password)
                 .then(res => {
-                    console.log(res);
+                    //console.log(res);
                     if (res) {
                         const returnSerialized = {
                             user: {
@@ -224,12 +230,12 @@ class UsersControllerr {
                                 email: serializedUser.email,
                                 points: serializedUser.points,
                                 password: password,
-                                image_url: serializedUser.image_url
+                                image_url: serializedUser.image_url,
+                                user_online: 1
                             }
                         };
                         return response.status(202).json(returnSerialized);
-                    }
-                    else {
+                    } else {
                         return response.status(203).json({ 
                                 user: {
                                     id: -1,
@@ -237,7 +243,8 @@ class UsersControllerr {
                                     email: 'Vazio',
                                     points: -1,
                                     password: 'Vazio',
-                                    image_url: 'Vazio'
+                                    image_url: 'Vazio',
+                                    user_online: 0
                                 }
                             });
                     }
@@ -249,11 +256,12 @@ class UsersControllerr {
                             email: 'Vazio',
                             points: -1,
                             password: 'Vazio',
-                            image_url: 'Vazio'
+                            image_url: 'Vazio',
+                            user_online: 0
                         }
-                    });});
+                    })});
         } else {
-            console.log(false);
+            //console.log(false);
             return response.status(203).json({ 
                 user: {
                     id: -1, 
@@ -261,12 +269,65 @@ class UsersControllerr {
                     email: 'Vazio',
                     points: -1,
                     password: 'Vazio',
-                    image_url: 'Vazio'
+                    image_url: 'Vazio',
+                    user_online: 0
                 }
             });
         }
-        
-    };
-};
+    }
+
+    async logoff(request: Request, response: Response) {
+        var id = -1;
+        const { email, password } = request.params;
+        const userSelected = await knex('user_table').select('*').where('MAIL_USER', email).first();
+        id = userSelected.COD_USER;
+
+        if (id !== -1) {
+            await knex('user_table')
+                .where('COD_USER', id)
+                .update({
+                    USER_ONLINE: 0
+                });
+            bcrypt
+                .compare(password, userSelected.PASSWORD_USER)
+                .then(async res => {
+                    if (res) {
+                        try {
+                            await knex('user_table')
+                            .where('COD_USER', id)
+                            .update({
+                                USER_ONLINE: 0
+                            })
+                            return response.status(200).json({ 
+                                id, 
+                                message: 'Usuário deslogado.'
+                            })
+                        } catch (err) {
+                            return response.status(400).json({
+                                id, 
+                                message: err.message
+                            })
+                        }
+                    } else {
+                        return response.status(400).json({
+                            id, 
+                            message: 'Usuário não autenticado com os dados informados.'
+                        })
+                    }
+                })
+                .catch(err => {
+                    return response.status(400).json({
+                        id, 
+                        message: err.message
+                    })
+                })
+        } else {
+            return response.status(400).json({
+                id, 
+                message: 'Usuário não encontrado.'
+            })
+        }
+    }
+}
 
 export default UsersControllerr;

@@ -25,10 +25,23 @@ interface UserUpdateResponse {
     }
 }
 
+interface singOutResponse {
+    id: number, 
+    message: string
+}
+
 export async function singIn(email: string, password: string): Promise<userValidationResponse> {
     return new Promise((resolve) => {
         api.get<userValidationResponse>(`/uservalidate/${email}/${password}`).then(response => {
             resolve(response.data as userValidationResponse); 
+        });
+    });
+}
+
+export async function singOut(email: string, password: string): Promise<singOutResponse> {
+    return new Promise((resolve) => {
+        api.get<singOutResponse>(`/usersingout/${email}/${password}`).then(response => {
+            resolve(response.data as singOutResponse); 
         });
     });
 }

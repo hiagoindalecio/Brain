@@ -23,6 +23,7 @@ routes.use(express.json());
 routes.get('/users', usersController.index);
 routes.get('/users/:id', usersController.show);
 routes.get('/uservalidate/:email/:password', usersController.validateUser);
+routes.get('/usersingout/:email/:password', usersController.logoff);
 //checkpoint
 routes.get('/checkpoint/:userId', checkController.show);
 //task

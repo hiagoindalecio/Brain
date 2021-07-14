@@ -6,11 +6,11 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Collapse from '@material-ui/core/Collapse';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import ContactsIcon from '@material-ui/icons/Contacts';
-//import FriendsContex from '../../contexts/friends';
+import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
+import IndeterminateCheckBoxIcon from '@material-ui/icons/IndeterminateCheckBox';
 
 import './styles.css';
 
@@ -18,7 +18,8 @@ interface FriendsData {
     cod_friend: number,
     name_friend: string,
     pic_friend: string,
-    accepted: number
+    accepted: number,
+    user_online: number
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -37,41 +38,63 @@ const useStyles = makeStyles((theme: Theme) =>
 const NestedList: React.FC<{friends: Array<FriendsData>}> = ({friends}) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
+  const [openOnline, setOpenOnline] = useState(false);
+  const [openOffline, setOpenOffline] = useState(false);
 
-  const [screen, setScreen] = useState<Array<JSX.Element>>([]);
+  const [amigosOnline, setAmigosOnline] = useState<Array<JSX.Element>>([]);
+  const [amigosOffline, setAmigosOffline] = useState<Array<JSX.Element>>([]);
 
   useLayoutEffect(() => {
     if (friends.length > 0) {
-      friends.map((oneFriend) => {
-        setScreen([ ...screen,
-            <ListItem button className={classes.nested} key={oneFriend.cod_friend}>
-                <ListItemIcon>
-                  <img src={oneFriend.pic_friend} alt="Friend Image" className='profile-friend-picture'/>
-                </ListItemIcon>
-                <ListItemText primary={oneFriend.name_friend} />
-            </ListItem>
-        ])
-      });
-      /*setScreen( FILTRAR ONLINE E ACERTAR ISSO NO BANCO QUANDO LOGA E FILTRAR POR SÓ ATIVOS
-        [...friends].fiter()
-      )*/
+      setAmigosOnline(
+        [ ...friends].filter((f: { user_online: number; }) => f.user_online == 1).map((oneFriend: FriendsData) => 
+                <ListItem button className={classes.nested} key={oneFriend.cod_friend}>
+                    <ListItemIcon>
+                      <img src={oneFriend.pic_friend} alt="Friend Image" className='profile-friend-picture'/>
+                    </ListItemIcon>
+                    <ListItemText primary={oneFriend.name_friend} />
+                </ListItem>
+          )
+      )
+      setAmigosOffline(
+        [ ...friends].filter((f: { user_online: number; }) => f.user_online == 0).map((oneFriend: FriendsData) => 
+                <ListItem button className={classes.nested} key={oneFriend.cod_friend}>
+                    <ListItemIcon>
+                      <img src={oneFriend.pic_friend} alt="Friend Image" className='profile-friend-picture'/>
+                    </ListItemIcon>
+                    <ListItemText primary={oneFriend.name_friend} />
+                </ListItem>
+          )
+      )
+      
+      if ([ ...friends].filter((f: { user_online: number; }) => f.user_online == 1).length == 0) {
+        setAmigosOnline([
+          <ListItem button className={classes.nested} key="none">
+            <ListItemText primary="Nenhum amigo disponível" />
+          </ListItem>
+        ]);
+      }
+      if ([ ...friends].filter((f: { user_online: number; }) => f.user_online == 0).length == 0) {
+        setAmigosOffline([
+          <ListItem button className={classes.nested} key="none2">
+            <ListItemText primary="Nenhum amigo indisponível" />
+          </ListItem>
+        ]);
+      }
     }
-    else{
-      setScreen([
-        <ListItem button className={classes.nested} key="none">
-          <ListItemIcon>
-          </ListItemIcon>
-          <ListItemText primary="Parece que você ainda não possui amigos :(" />
-        </ListItem>
-      ]);
-    }
-
-
   }, []);
 
   const handleClick = () => {
     setOpen(!open);
-  };
+  }
+
+  const clickOnline = () => {
+    setOpenOnline(!openOnline);
+  }
+
+  const clickOffline = () => {
+    setOpenOffline(!openOffline);
+  }
 
   return (
     <List
@@ -93,9 +116,26 @@ const NestedList: React.FC<{friends: Array<FriendsData>}> = ({friends}) => {
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
-            {screen}
-        </List>
+        <ListItem button onClick={clickOnline} key="none3">
+          <ListItemIcon>
+            <FiberManualRecordIcon/>
+          </ListItemIcon>
+          <ListItemText primary="Disponível" />
+          {openOnline ? <ExpandLess /> : <ExpandMore />}
+        </ListItem>
+        <Collapse in={openOnline} timeout="auto" unmountOnExit>
+          {amigosOnline}
+        </Collapse>
+        <ListItem button onClick={clickOffline} key="none4">
+          <ListItemIcon>
+            <IndeterminateCheckBoxIcon/>
+          </ListItemIcon>
+          <ListItemText primary="Indisponível" />
+          {openOffline ? <ExpandLess /> : <ExpandMore />}
+        </ListItem>
+        <Collapse in={openOffline} timeout="auto" unmountOnExit>
+            {amigosOffline}
+        </Collapse>
       </Collapse>
     </List>
   );

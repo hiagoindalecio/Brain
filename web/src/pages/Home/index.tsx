@@ -52,7 +52,7 @@ const Home: React.FC = () =>  {
         }
     }
     function handleLogoff() {
-        singOut();
+        singOut(user? user.email as string : '', user? user.password as string : '');
     }
     
     const handleClick = () => setClick(!click);

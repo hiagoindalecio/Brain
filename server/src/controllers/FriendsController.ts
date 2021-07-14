@@ -1,6 +1,5 @@
 import knex from '../database/connection';
 import { Request, Response } from 'express';
-import bcrypt  from 'bcrypt';
 
 interface friends{
     cod_friend: number,
@@ -39,7 +38,8 @@ class FriendsController {
                         cod_friend: serializedItems[i].cod_friend,
                         name_friend: user.NAME_USER as string,
                         pic_friend: `http://localhost:3334/uploads/${user.IMAGE as string}`,
-                        accepted: serializedItems[i].accepted
+                        accepted: serializedItems[i].accepted,
+                        user_online: user.USER_ONLINE
                     };
                 }));
             }

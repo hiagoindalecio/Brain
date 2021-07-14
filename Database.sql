@@ -82,13 +82,15 @@ CREATE TABLE memory_user
 
 INSERT INTO memory_user(COD_USER, SUMMARY_MEMORY, DESCRI_MEMORY)
 	VALUES(1, 'Minha mãe.', 'Minha mãe se chama Carmen Lúcia Lima e sempre foi muito dedicada em me fazer feliz.');
-	
+
+DROP TABLE IF EXISTS friends_user;
 CREATE TABLE friends_user
 (
+	ID_FRIENDSHIP INT NOT NULL AUTO_INCREMENT,
 	COD_FRIEND INT NOT NULL,
 	COD_USER INT NOT NULL,
 	ACCEPTED TINYINT(1) NOT NULL,
-	PRIMARY KEY (COD_FRIEND),
+	PRIMARY KEY (ID_FRIENDSHIP),
 	CONSTRAINT fk_friend_user
 	FOREIGN KEY (COD_FRIEND)
 	REFERENCES user_table(COD_USER),
@@ -98,4 +100,5 @@ CREATE TABLE friends_user
 );
 
 INSERT INTO friends_user(COD_FRIEND, COD_USER, ACCEPTED)
-	VALUES(2, 1, 1);
+	VALUES(2, 1, 1),
+		  (1, 2, 1);

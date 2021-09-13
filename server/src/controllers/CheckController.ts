@@ -52,7 +52,6 @@ class CheckController {
                     status: item.STATUS_CHECK
                 };
             } );
-            console.log(serializedItems);
             response.status(200).send(serializedItems);    
         } catch (e) {
             response.status(400).json({

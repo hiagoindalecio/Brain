@@ -193,7 +193,6 @@ class UsersControllerr {
             image_url: string
         }
         const { email, password } = request.params;
-        //console.log(`Email input: ${email}\nPassword input: ${password}`);
         const userSelected = await knex('user_table').select('*').where('MAIL_USER', email);
         const serializedUser:User = {
             id: -1,
@@ -221,7 +220,6 @@ class UsersControllerr {
             bcrypt
                 .compare(password, serializedUser.password)
                 .then(res => {
-                    //console.log(res);
                     if (res) {
                         const returnSerialized = {
                             user: {
@@ -261,7 +259,6 @@ class UsersControllerr {
                         }
                     })});
         } else {
-            //console.log(false);
             return response.status(203).json({ 
                 user: {
                     id: -1, 

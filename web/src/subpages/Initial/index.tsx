@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useContext, useLayoutEffect, useState } from 'react';
 
 import Ricardo from '../../assets/Ricardo.png';
 import Beginner from '../../assets/beginner-level.png';
@@ -7,6 +7,9 @@ import Master from '../../assets/master-level.png';
 import MasterBlaster from '../../assets/masterblaster-level.png';
 
 import ModalFriendsList from '../../components/FriendsList/index';
+
+import FriendsContex from '../../contexts/friends';
+import AuthContext from '../../contexts/auth';
 
 import './styles.css';
 
@@ -19,7 +22,10 @@ interface FriendsData {
 }
 
 const Initial: React.FC<{friends: Array<FriendsData>, userName: string | null | undefined, pointsUser: number | null | undefined}> = ({friends, userName, pointsUser}) => {
+    const { user } = useContext(AuthContext);
     const [level, setLevel] = useState<JSX.Element>(<div />);
+    const [userFriends, setUserFriends] = useState<Array<FriendsData>>(friends);
+    const { getFriends } = useContext(FriendsContex);
     
     useLayoutEffect(() => {
         if(pointsUser as number < 50) {
@@ -51,6 +57,8 @@ const Initial: React.FC<{friends: Array<FriendsData>, userName: string | null | 
                 </div>
             );
         }
+
+        setInterval(async () => {console.log('caiu'); setUserFriends(await getFriends(user ? user.id as number : -1));}, 5000)
     }, []);
     
     return (
@@ -67,7 +75,7 @@ const Initial: React.FC<{friends: Array<FriendsData>, userName: string | null | 
                         <h6><br/><br/>Conquiste mais pontos e suba de nível!</h6>
                     </div>
                 </div>
-                <ModalFriendsList friends={friends}></ModalFriendsList>
+                <ModalFriendsList friends={userFriends}></ModalFriendsList>
             </div>
         </fieldset>
     );

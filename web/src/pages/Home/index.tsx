@@ -33,8 +33,7 @@ const Home: React.FC = () =>  {
         selectScreen(componentName);
         switch(componentName) {
             case 'Home': {
-                setComponent(<Initial friends={ await getFriends(user ? user.id as number : -1) } userName={user ? user.name : null} pointsUser={user ? user.points : null} />);
-                //setComponent(<Initial userId={user ? user.id : null} userName={user ? user.name : null} pointsUser={user ? user.points : null} />);
+                setComponent(<Initial />);
                 break;
             }
             case 'Checkpoints': {

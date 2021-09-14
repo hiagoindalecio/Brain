@@ -21,11 +21,12 @@ interface FriendsData {
     user_online: number
 }
 
-const Initial: React.FC<{friends: Array<FriendsData>, userName: string | null | undefined, pointsUser: number | null | undefined}> = ({friends, userName, pointsUser}) => {
+const Initial: React.FC = () => {
     const { user } = useContext(AuthContext);
     const [level, setLevel] = useState<JSX.Element>(<div />);
-    const [userFriends, setUserFriends] = useState<Array<FriendsData>>(friends);
+    const [friendsComponent, setFriendsComponent] = useState<JSX.Element>();
     const { getFriends } = useContext(FriendsContex);
+    const pointsUser = user ? user.points as number : 0;
     
     useLayoutEffect(() => {
         if(pointsUser as number < 50) {
@@ -58,7 +59,13 @@ const Initial: React.FC<{friends: Array<FriendsData>, userName: string | null | 
             );
         }
 
-        setInterval(async () => {console.log('caiu'); setUserFriends(await getFriends(user ? user.id as number : -1));}, 5000)
+        async function findFriends() {
+            setFriendsComponent(<div></div>)
+            setFriendsComponent(<ModalFriendsList friends={await getFriends(user ? user.id as number : -1)}></ModalFriendsList>);
+        }
+
+        findFriends();
+        setInterval(async () => {findFriends()}, 10000);
     }, []);
     
     return (
@@ -66,7 +73,7 @@ const Initial: React.FC<{friends: Array<FriendsData>, userName: string | null | 
             <div className="presentation" key="initalKey">
             <img src={Ricardo} alt="Ricardo" className="avatar-img"/>
                 <div className="text">
-                    <h5>Olá {userName ? userName : ''}!<br/>Este é o seu espaço, aqui você tem acesso à todas as ferramentas acima. <br/>Confira acima o menu de opções interativo.<br/><br/>_Ricardo<br/><br/><br/><br/></h5>
+                    <h5>Olá {user ? user.name : ''}!<br/>Este é o seu espaço, aqui você tem acesso à todas as ferramentas acima. <br/>Confira acima o menu de opções interativo.<br/><br/>_Ricardo<br/><br/><br/><br/></h5>
                     <div className="level-field">
                         <h4>Seu nível é: <br/><br/></h4>
                         {
@@ -75,7 +82,9 @@ const Initial: React.FC<{friends: Array<FriendsData>, userName: string | null | 
                         <h6><br/><br/>Conquiste mais pontos e suba de nível!</h6>
                     </div>
                 </div>
-                <ModalFriendsList friends={userFriends}></ModalFriendsList>
+                {
+                    friendsComponent
+                }
             </div>
         </fieldset>
     );

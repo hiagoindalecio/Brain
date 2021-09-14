@@ -37,9 +37,9 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const NestedList: React.FC<{friends: Array<FriendsData>}> = ({friends}) => {
   const classes = useStyles();
-  const [open, setOpen] = useState(false);
-  const [openOnline, setOpenOnline] = useState(false);
-  const [openOffline, setOpenOffline] = useState(false);
+  const [open, setOpen] = useState(true);
+  const [openOnline, setOpenOnline] = useState(true);
+  const [openOffline, setOpenOffline] = useState(true);
 
   const [amigosOnline, setAmigosOnline] = useState<Array<JSX.Element>>([]);
   const [amigosOffline, setAmigosOffline] = useState<Array<JSX.Element>>([]);
@@ -108,30 +108,48 @@ const NestedList: React.FC<{friends: Array<FriendsData>}> = ({friends}) => {
       className={classes.root}
       id='lista-amigos'
     >
-      <ListItem button onClick={handleClick} key="button">
-        <ListItemIcon>
-          <ContactsIcon />
-        </ListItemIcon>
-        <ListItemText primary="Todos Amigos" />
-        {open ? <ExpandLess /> : <ExpandMore />}
-      </ListItem>
+      {
+        /*<ListItem button onClick={handleClick} key="button">
+          <ListItemIcon>
+            <ContactsIcon />
+          </ListItemIcon>
+          <ListItemText primary="Todos Amigos" />
+          {open ? <ExpandLess /> : <ExpandMore />}
+        </ListItem>*/
+      }
       <Collapse in={open} timeout="auto" unmountOnExit>
-        <ListItem button onClick={clickOnline} key="none3">
+        {
+          /*<ListItem button onClick={clickOnline} key="none3">
+            <ListItemIcon>
+              <FiberManualRecordIcon/>
+            </ListItemIcon>
+            <ListItemText primary="Disponível" />
+            {openOnline ? <ExpandLess /> : <ExpandMore />}
+          </ListItem>*/
+        }
+        <ListItem button key="none3">
           <ListItemIcon>
             <FiberManualRecordIcon/>
           </ListItemIcon>
           <ListItemText primary="Disponível" />
-          {openOnline ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
         <Collapse in={openOnline} timeout="auto" unmountOnExit>
           {amigosOnline}
         </Collapse>
-        <ListItem button onClick={clickOffline} key="none4">
+        {
+          /*<ListItem button onClick={clickOffline} key="none4">
+            <ListItemIcon>
+              <IndeterminateCheckBoxIcon/>
+            </ListItemIcon>
+            <ListItemText primary="Indisponível" />
+            {openOffline ? <ExpandLess /> : <ExpandMore />}
+          </ListItem>*/
+        }
+        <ListItem button key="none4">
           <ListItemIcon>
             <IndeterminateCheckBoxIcon/>
           </ListItemIcon>
           <ListItemText primary="Indisponível" />
-          {openOffline ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
         <Collapse in={openOffline} timeout="auto" unmountOnExit>
             {amigosOffline}

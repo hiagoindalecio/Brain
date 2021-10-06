@@ -2,6 +2,10 @@
   margin: 1em;
 }
 
+.clicked-button {
+  border-bottom: 2px solid #fff !important;
+}
+
 button {
   text-decoration: none;
   background: none;
@@ -108,10 +112,7 @@ button {
 
 .nav-item:hover {
   border-bottom: 2px solid #fff;
-}
-
-.nav-item:click {
-  border-bottom: 2px solid #fff;
+  cursor: pointer;
 }
 
 .fa-bars {

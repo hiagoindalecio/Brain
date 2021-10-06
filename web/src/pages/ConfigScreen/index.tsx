@@ -45,7 +45,7 @@ const ConfigScreen: React.FC = () => {
                     setProfilePic(
                         <Dropzone onFileUploaded={setSelectedfile} />
                     )
-                    $("button[type=button][id=cancelPic]").css("visibility", "visible");
+                    $("button[type=button][id=]").css("visibility", "visible");
                     setBtnPic('Salvar foto');
                 } else if(btnPic === 'Salvar foto') {
                     var result = await updateUser(user ? user.id as number : -1, null, null, selectedFile as File);

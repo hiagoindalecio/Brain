@@ -59,13 +59,13 @@ const Initial: React.FC = () => {
             );
         }
 
-        async function findFriends() {
+        /*async function findFriends() { LISTA DE AMIGOS DESATIVADA
             setFriendsComponent(<div></div>)
             setFriendsComponent(<ModalFriendsList friends={await getFriends(user ? user.id as number : -1)}></ModalFriendsList>);
         }
 
         findFriends();
-        setInterval(async () => {findFriends()}, 10000);
+        setInterval(async () => {findFriends()}, 10000);*/
     }, []);
     
     return (

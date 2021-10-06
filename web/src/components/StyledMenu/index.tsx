@@ -53,6 +53,7 @@ export default function CustomizedMenus() {
 
   function handleLogoff() {
     singOut(user? user.email as string : '', user? user.password as string : '');
+    history.push("/");
   }
 
   return (

@@ -18,20 +18,32 @@ const CheckpointsList: React.FC<{checkpointsResponse: Array<CheckpointsData>}> =
     const [isModalVsisble, setIsModalVisible] = useState(false);
     const [screen, setScreen] = useState<Array<JSX.Element>>([
         <div style={{ padding: 50 }}>
-            <h1>
+            <h3>
                 Parece que você ainda não possui checkpoints salvos :( <br/>
                 Vamos lá, adicione um novo checkpoint!
-            </h1>
+            </h3>
         </div>
     ]);
 
     useLayoutEffect(() => {
         if(checkpointsResponse.length > 0) {
-            setScreen(
-                [...checkpointsResponse].filter((c: { status: number; }) => c.status === 1).map((oneCheckpoint: { cod: number; codUser: number; summary: string; limitdate: string; description: string; }) => 
-                    <Checkpoint cod={oneCheckpoint.cod} codUser={oneCheckpoint.codUser} summary={oneCheckpoint.summary} limitdate={oneCheckpoint.limitdate} description={oneCheckpoint.description} />
-                )
-            );
+            var ativeCheckpoints = [...checkpointsResponse].filter((c) => c.status === 1);
+            
+            if (ativeCheckpoints.length > 0)
+                setScreen(
+                    ativeCheckpoints.map((oneCheckpoint) => 
+                        <Checkpoint cod={oneCheckpoint.cod} codUser={oneCheckpoint.codUser} summary={oneCheckpoint.summary} limitdate={oneCheckpoint.limitdate} description={oneCheckpoint.description} />
+                    )
+                );
+            else
+                setScreen([
+                    <div style={{ padding: 50 }}>
+                        <h3>
+                            Parece que você ainda não possui checkpoints ativos no momento :( <br/>
+                            Vamos lá, adicione um novo checkpoint!
+                        </h3>
+                    </div>
+                ]);
         }
     }, []);
 

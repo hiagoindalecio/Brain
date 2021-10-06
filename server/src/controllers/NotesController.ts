@@ -64,7 +64,7 @@ class NotesController {
                 message: 'Nova nova criada com sucesso!'
             });
         } catch (e) {
-            return response.status(400).json({ idNote: -1, mensagem: `Erro durante a criação da nota.  ${e.message}`});
+            return response.status(400).json({ idNote: -1, mensagem: `Erro durante a criação da nota.  ${e}`});
         }
     };
     

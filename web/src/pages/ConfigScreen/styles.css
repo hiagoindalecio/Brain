@@ -41,6 +41,7 @@
 
 .back-button {
   margin: 30px 30px;
+  cursor: pointer;
 }
 
 .form-config {

@@ -16,6 +16,7 @@ import CheckpointsList from '../../subpages/CheckpointsList';
 import AboutBrain from '../../subpages/AboutBrain';
 import NotesList from '../../subpages/NotesList';
 import SMenu from '../../components/StyledMenu';
+import ReactDOM from 'react-dom';
 
 const Home: React.FC = () =>  {
     const { singOut, user, currentScreen, selectScreen } = useContext(AuthContext);
@@ -29,22 +30,42 @@ const Home: React.FC = () =>  {
         handleSelectedField(currentScreen);
     }, []);
 
+    function clearSelection() {
+        let navButtons: HTMLCollectionOf<Element> = document.getElementsByClassName('nav-item');
+
+        for (let i = 0; i < navButtons.length; i++) {
+            navButtons[i].classList.remove('clicked-button');
+        }
+    }
+
+    function selectItemById(idElement:string) {
+        let buttonSelected: Element | null = document.getElementById(idElement);
+
+        if (buttonSelected != null)
+            buttonSelected.classList.add('clicked-button');
+    }
+
     async function handleSelectedField(componentName: string) {
         selectScreen(componentName);
+        clearSelection();
         switch(componentName) {
             case 'Home': {
+                selectItemById('btnHome');
                 setComponent(<Initial />);
                 break;
             }
             case 'Checkpoints': {
+                selectItemById('btnCheckpoints');
                 setComponent(<CheckpointsList checkpointsResponse={ await getCheckpoints(user ? user.id as number : -1) } />);
                 break;
             }
             case 'AboutBrain': {
+                selectItemById('btnAbout');
                 setComponent(<AboutBrain />);
                 break;
             }
             case 'Notes': {
+                selectItemById('btnNotes');
                 setComponent(<NotesList notesResponse={ await getNotes(user ? user.id as number : -1) } />);
                 break;
             }
@@ -78,16 +99,19 @@ const Home: React.FC = () =>  {
                                     {click ? <FaTimes /> : <FaBars />}   
                                 </div>
                                 <ul className={click ? 'nav-menu active' : 'nav-menu'} onClick={closeMobileMenu}>
-                                    <li className='nav-item' onClick={() => handleSelectedField('Home')} key="btnHome">
+                                    <li className='nav-item' onClick={() => handleSelectedField('Home')} id="btnHome" key="btnHome">
                                         Home
                                     </li>
-                                    <li className='nav-item' onClick={() => handleSelectedField('Checkpoints')} key="btnCheckpoints">
+                                    <li className='nav-item' onClick={() => handleSelectedField('Feed')} id="btnFeed" key="btnFeed">
+                                        Feed
+                                    </li>
+                                    <li className='nav-item' onClick={() => handleSelectedField('Checkpoints')} id="btnCheckpoints" key="btnCheckpoints">
                                         Meus Checkpoints
                                     </li>
-                                    <li className='nav-item' onClick={() => handleSelectedField('Notes')} key="btnNotes">
+                                    <li className='nav-item' onClick={() => handleSelectedField('Notes')} id="btnNotes" key="btnNotes">
                                         Minhas Notas
                                     </li>
-                                    <li className='nav-item' onClick={() => handleSelectedField('AboutBrain')} key="btnAbout">
+                                    <li className='nav-item' onClick={() => handleSelectedField('AboutBrain')} id="btnAbout" key="btnAbout">
                                         Sobre a Brain
                                     </li>
                                     <button className="link-btn" onClick={handleLogoff}>

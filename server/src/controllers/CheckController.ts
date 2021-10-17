@@ -1,13 +1,5 @@
 import { Request, Response } from 'express';
-import knex from '../database/connection'
-
-interface Chekpoint {
-    cod: number;
-    codUser: number;
-    summary: string;
-    limitdate: string;
-    description: string;
-}
+import knex from '../database/connection';
 
 class CheckController {
     async index(request: Request, response: Response) {

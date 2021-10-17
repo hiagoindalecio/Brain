@@ -7,7 +7,7 @@ const connection = knex({
         port: 3306,
         user: 'root',
         password: '',
-        database: 'web_project_dw'
+        database: 'brain_db'
     },
     useNullAsDefault: true,
 });

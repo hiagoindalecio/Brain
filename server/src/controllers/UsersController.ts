@@ -302,7 +302,7 @@ class UsersControllerr {
                         } catch (err) {
                             return response.status(400).json({
                                 id, 
-                                message: err.message
+                                message: err
                             })
                         }
                     } else {

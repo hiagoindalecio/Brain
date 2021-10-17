@@ -1,12 +1,6 @@
 import knex from '../database/connection';
 import { Request, Response } from 'express';
-
-interface friends{
-    cod_friend: number,
-    name_friend: string,
-    pic_friend: string,
-    accepted: number
-}
+import { friends } from '../interfaces/interfaces';
 
 class FriendsController {
     async index(request: Request, response: Response){

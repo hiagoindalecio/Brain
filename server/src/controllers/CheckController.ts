@@ -177,9 +177,25 @@ class CheckController {
                     .update('DESCRI_CHECK', description)
                     .update('DATA_CHECK', limitdate)
                     .where('COD_CHECK', idCheck);
-                    return response.status(201).json({
-                        message: `O checkpoint foi atualizado com sucesso.`
-                    });
+                    var checkpoint = await knex('user_checkpoint').where('COD_CHECK', idCheck);
+
+                    const activity = {
+                        COD_TYPE : 4,
+                        COD_USER : checkpoint[0].COD_USER,
+                        DESCRIPTION : checkpoint[0].SUMMARY_CHECK
+                    }
+
+                    try {
+                        await knex('user_activity').insert(activity);
+                        return response.status(201).json({
+                            message: `O checkpoint foi atualizado com sucesso.`
+                        });
+                    } catch (e) {
+                        console.log(e);
+                        return response.status(400).json({
+                            message: `Um erro ocorreu na criação da log após editar o checkpoint :(\n${e}`
+                        });
+                    }
                 }
             })
         } catch(e) {

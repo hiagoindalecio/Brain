@@ -59,6 +59,7 @@ class CheckController {
 
     async create(request: Request, response: Response) {
         const { id_user, summary, description, limitdate } = request.body;
+        
         const checkpoint = {
             COD_USER : id_user,
             SUMMARY_CHECK : summary,
@@ -68,11 +69,27 @@ class CheckController {
         }
         try {
             const insertedCheckpoint = await knex('user_checkpoint').insert(checkpoint);
-            return response.status(201).json({
-                id: insertedCheckpoint[0],
-                name: insertedCheckpoint[1],
-                message: 'Novo checkpoint criado com sucesso!'
-            });
+            const activity = {
+                COD_TYPE : 2,
+                COD_USER : id_user,
+                DESCRIPTION : checkpoint.SUMMARY_CHECK
+            }
+
+            try {
+                await knex('user_activity').insert(activity);
+                return response.status(201).json({
+                    id: insertedCheckpoint[0],
+                    name: checkpoint.SUMMARY_CHECK,
+                    message: 'Novo checkpoint criado com sucesso!'
+                });
+            } catch (e) {
+                console.log(e);
+                return response.status(400).json({
+                    id: -1,
+                    name: '',
+                    message: 'Uma falha ocorreu durante a criação do checkpoint :('
+                });
+            }
         } catch (e) {
             console.log(e);
             return response.status(400).json({

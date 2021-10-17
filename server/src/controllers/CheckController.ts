@@ -87,7 +87,7 @@ class CheckController {
                 return response.status(400).json({
                     id: -1,
                     name: '',
-                    message: 'Uma falha ocorreu durante a criação do checkpoint :('
+                    message: 'Uma falha ocorreu durante a criação do log após a criação do checkpoint :('
                 });
             }
         } catch (e) {

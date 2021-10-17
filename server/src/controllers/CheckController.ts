@@ -119,16 +119,32 @@ class CheckController {
             if (quantas === 0) {
                 try {
                     await knex('user_checkpoint').update({STATUS_CHECK: false}).where('COD_CHECK', idCheck);
+                    var checkpoint = await knex('user_checkpoint').where('COD_CHECK', idCheck);
                     var points = await knex('user_table').select('POINTS_USER').where('COD_USER', userId);
                     var userPoints = 0;
                     points.map(one => {
                         userPoints = one.POINTS_USER
                     })
                     await knex('user_table').update({POINTS_USER: (userPoints + 20)}).where('COD_USER', userId);
-                    return response.status(201).json({
-                        done: 1,
-                        message: `Checkpoint completo com sucesso. Parabéns você conquistou 20 pontos!`
-                    });
+                    const activity = {
+                        COD_TYPE : 1,
+                        COD_USER : userId,
+                        DESCRIPTION : checkpoint[0].SUMMARY_CHECK
+                    }
+
+                    try {
+                        await knex('user_activity').insert(activity);
+                        return response.status(201).json({
+                            done: 1,
+                            message: `Checkpoint completo com sucesso. Parabéns você conquistou 20 pontos!`
+                        });
+                    } catch (e) {
+                        console.log(e);
+                        return response.status(400).json({
+                            done: 0,
+                            message: `Um erro ocorreu durante a criação da log após completar o checkpoint :(\n${e}`
+                        });
+                    }
                 } catch(e) {
                     return response.status(400).json({
                         done: 0,

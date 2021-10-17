@@ -1,29 +1,6 @@
 import React, {createContext, useEffect, useState} from 'react';
+import { createNotesResponse, messageResponse, NotesContexData, NotesData } from '../interfaces/interfaces';
 import * as note from '../services/notes';
-
-interface NotesData {
-    idNote: number,
-    idUser: number,
-    summary: string,
-    desc: string
-}
-
-interface messageResponse {
-    message: string
-}
-
-interface createNotesResponse {
-    id: number,
-    message: string
-}
-
-interface NotesContexData {
-    loading: boolean;
-    getNotes: (idUser: number) => Promise<Array<NotesData>>;
-    setNotes: (id: number, name: string, message: string) => Promise<createNotesResponse>;
-    updateNotes: (idNote: number, summary: string, description: string) => Promise<messageResponse>;
-    drop: (idNote: number) => Promise<messageResponse>
-}
 
 const NotesContext = createContext<NotesContexData>({} as NotesContexData);
 

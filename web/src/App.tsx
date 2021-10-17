@@ -1,6 +1,8 @@
 import React from 'react';
 import './App.css';
 
+import '../src/bootstrap-4.5.3-dist/css/bootstrap.min.css';
+
 // Components
 import Routes from './routes';
 import { AuthProvider } from './contexts/auth';

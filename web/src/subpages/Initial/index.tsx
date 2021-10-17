@@ -13,14 +13,6 @@ import AuthContext from '../../contexts/auth';
 
 import './styles.css';
 
-interface FriendsData {
-    cod_friend: number,
-    name_friend: string,
-    pic_friend: string,
-    accepted: number,
-    user_online: number
-}
-
 const Initial: React.FC = () => {
     const { user } = useContext(AuthContext);
     const [level, setLevel] = useState<JSX.Element>(<div />);

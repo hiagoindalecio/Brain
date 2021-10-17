@@ -6,21 +6,14 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Collapse from '@material-ui/core/Collapse';
-import ExpandLess from '@material-ui/icons/ExpandLess';
-import ExpandMore from '@material-ui/icons/ExpandMore';
-import ContactsIcon from '@material-ui/icons/Contacts';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import IndeterminateCheckBoxIcon from '@material-ui/icons/IndeterminateCheckBox';
+/*import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import ContactsIcon from '@material-ui/icons/Contacts';*/
 
 import './styles.css';
-
-interface FriendsData {
-    cod_friend: number,
-    name_friend: string,
-    pic_friend: string,
-    accepted: number,
-    user_online: number
-}
+import { FriendsData } from '../../interfaces/interfaces';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

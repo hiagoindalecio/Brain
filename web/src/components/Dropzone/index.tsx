@@ -1,14 +1,11 @@
 import React, {useCallback, useState} from 'react';
 import {useDropzone} from 'react-dropzone';
 import { FiUpload } from 'react-icons/fi';
+import { DropzoneProps } from '../../interfaces/interfaces';
 
 import './styles.css';
 
-interface Props {
-    onFileUploaded: (file: File) => void;
-}
-
-const Dropzone: React.FC<Props> = (props) => {
+const Dropzone: React.FC<DropzoneProps> = (props) => {
   const [selectedFileUrl, setSelectedFileUrl] = useState('');
   const onDrop = useCallback(acceptedFiles => {
     const file = acceptedFiles[0];

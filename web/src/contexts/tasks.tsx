@@ -1,36 +1,6 @@
 import React, {createContext, useState} from 'react';
+import { completeResponse, createTasksResponse, messageResponse, Task, TasksContextData } from '../interfaces/interfaces';
 import * as task from '../services/tasks';
-
-interface Task {
-    idTask: number;
-    idCheck: number;
-    summary: string;
-    desc: string;
-    status: boolean;
-}
-
-interface TasksContextData {
-    loading: boolean;
-    getTasks: (idCheckpoint: number) => Promise<Array<Task>>;
-    setTasks: (idCheck: number, summary: string, description: string) => Promise<createTasksResponse>;
-    updateTask: (idTask: number, summary: string, description: string) => Promise<messageResponse>;
-    completeTask: (idTask: number) => Promise<completeResponse>
-}
-
-interface createTasksResponse {
-    id: number,
-    name: string,
-    message: string
-}
-
-interface messageResponse {
-    message: string;
-}
-
-interface completeResponse {
-    done: number,
-    message: string
-}
 
 const TaskContext = createContext<TasksContextData>({} as TasksContextData);
 

@@ -1,21 +1,13 @@
 import React, { useContext, useState } from 'react'
-import '../../bootstrap-4.5.3-dist/css/bootstrap.min.css';
 import './Modal.css'
 
 import TaskContex from '../../contexts/tasks';
 import AuthContext from '../../contexts/auth';
 
 import ModalMessage from '../../components/ModalMessages/ModalMessages';
+import { ModalTaskProps } from '../../interfaces/interfaces';
 
-interface ModalProps {
-    props : {
-        idTask: number;
-        title: string;
-    };
-    onClose: () => void;
-}
-
-const ModalCompleteCheckpoint: React.FC<ModalProps> = ({props, onClose}) => {
+const ModalCompleteCheckpoint: React.FC<ModalTaskProps> = ({props, onClose}) => {
     const { completeTask } = useContext(TaskContex);
     const { setPoints, user } = useContext(AuthContext);
     const [isModalMessageVisible, setIsModalMessageVisible] = useState(false);

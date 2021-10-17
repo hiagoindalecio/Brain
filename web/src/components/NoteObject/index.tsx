@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import './styles.css';
 
-import '../../bootstrap-4.5.3-dist/css/bootstrap.min.css';
 import ModalNotes from '../../components/ModalNotes/ModalNotes';
 import ModalDropNotes from '../../components/ModalDropNote/ModalDropNote';
 

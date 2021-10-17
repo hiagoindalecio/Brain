@@ -1,28 +1,6 @@
 import { response } from 'express';
+import { completeResponse, createTasksResponse, messageResponse, tasksResponse } from '../interfaces/interfaces';
 import api from './api';
-
-interface tasksResponse {
-    idTask: number;
-    idCheck: number;
-    summary: string;
-    desc: string;
-    status: boolean;
-}
-
-interface createTasksResponse {
-    id: number,
-    name: string,
-    message: string
-}
-
-interface messageResponse {
-    message: string;
-}
-
-interface completeResponse {
-    done: number,
-    message: string
-}
 
 export function getTasks(idCheckpoint: number): Promise<tasksResponse[]> {
     return new Promise(async (resolve) => {

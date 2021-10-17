@@ -1,20 +1,5 @@
+import { createNotesResponse, messageResponse, notesResponse } from '../interfaces/interfaces';
 import api from './api';
-
-interface notesResponse {
-    idNote: number,
-    idUser: number,
-    summary: string,
-    desc: string
-}
-
-interface createNotesResponse {
-    id: number,
-    message: string
-}
-
-interface messageResponse {
-    message: string
-}
 
 export function getNotes(idUser: number): Promise<notesResponse[]> {
     return new Promise(async (resolve) => {

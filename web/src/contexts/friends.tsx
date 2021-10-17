@@ -1,18 +1,6 @@
 import React, {createContext, useState} from 'react';
+import { FriendsContextData, FriendsData } from '../interfaces/interfaces';
 import * as friends from '../services/friends';
-
-interface FriendsData {
-    cod_friend: number,
-    name_friend: string,
-    pic_friend: string,
-    accepted: number,
-    user_online: number
-}
-
-interface FriendsContextData {
-    loading: boolean;
-    getFriends: (idUser: number) => Promise<Array<FriendsData>>;
-}
 
 const FriendsContext = createContext<FriendsContextData>({} as FriendsContextData);
 

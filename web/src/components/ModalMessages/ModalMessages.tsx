@@ -1,15 +1,8 @@
 import React from 'react'
-import '../../bootstrap-4.5.3-dist/css/bootstrap.min.css';
+import { ModalMessagesProps } from '../../interfaces/interfaces';
 import './Modal.css'
 
-interface ModalProps {
-    props : {
-        message: string;
-    };
-    onClose: () => void;
-}
-
-const ModalMessage: React.FC<ModalProps> = ({props, onClose}) => {
+const ModalMessage: React.FC<ModalMessagesProps> = ({props, onClose}) => {
     const overlayRef = React.useRef(null);
     const handleOverlayClick = (e : React.MouseEvent<HTMLElement, MouseEvent>) => {
         if(e.target === overlayRef.current){

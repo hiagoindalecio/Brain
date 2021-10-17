@@ -1,6 +1,5 @@
 import React from 'react';
 import './styles.css';
-import '../../bootstrap-4.5.3-dist/css/bootstrap.min.css';
 import { FiLogIn } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 

@@ -1,46 +1,6 @@
 import React, {createContext, useState} from 'react';
+import { CheckpointsContextData, CheckpointsData, completeResponse, createCheckpointResponse, messageResponse } from '../interfaces/interfaces';
 import * as checkpoint from '../services/checkpoints';
-
-interface Task {
-    idTask: number;
-    idCheck: number;
-    summary: string;
-    desc: string;
-    status: boolean;
-}
-
-interface CheckpointsData {
-    cod: number;
-    codUser: number;
-    summary: string;
-    limitdate: string;
-    description: string;
-    status: number;
-}
-
-interface createCheckpointResponse {
-    id: number,
-    name: string,
-    message: string
-}
-
-interface messageResponse {
-    message: string
-}
-
-interface completeResponse {
-    done: number,
-    message: string
-}
-
-interface CheckpointsContextData {
-    loading: boolean;
-    getCheckpoints: (idUser: number) => Promise<Array<CheckpointsData>>;
-    setCheckpoint: (id_user: number, summary: string, description: string, limitdate: string) => Promise<createCheckpointResponse>;
-    updateCheckpoint: (idCheck: number, summary: string, description: string, limitdate: string) => Promise<messageResponse>;
-    completeCheckpoint: (idCheck: number) => Promise<completeResponse>;
-    deleteCheckpoint: (idCheck: number) => Promise<messageResponse>
-}
 
 const CheckpointsContext = createContext<CheckpointsContextData>({} as CheckpointsContextData);
 
@@ -55,7 +15,6 @@ export const CheckpointsProvider: React.FC = ({ children }) => {
             checkpointReply.map(async oneCheckpoint => {
                 responseArray.push(oneCheckpoint);
             });
-            //console.log(responseArray);
             resolve(responseArray);
         });
     };

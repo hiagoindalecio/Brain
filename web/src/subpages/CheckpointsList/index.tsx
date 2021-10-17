@@ -2,17 +2,7 @@ import React, { useEffect, useLayoutEffect, useState } from 'react';
 import './styles.css';
 import Checkpoint from '../../components/CheckpointObject';
 import Modal from '../../components/ModalCheckpoint/Modal';
-import '../../bootstrap-4.5.3-dist/css/bootstrap.min.css';
-import { JsxEmit } from 'typescript';
-
-interface CheckpointsData {
-    cod: number,
-    codUser: number,
-    summary: string,
-    limitdate: string,
-    description: string,
-    status: number
-}
+import { CheckpointsData } from '../../interfaces/interfaces';
 
 const CheckpointsList: React.FC<{checkpointsResponse: Array<CheckpointsData>}> = ({checkpointsResponse}) => {
     const [isModalVsisble, setIsModalVisible] = useState(false);

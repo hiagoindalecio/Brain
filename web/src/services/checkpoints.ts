@@ -1,28 +1,5 @@
+import { checkpointResponse, completeResponse, createCheckpointResponse, messageResponse } from '../interfaces/interfaces';
 import api from './api';
-
-interface checkpointResponse {
-    cod: number;
-    codUser: number;
-    summary: string;
-    limitdate: string;
-    description: string;
-    status: number;
-}
-
-interface createCheckpointResponse {
-    id: number,
-    name: string,
-    message: string
-}
-
-interface messageResponse {
-    message: string
-}
-
-interface completeResponse {
-    done: number,
-    message: string
-}
 
 export function getCheckpoints(idUser: number): Promise<checkpointResponse[]> {
     return new Promise((resolve) => {

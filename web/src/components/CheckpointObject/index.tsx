@@ -3,21 +3,13 @@ import './styles.css';
 
 import TaskContext from '../../contexts/tasks';
 
-import Task from '../TaskObject';
+import TaskComp from '../TaskObject';
 import ModalTask from '../../components/ModalTasks/ModalTasks';
 import ModalCheck from '../../components/ModalCheckpoint/Modal';
 import ModalCompleteCheckpoint from '../../components/ModalCompleteCheckpoint/ModalCompleteCheckpoint';
 import ModalDeleteCheckpoint from '../../components/ModalDeleteCheckpoint/ModalDeleteCheckpoint';
 
-import '../../bootstrap-4.5.3-dist/css/bootstrap.min.css';
-
-interface Task {
-    idTask: number,
-    idCheck: number,
-    summary: string,
-    desc: string,
-    status: boolean
-}
+import { Task } from '../../interfaces/interfaces';
 
 const Checkpoint: React.FC<{
     cod: number,
@@ -128,7 +120,7 @@ const Checkpoint: React.FC<{
                 {
                     [...checkTasks].map((task, index: number) => {
                         if(task.status) {
-                            return <div key={index}><br/><Task idTask={task.idTask} idCheck={cod} summary={task.summary} desc={task.desc} status={task.status} /></div>
+                            return <div key={index}><br/><TaskComp idTask={task.idTask} idCheck={cod} summary={task.summary} desc={task.desc} status={task.status} /></div>
                         }
                     })
                 }
@@ -138,7 +130,7 @@ const Checkpoint: React.FC<{
                 {
                     [...finalizedCheckTasks].map((task, index: number) => {
                         if(!task.status) {
-                            return <div key={index}><br/><Task idTask={task.idTask} idCheck={cod} summary={task.summary} desc={task.desc} status={task.status} /></div>
+                            return <div key={index}><br/><TaskComp idTask={task.idTask} idCheck={cod} summary={task.summary} desc={task.desc} status={task.status} /></div>
                         }
                     })
                 }

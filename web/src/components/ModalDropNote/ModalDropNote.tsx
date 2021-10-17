@@ -1,20 +1,12 @@
 import React, { useContext, useState } from 'react'
-import '../../bootstrap-4.5.3-dist/css/bootstrap.min.css';
 import './Modal.css'
 
 import NotesContex from '../../contexts/notes';
 
 import ModalMessage from '../../components/ModalMessages/ModalMessages';
+import { ModalDropNoteProps } from '../../interfaces/interfaces';
 
-interface ModalProps {
-    props : {
-        idNote: number;
-        title: string;
-    };
-    onClose: () => void;
-}
-
-const ModalDropNote: React.FC<ModalProps> = ({props, onClose}) => {
+const ModalDropNote: React.FC<ModalDropNoteProps> = ({props, onClose}) => {
     const { drop } = useContext(NotesContex);
     const [isModalMessageVisible, setIsModalMessageVisible] = useState(false);
     const [message, setMessage] = useState<string>('');

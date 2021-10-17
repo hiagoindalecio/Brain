@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-import '../../bootstrap-4.5.3-dist/css/bootstrap.min.css';
-
 import Modal from '../../components/ModalTasks/ModalTasks';
 import ModalComplete from '../../components/ModalCompleteTask/ModalCompleteTask';
 

@@ -1,12 +1,5 @@
+import { friendsResponse } from '../interfaces/interfaces';
 import api from './api';
-
-interface friendsResponse {
-    cod_friend: number,
-    name_friend: string,
-    pic_friend: string,
-    accepted: number,
-    user_online: number
-}
 
 export function getFriends(idUser: number): Promise<friendsResponse[]> {
     return new Promise(async (resolve) => {

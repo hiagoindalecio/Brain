@@ -2,14 +2,7 @@ import React, { useLayoutEffect, useState } from 'react';
 import './styles.css';
 import Note from '../../components/NoteObject';
 import Modal from '../../components/ModalNotes/ModalNotes';
-import '../../bootstrap-4.5.3-dist/css/bootstrap.min.css';
-
-interface NotesData {
-    idNote: number,
-    idUser: number,
-    summary: string,
-    desc: string
-}
+import { NotesData } from '../../interfaces/interfaces';
 
 const NotesList: React.FC<{notesResponse: Array<NotesData>}> = ({notesResponse}) => {
     const [isModalVsisble, setIsModalVisible] = useState(false);

@@ -1,34 +1,5 @@
+import { singOutResponse, UserEditResponse, UserUpdateResponse, userValidationResponse } from '../interfaces/interfaces';
 import api from './api';
-
-interface userValidationResponse {
-    user: {
-        id: number;
-        name: string;
-        email: string;
-        points: number;
-        password: string;
-        image_url: string;
-    }
-}
-
-interface UserEditResponse {
-    message: string;
-}
-
-interface UserUpdateResponse {
-    message: string,
-    userReply: {
-        id: number,
-        name: string,
-        password: string,
-        image_url: string
-    }
-}
-
-interface singOutResponse {
-    id: number, 
-    message: string
-}
 
 export async function singIn(email: string, password: string): Promise<userValidationResponse> {
     return new Promise((resolve) => {

@@ -1,27 +1,6 @@
 import React, {createContext, useEffect, useState } from 'react';
+import { AuthContextData, User } from '../interfaces/interfaces';
 import * as auth from '../services/auth';
-
-interface User {
-    id: number | undefined;
-    name: string | undefined;
-    email: string | undefined;
-    points: number | undefined;
-    password: string | undefined;
-    image_url: string | undefined;
-}
-
-interface AuthContextData {
-    signed: boolean;
-    user: User | null;
-    loading: boolean;
-    currentScreen: string;
-    singIn(email: string, password: string): Promise<string>;
-    createUser(email: string, password: string, name: string, image: File): Promise<string>;
-    updateUser(id: number, name: string | null, password: string | null, image: File | null): Promise<string>;
-    singOut(email: string, password: string): Promise<string>;
-    setPoints(pointsUser: number): void;
-    selectScreen(eleme: string): void;
-}
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 

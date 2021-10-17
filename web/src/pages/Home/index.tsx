@@ -1,6 +1,5 @@
 import React, { useState, useContext, useLayoutEffect } from 'react';
 import './styles.css';
-import '../../bootstrap-4.5.3-dist/css/bootstrap.min.css';
 import { FaBars, FaTimes } from 'react-icons/fa';
 
 import AuthContext from '../../contexts/auth';

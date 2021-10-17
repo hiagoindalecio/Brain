@@ -1,25 +1,15 @@
 import React,{ useContext, FormEvent, useState } from 'react'
-import '../../bootstrap-4.5.3-dist/css/bootstrap.min.css';
 import './Modal.css'
-import $ from "jquery";
 
 import AuthContext from '../../contexts/auth';
 import CheckpointsContext from '../../contexts/checkpoints';
 
 import ModalMessage from '../../components/ModalMessages/ModalMessages';
+import { ModalCheckProps } from '../../interfaces/interfaces';
 
-interface ModalProps {
-    props : {
-        id: number,
-        summary: string,
-        description: string,
-        date: string
-    };
-    onClose: () => void;
-}
-
-    
-const Modal: React.FC<ModalProps> = ({props, onClose}) => {
+import $ from "jquery";
+  
+const Modal: React.FC<ModalCheckProps> = ({props, onClose}) => {
     const { user } = useContext(AuthContext);
     const { setCheckpoint, updateCheckpoint } = useContext(CheckpointsContext);
     const [isModalMessageVisible, setIsModalMessageVisible] = useState(false);

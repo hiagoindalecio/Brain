@@ -1,21 +1,13 @@
 import React, { useContext, useState } from 'react'
-import '../../bootstrap-4.5.3-dist/css/bootstrap.min.css';
 import './Modal.css'
 
 import CheckpointsContext from '../../contexts/checkpoints';
 import AuthContext from '../../contexts/auth';
 
 import ModalMessage from '../../components/ModalMessages/ModalMessages';
+import { ModalPropsCompleteCheck } from '../../interfaces/interfaces';
 
-interface ModalProps {
-    props : {
-        idCheck: number;
-        title: string;
-    };
-    onClose: () => void;
-}
-
-const ModalCompleteCheckpoint: React.FC<ModalProps> = ({props, onClose}) => {
+const ModalCompleteCheckpoint: React.FC<ModalPropsCompleteCheck> = ({props, onClose}) => {
     const { completeCheckpoint } = useContext(CheckpointsContext);
     const { setPoints, user } = useContext(AuthContext);
     const [isModalMessageVisible, setIsModalMessageVisible] = useState(false);

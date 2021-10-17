@@ -1,24 +1,15 @@
 import React,{ useContext, FormEvent, useState } from 'react'
-import '../../bootstrap-4.5.3-dist/css/bootstrap.min.css';
 import './Modal.css'
-import $ from "jquery";
 
 import AuthContext from '../../contexts/auth';
 import TaskContext from '../../contexts/tasks';
 
 import ModalMessage from '../../components/ModalMessages/ModalMessages';
+import { ModalTasksProps } from '../../interfaces/interfaces';
 
-interface ModalProps {
-    props : {
-        id: number,
-        idCheck: number,
-        summary: string,
-        description: string
-    };
-    onClose: () => void;
-}
+import $ from "jquery";
 
-const Modal: React.FC<ModalProps> = ({props, onClose}) => {
+const Modal: React.FC<ModalTasksProps> = ({props, onClose}) => {
     const { user } = useContext(AuthContext);
     const { setTasks, updateTask } = useContext(TaskContext);
     const [isModalMessageVisible, setIsModalMessageVisible] = useState(false);

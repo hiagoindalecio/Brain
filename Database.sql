@@ -115,7 +115,7 @@ CREATE TABLE activity_type
 INSERT INTO activity_type(DESCRIPTION)
 	VALUES('completou um checkpoint e recebou 20 pontos de score'),
 		  ('adicionou um checkpoint'),
-		  ('excluiu um checkpoint'),
+		  ('excluiu um checkpoint e todas as tasks nele inclusas'),
 		  ('editou um checkpoint'),
 		  ('completou uma task e recebou 10 pontos de score'),
 		  ('adicionou uma task'),

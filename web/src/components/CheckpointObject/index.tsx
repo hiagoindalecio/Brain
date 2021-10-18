@@ -140,7 +140,7 @@ const Checkpoint: React.FC<{
                 {isModalCheckVisible ? <ModalCheck props={{id: cod, summary, description, date: limitdate}} onClose={() => {setIsModalTaskVisible(false); window.location.reload();}}></ModalCheck> : null}
                 <button type="button" className="btn btn-primary btn-sm" onClick={() => (setIsModalTaskVisible(true))}>Adicionar Task</button>
                 {isModalTaskVisible ? <ModalTask props={{id: -1, idCheck: cod, summary: '', description: ''}} onClose={() => {setIsModalTaskVisible(false); window.location.reload();}}></ModalTask> : null}
-                <button type="button" className="btn btn-primary btn-sm btn-drop" onClick={() => (setIsModalDeleteVisible(true))}>Cancelar</button>
+                <button type="button" className="btn btn-primary btn-sm btn-drop" onClick={() => (setIsModalDeleteVisible(true))}>Excluir</button>
                 {isModalDeleteVisible ? <ModalDeleteCheckpoint props={{idCheck: cod, title: summary}} onClose={() => {setIsModalDeleteVisible(false); window.location.reload();}}></ModalDeleteCheckpoint> : null}
             </div>
         </div>

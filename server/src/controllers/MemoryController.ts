@@ -3,7 +3,7 @@ import knex from '../database/connection'
 
 
 class MemoryController {
-    async index(request: Request, response: Response) {
+    async index(response: Response) {
         const trx = await knex.transaction();
         const general = await trx ('memory_user').select('*');
         
@@ -61,7 +61,7 @@ class MemoryController {
                 message: 'New Memory created successfully'
             });
         } catch (e) {
-            return response.status(400).json({ mensagem: `Error during the Memorys creation. ${e.message}`});
+            return response.status(400).json({ mensagem: `Error during the Memorys creation. ${e}`});
         }
     };
 

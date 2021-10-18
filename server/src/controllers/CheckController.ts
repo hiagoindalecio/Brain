@@ -87,7 +87,7 @@ class CheckController {
                 return response.status(400).json({
                     id: -1,
                     name: '',
-                    message: 'Uma falha ocorreu durante a criação do log após a criação do checkpoint :('
+                    message: `Uma falha ocorreu durante a criação do log após a criação do checkpoint :(\n${e}`
                 });
             }
         } catch (e) {
@@ -95,7 +95,7 @@ class CheckController {
             return response.status(400).json({
                 id: -1,
                 name: '',
-                message: 'Uma falha ocorreu durante a criação do checkpoint :('
+                message: `Uma falha ocorreu durante a criação do checkpoint :(\n${e}`
             });
         }
     };
@@ -193,7 +193,7 @@ class CheckController {
                     } catch (e) {
                         console.log(e);
                         return response.status(400).json({
-                            message: `Um erro ocorreu na criação da log após editar o checkpoint :(\n${e}`
+                            message: `Um erro ocorreu na criação da log após a edição do checkpoint :(\n${e}`
                         });
                     }
                 }
@@ -209,11 +209,27 @@ class CheckController {
         const { idCheck } = request.body;
 
         try {
+            const checkpoint = await knex('user_checkpoint').where('COD_CHECK', idCheck);
             await knex('checkpoint_tasks').delete().where('COD_CHECK', idCheck);
             await knex('user_checkpoint').delete().where('COD_CHECK', idCheck);
-            return response.status(201).json({
-                message: `O checkpoint foi excluído com sucesso.`
-            });
+
+            const activity = {
+                COD_TYPE : 3,
+                COD_USER : checkpoint[0].COD_USER,
+                DESCRIPTION : checkpoint[0].SUMMARY_CHECK
+            }
+
+            try {
+                await knex('user_activity').insert(activity);
+                return response.status(201).json({
+                    message: `O checkpoint foi excluído com sucesso.`
+                });
+            } catch (e) {
+                console.log(e);
+                return response.status(400).json({
+                    message: `Um erro ocorreu na criação da log após a exclusão do checkpoint :(\n${e}`
+                });
+            }
         } catch (e) {
             return response.status(400).json({
                 message: `Um erro ocorreu, verifique o id e tente novamente. ${e}`

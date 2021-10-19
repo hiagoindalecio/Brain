@@ -58,7 +58,7 @@ class UsersControllerr {
                     POINTS_USER: 0,
                     IMAGE: img
                 }
-                try{
+                try {
                     await knex('user_table').insert(user);
                     const serializedResponse = {
                         message: 'Novo usuário criado com sucesso.'

@@ -240,4 +240,3 @@ class CheckController {
 }
 
 export default CheckController;
-

@@ -108,11 +108,11 @@ DROP TABLE IF EXISTS activity_type;
 CREATE TABLE activity_type
 (
 	COD_TYPE BIGINT NOT NULL AUTO_INCREMENT,
-	DESCRIPTION VARCHAR(60),
+	DESCRI_ACTIVITY_TYPE VARCHAR(60),
 	PRIMARY KEY (COD_TYPE)
 );
 
-INSERT INTO activity_type(DESCRIPTION)
+INSERT INTO activity_type(DESCRI_ACTIVITY_TYPE)
 	VALUES('completou um checkpoint e recebou 20 pontos de score'),
 		  ('adicionou um checkpoint'),
 		  ('excluiu um checkpoint e todas as tasks nele inclusas'),

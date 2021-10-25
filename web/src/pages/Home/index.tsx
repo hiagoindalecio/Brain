@@ -15,7 +15,7 @@ import CheckpointsList from '../../subpages/CheckpointsList';
 import AboutBrain from '../../subpages/AboutBrain';
 import NotesList from '../../subpages/NotesList';
 import SMenu from '../../components/StyledMenu';
-import ReactDOM from 'react-dom';
+import Feed from '../../subpages/Feed';
 
 const Home: React.FC = () =>  {
     const { singOut, user, currentScreen, selectScreen } = useContext(AuthContext);
@@ -51,6 +51,11 @@ const Home: React.FC = () =>  {
             case 'Home': {
                 selectItemById('btnHome');
                 setComponent(<Initial />);
+                break;
+            }
+            case 'Feed': {
+                selectItemById('btnFeed');
+                setComponent(<Feed />);
                 break;
             }
             case 'Checkpoints': {

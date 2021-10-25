@@ -10,20 +10,23 @@ import { CheckpointsProvider } from './contexts/checkpoints';
 import { NotesProvider } from './contexts/notes';
 import { TasksProvider } from './contexts/tasks';
 import { FriendsProvider } from './contexts/friends';
+import { ActivityProvider } from './contexts/activity';
 
 function App() {
   return (
-    <TasksProvider>
-      <NotesProvider>
-        <CheckpointsProvider>
-          <AuthProvider>
-            <FriendsProvider>
-              <Routes />
-            </FriendsProvider>
-          </AuthProvider>
-        </CheckpointsProvider>
-      </NotesProvider>
-    </TasksProvider>
+    <ActivityProvider>
+      <TasksProvider>
+        <NotesProvider>
+          <CheckpointsProvider>
+            <AuthProvider>
+              <FriendsProvider>
+                <Routes />
+              </FriendsProvider>
+            </AuthProvider>
+          </CheckpointsProvider>
+        </NotesProvider>
+      </TasksProvider>
+    </ActivityProvider>
   );
 }
 

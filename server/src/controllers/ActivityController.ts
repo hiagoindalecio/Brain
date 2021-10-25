@@ -30,7 +30,7 @@ class ActivityController {
         }
     }
 
-    async findFriends(request: Request, response: Response) {
+    async getFriendsActivity(request: Request, response: Response) {
         const { userId } = request.params;
         const updatesFriends = await knex.select('*')
             .from('user_activity')
@@ -53,12 +53,11 @@ class ActivityController {
             response.status(200).send(serializedItems);    
         } catch (e) {
             response.status(400).json({
-                cod: -1,
-                codUser: -1,
-                summary: '',
-                limitdate: '',
-                description: '',
-                status: false
+                codActivity: -1,
+                descriType: '',
+                nameUser: '',
+                description: e,
+                updateTime: null
             });
         }
     }

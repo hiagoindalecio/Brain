@@ -131,6 +131,14 @@ export interface tasksResponse {
     desc: string;
     status: boolean;
 }
+
+export interface activityResponse {
+    codActivity: number,
+    descriType: string,
+    nameUser: string,
+    description: string,
+    updateTime: Date
+}
 //#endregion
 
 //#region contexts
@@ -175,6 +183,11 @@ export interface CheckpointsContextData {
     updateCheckpoint: (idCheck: number, summary: string, description: string, limitdate: string) => Promise<messageResponse>;
     completeCheckpoint: (idCheck: number) => Promise<completeResponse>;
     deleteCheckpoint: (idCheck: number) => Promise<messageResponse>
+}
+
+export interface ActivityContextData {
+    loading: boolean;
+    getFriendsActivity: (idUser: number) => Promise<Array<activityResponse>>;
 }
 //#endregion
 

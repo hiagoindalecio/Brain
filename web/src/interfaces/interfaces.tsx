@@ -137,7 +137,8 @@ export interface activityResponse {
     descriType: string,
     nameUser: string,
     description: string,
-    updateTime: Date
+    updateTime: Date,
+    profilePic: string
 }
 //#endregion
 

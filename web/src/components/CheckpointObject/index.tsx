@@ -36,6 +36,13 @@ const Checkpoint: React.FC<{
     const [isModalDeleteVisible, setIsModalDeleteVisible] = useState(false);
 
     useEffect(() => {
+        function convertData(): void {
+            var converted: Array<string> = limitdate.split('-');
+            converted[2] = converted[2].split('T')[0];
+            var finalConversion: string = converted[2] + '/' + converted[1] + '/' + converted[0];
+            setDateLimit(finalConversion);
+        }
+        
         convertData();
     }, []);
 
@@ -99,13 +106,6 @@ const Checkpoint: React.FC<{
             setButtonText2('+ Abrir tasks finalizadas');
             setFinalizedCheckTasks([]);
         }
-    }
-
-    function convertData(): void {
-        var converted: Array<string> = limitdate.split('-');
-        converted[2] = converted[2].split('T')[0];
-        var finalConversion: string = converted[2] + '/' + converted[1] + '/' + converted[0];
-        setDateLimit(finalConversion);
     }
 
     return (

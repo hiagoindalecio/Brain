@@ -6,7 +6,8 @@ class ActivityController {
         const general = await knex.select('*')
             .from('user_activity')
             .leftJoin('activity_type', 'user_activity.COD_TYPE', 'activity_type.COD_TYPE')
-            .leftJoin('user_table', 'user_activity.COD_USER', 'user_table.COD_USER');
+            .leftJoin('user_table', 'user_activity.COD_USER', 'user_table.COD_USER')
+            .orderBy('UPDATETIME', 'desc');
         try {
             const serializedItems  = general.map( item => { // Percorre e reorganiza o que sera retornado
                 return {
@@ -14,7 +15,8 @@ class ActivityController {
                     descriType: item.DESCRI_ACTIVITY_TYPE,
                     nameUser: item.NAME_USER,
                     description: item.DESCRIPTION,
-                    updateTime: item.UPDATETIME
+                    updateTime: item.UPDATETIME,
+                    profilePic: `http://localhost:3334/uploads/${item.IMAGE}`
                 };
             } );
 
@@ -25,7 +27,8 @@ class ActivityController {
                 descriType: '',
                 nameUser: '',
                 description: e,
-                updateTime: null
+                updateTime: null,
+                profilePic: ''
             };
         }
     }
@@ -37,7 +40,8 @@ class ActivityController {
             .leftJoin('friends_user', 'friends_user.COD_FRIEND', 'user_activity.COD_USER')
             .where('friends_user.COD_USER', userId)
             .leftJoin('activity_type', 'user_activity.COD_TYPE', 'activity_type.COD_TYPE')
-            .leftJoin('user_table', 'user_activity.COD_USER', 'user_table.COD_USER');
+            .leftJoin('user_table', 'user_activity.COD_USER', 'user_table.COD_USER')
+            .orderBy('UPDATETIME', 'desc');;
 
         try {
             const serializedItems  = updatesFriends.map( item => { // Percorre e reorganiza o que sera retornado
@@ -46,7 +50,8 @@ class ActivityController {
                     descriType: item.DESCRI_ACTIVITY_TYPE,
                     nameUser: item.NAME_USER,
                     description: item.DESCRIPTION,
-                    updateTime: item.UPDATETIME
+                    updateTime: item.UPDATETIME,
+                    profilePic: `http://localhost:3334/uploads/${item.IMAGE}`
                 };
             } );
 
@@ -57,7 +62,8 @@ class ActivityController {
                 descriType: '',
                 nameUser: '',
                 description: e,
-                updateTime: null
+                updateTime: null,
+                profilePic: ''
             });
         }
     }

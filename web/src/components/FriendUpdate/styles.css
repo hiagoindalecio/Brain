@@ -1,0 +1,14 @@
+.card {
+  max-width: 85%;
+  margin: auto;
+  padding: 10px;
+}
+
+.friend-picture {
+  max-width: 53px;
+  max-height: 53px;
+
+  border-radius: 50%;
+
+  margin-right: 20px;
+}

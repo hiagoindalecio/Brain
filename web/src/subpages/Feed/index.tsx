@@ -1,4 +1,5 @@
 import React, { useContext, useLayoutEffect, useState } from 'react';
+import FriendUpdate from '../../components/FriendUpdate';
 import ActivityContext from '../../contexts/activity';
 import AuthContext from '../../contexts/auth';
 import './styles.css';
@@ -6,7 +7,16 @@ import './styles.css';
 const Feed : React.FC = () => {
     const { user } = useContext(AuthContext);
     const { getFriendsActivity } = useContext(ActivityContext);
-    const [divs, setDivs] = useState<[JSX.Element]>();
+    const [divs, setDivs] = useState<[JSX.Element]>(
+        [
+            <div style={{ padding: 50 }}>
+                <h3>
+                    Parece que as coisas estão meio vazias por aqui :( <br/>
+                    Vamos lá, pesquise por amigos e veja suas atualizações!
+                </h3>
+            </div>
+        ]
+    );
 
     useLayoutEffect(() => {
         findFriendsActivity();
@@ -14,23 +24,16 @@ const Feed : React.FC = () => {
 
     async function findFriendsActivity() {
         const act = await getFriendsActivity(user ? user.id as number : -1);
-        console.log(act);
+
         if(act.length > 0) {
-            var divss: [JSX.Element] = [<p>teste</p>];
+            var elements: [JSX.Element] = [<p></p>];
             act.map((acti) => {
-                divss.push(
-                    <><div>
-                        <p>{acti.codActivity}</p>
-                        <br />
-                        <h3>{acti.nameUser} {acti.descriType}</h3>
-                        <br />
-                        <h2>{acti.description}</h2>
-                        <br />
-                        <p>{acti.updateTime}</p>
-                    </div><br /> <br /></>)
+                elements.push(
+                    <><FriendUpdate activity={acti} /><br /></>
+                )
             })
 
-            setDivs(divss);
+            setDivs(elements);
         }
     }
 

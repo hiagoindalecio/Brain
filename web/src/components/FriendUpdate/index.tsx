@@ -12,17 +12,47 @@ const FriendUpdate: React.FC<{
     const [formatDate, setFormatDate] = useState<string>();
 
     useEffect(() => {
-        var now = new Date();
+        function SplitTime(numberOfHours: number){
+            var Days = Math.floor(numberOfHours/24);
+            var Remainder = numberOfHours % 24;
+            var Hours = Math.floor(Remainder);
+            var Minutes = Math.floor(60*(Remainder-Hours));
+            return({"Days":Days,"Hours":Hours,"Minutes":Minutes})
+        }
+        
+        function takeTime() {
+            var now = new Date();
+            var ms = moment(now.toJSON().slice(0, 19),"YYYY-MM-DDTHH:mm:ss").diff(moment(activity.updateTime,"YYYY-MM-DDTHH:mm:ss"));
+            var d = moment.duration(ms);
+            var timeAgo = Math.floor(d.asHours()) + moment.utc(ms).format(":mm");
 
-        console.log(now.toJSON().slice(0, 19), activity.updateTime)
-        var ms = moment(now.toJSON().slice(0, 19),"DD-MM-YYYYTHH:mm:ss").diff(moment(activity.updateTime,"DD-MM-YYYYTHH:mm:ss"));
-        console.log(ms);
-        var d = moment.duration(ms);
-        console.log(d)
-        var s = Math.floor(d.asHours()) + moment.utc(ms).format(":mm:ss");
-        console.log(s);
+            if (timeAgo.split(':')[0] as unknown as number >= 24) { // Caso tenha completado pelo menos um dia
+                var convertedTime = SplitTime(timeAgo.split(':')[0] as unknown as number);
 
-        setFormatDate(s);
+                timeAgo = `${convertedTime.Days} ${convertedTime.Days > 1 ? 'dias' : 'dia'} 
+                    ${convertedTime.Hours > 0 ? `e ${convertedTime.Hours} ${convertedTime.Hours > 1 ? 'horas' : 'hora'}` : ''} 
+                     atrás`
+            } else if (timeAgo == '0:00') { // Num um minuto
+                timeAgo = 'Alguns segundos atrás'
+            } else { // Menos de 24 horas
+                timeAgo = `${timeAgo.split(':')[0] as unknown as number > 0 ? //dias
+                timeAgo.split(':')[0] as unknown as number > 1 ? 
+                    timeAgo.split(':')[0] + ' horas' : 
+                    timeAgo.split(':')[0] + ' hora' :
+                ''}` + 
+                `${timeAgo.split(':')[0] as unknown as number > 0 && timeAgo.split(':')[1] as unknown as number > 0 ? ' e ' : ''}` + 
+                `${timeAgo.split(':')[1] as unknown as number > 0 ? //horas
+                timeAgo.split(':')[1] as unknown as number > 1 ? 
+                    `${timeAgo.split(':')[1]} minutos` : 
+                    `${timeAgo.split(':')[1]} minuto` :
+                ''}` + 
+                ' atrás';
+            }
+
+            return (timeAgo);
+        }
+
+        setFormatDate(takeTime());
     }, [])
 
     return (

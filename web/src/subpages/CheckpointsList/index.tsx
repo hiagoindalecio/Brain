@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import './styles.css';
 import Checkpoint from '../../components/CheckpointObject';
 import Modal from '../../components/ModalCheckpoint/Modal';
@@ -52,6 +52,7 @@ const CheckpointsList: React.FC<{checkpointsResponse: Array<CheckpointsData>}> =
                         <div key={index}><br/>{elem}</div>
                     )
                 }
+                <br />
             </div>
         </fieldset>
     )

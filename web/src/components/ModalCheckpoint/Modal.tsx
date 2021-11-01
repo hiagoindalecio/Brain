@@ -19,9 +19,9 @@ const Modal: React.FC<ModalCheckProps> = ({props, onClose}) => {
     async function handleSubmit(event: FormEvent) {
         event.preventDefault();
         const formData = {
-            summaryCheck: $("input[type=summary][name=summary]").val() as string,
-            descCheck: $("textarea[id=description][name=desc]").val() as string,
-            dateCheck: $("input[type=date][id=dateCheck]").val() as string
+            summaryCheck: $("#summary").val() as string,
+            descCheck: $("#description").val() as string,
+            dateCheck: $("#dateCheck").val() as string
         }
         if (formData.dateCheck.toString() === '') {
             setMessage('Data inválida!');

@@ -61,7 +61,7 @@ export default function CustomizedMenus() {
       <Button
         onClick={handleClick}
       >
-        <img src={user ? user.image_url : 'blank-profile.webp'} alt="profile-picture" className='profile-picture'/>
+        <img src={user ? user.image_url : 'blank-profile.webp'} alt="profile" className='profile-picture'/>
       </Button>
       <StyledMenu
         id="customized-menu"

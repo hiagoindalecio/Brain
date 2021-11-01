@@ -1,5 +1,4 @@
-import React from 'react';
-import { Route, BrowserRouter, Switch, Redirect} from 'react-router-dom';
+import { Route, BrowserRouter, Switch} from 'react-router-dom';
 //importando paginas
 import Home from '../pages/Home';
 import ConfigScreen from '../pages/ConfigScreen';

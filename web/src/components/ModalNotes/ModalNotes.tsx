@@ -1,4 +1,4 @@
-import React,{ useContext, FormEvent, useState } from 'react'
+import React,{ useContext, useState } from 'react'
 import './Modal.css'
 
 import NotesContext from '../../contexts/notes'
@@ -18,8 +18,8 @@ const Modal: React.FC<ModalNotesProps> = ({props, onClose}) => {
 
     async function handleSubmit() {
         const formData = {
-            summaryNotes: $("input[type=summary][name=summary]").val() as string,
-            descNotes: $("textarea[id=description][name=desc]").val() as string
+            summaryNotes: $("#summary").val() as string,
+            descNotes: $("#description").val() as string
         }  
         if (formData.descNotes === '') {
             setMessage('Você deve Preencher o campo de Descrição!');

@@ -40,6 +40,7 @@ const NotesList: React.FC<{notesResponse: Array<NotesData>}> = ({notesResponse})
                         <div key={index}><br/>{elem}</div>
                     )
                 }
+                <br />
             </div>
         </fieldset>
         

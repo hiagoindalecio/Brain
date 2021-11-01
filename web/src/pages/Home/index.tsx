@@ -1,4 +1,4 @@
-import React, { useState, useContext, useLayoutEffect } from 'react';
+import React, { useState, useContext, useLayoutEffect, FormEvent, ChangeEvent } from 'react';
 import './styles.css';
 import { FaBars, FaTimes } from 'react-icons/fa';
 
@@ -16,14 +16,16 @@ import AboutBrain from '../../subpages/AboutBrain';
 import NotesList from '../../subpages/NotesList';
 import SMenu from '../../components/StyledMenu';
 import Feed from '../../subpages/Feed';
+import SearchList from '../../components/UserSearchList';
 
 const Home: React.FC = () =>  {
     const { singOut, user, currentScreen, selectScreen } = useContext(AuthContext);
     const { getCheckpoints } = useContext(CheckpointsContext);
-    const { getFriends } = useContext(FriendsContex);
+    //const { getFriends } = useContext(FriendsContex);
     const { getNotes } = useContext(NotesContext);
     const [component, setComponent] = useState<JSX.Element>(<div />);
     const [click, setClick] = useState(false);
+    const [userSearch, setUserSearch] = useState('');
 
     useLayoutEffect(() => {
         handleSelectedField(currentScreen);
@@ -82,6 +84,15 @@ const Home: React.FC = () =>  {
     const handleClick = () => setClick(!click);
     const closeMobileMenu = () => setClick(false);
 
+    function handleSearchChange(e: ChangeEvent<HTMLInputElement>) {
+        const inputValue = (e?.target as HTMLInputElement).value
+        if (inputValue.length > 2) {
+            setUserSearch(inputValue);
+        } else {
+            setUserSearch('');
+        }
+    }
+
     return (
         <fieldset>
             <div id="home-page">
@@ -90,6 +101,20 @@ const Home: React.FC = () =>  {
                         <div className="header-logo">
                             <h1 className="header-text">Brain</h1>
                             <img src={logo} alt="logo" className="img-logo"/>
+                        </div>
+                        <div className="search-bar">
+                            <label htmlFor="search"><h5>Buscar pessoas &#128270;</h5></label>
+                            <input type="text" 
+                                name="search" 
+                                id="search" 
+                                onChange={handleSearchChange} 
+                                placeholder="Digite pelo menos três caracteres"/>
+                            {
+                                userSearch.length > 2 ?
+                                    <SearchList pesquisa={userSearch} />
+                                :
+                                <></>
+                            }
                         </div>
                         <div className="header-information">
                             <SMenu />

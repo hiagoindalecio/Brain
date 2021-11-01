@@ -27,8 +27,8 @@ button {
 }
 
 .profile-picture {
-  max-width:93px;
-  max-height:93px;
+  max-width: 93px;
+  max-height: 93px;
   width: auto;
   height: auto;
   border-radius: 50%;

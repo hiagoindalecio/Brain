@@ -1,0 +1,15 @@
+.search-bar label {
+  margin-right: 300px;
+}
+
+.list-group {
+  position: absolute;
+  z-index: 10000;
+  min-width: 350px;
+  border-radius: 5px;
+}
+
+.search-bar input {
+  min-width: 350px;
+  border-radius: 5px;
+}

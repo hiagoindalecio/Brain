@@ -7,32 +7,36 @@ import AuthContext from '../../contexts/auth';
 import ModalMessage from '../../components/ModalMessages/ModalMessages';
 import { ModalNotesProps } from '../../interfaces/interfaces';
 
-import $ from "jquery";
-
 const Modal: React.FC<ModalNotesProps> = ({props, onClose}) => {
     const { user } = useContext(AuthContext);
     const { setNotes, updateNotes } = useContext(NotesContext);
     const [isModalMessageVisible, setIsModalMessageVisible] = useState(false);
     const [message, setMessage] = useState<string>('');
     const [done, setDone] = useState(false);
+    const [summary, setSummary] = useState<string>('');
+    const [description, setDescription] = useState<string>('');
+
+    function handleChange(summa: string | null, descri: string | null) {
+        if (summa) {
+            setSummary(summa);
+        } else if (descri) {
+            setDescription(descri);
+        }
+    }
 
     async function handleSubmit() {
-        const formData = {
-            summaryNotes: $("#summary").val() as string,
-            descNotes: $("#description").val() as string
-        }  
-        if (formData.descNotes === '') {
+        if (description === '') {
             setMessage('Você deve Preencher o campo de Descrição!');
             setIsModalMessageVisible(true);
-        } else if (formData.summaryNotes === '') {
+        } else if (summary === '') {
             setMessage('Você deve preencher o campo de Titulo!');
             setIsModalMessageVisible(true);
         } else {
             if(props.id === -1) {
-                const reply = await setNotes((user ? user.id as number : -1), formData.summaryNotes, formData.descNotes);
+                const reply = await setNotes((user ? user.id as number : -1), summary, description);
                 setMessage(reply.message);
             } else {
-                const reply = await updateNotes(props.id ,formData.summaryNotes, formData.descNotes);
+                const reply = await updateNotes(props.id, summary, description);
                 setMessage(reply.message);
             }
             setDone(true);
@@ -64,11 +68,11 @@ const Modal: React.FC<ModalNotesProps> = ({props, onClose}) => {
                             <label htmlFor="recipient-name" className="col-form-label">
                                 Titulo da Nota:
                             </label>
-                            <input type="summary" name="summary" className="form-control" id="summary" defaultValue={props.summary}></input>
+                            <input type="summary" name="summary" className="form-control" id="summary" defaultValue={props.summary} onChange={event => handleChange(event.target.value, null)}></input>
                             <label htmlFor="message-text" className='col-form-label'>
                                 Nota:
                             </label>
-                            <textarea id="description" name="desc" className='form-control' defaultValue={props.description}></textarea>
+                            <textarea id="description" name="desc" className='form-control' defaultValue={props.description} onChange={event => handleChange(null, event.target.value)}></textarea>
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" onClick={onClose}>Fechar</button>

@@ -20,7 +20,7 @@
 .header-logo {
   display: grid;
   align-items: center;
-  grid-template-columns: 10vh 25vh;
+  grid-template-columns: 10vh 13vh;
   grid-template-areas: 
   "gimg-logo gheader-text";
 }

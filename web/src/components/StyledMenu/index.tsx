@@ -74,7 +74,7 @@ export default function CustomizedMenus() {
           <ListItemIcon>
             <AssignmentIndIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText primary="Meu perfil" />
+          <ListItemText primary="Editar perfil" />
         </MenuItem >
         <MenuItem onClick={() => handleLogoff()}>
           <ListItemIcon>

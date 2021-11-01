@@ -265,3 +265,7 @@ export interface ModalTasksProps {
     onClose: () => void;
 }
 //#endregion 
+
+export interface Visibility {
+    contentVisibility: "visible" | "auto" | "hidden";
+}

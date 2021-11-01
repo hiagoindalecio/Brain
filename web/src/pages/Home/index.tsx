@@ -84,15 +84,6 @@ const Home: React.FC = () =>  {
     const handleClick = () => setClick(!click);
     const closeMobileMenu = () => setClick(false);
 
-    function handleSearchChange(e: ChangeEvent<HTMLInputElement>) {
-        const inputValue = (e?.target as HTMLInputElement).value
-        if (inputValue.length > 2) {
-            setUserSearch(inputValue);
-        } else {
-            setUserSearch('');
-        }
-    }
-
     return (
         <fieldset>
             <div id="home-page">
@@ -104,10 +95,11 @@ const Home: React.FC = () =>  {
                         </div>
                         <div className="search-bar">
                             <label htmlFor="search"><h5>Buscar pessoas &#128270;</h5></label>
+                            <br />
                             <input type="text" 
                                 name="search" 
                                 id="search" 
-                                onChange={handleSearchChange} 
+                                onChange={event => {setUserSearch(event.target.value)}} 
                                 placeholder="Digite pelo menos três caracteres"/>
                             {
                                 userSearch.length > 2 ?

@@ -7,40 +7,43 @@ import TaskContext from '../../contexts/tasks';
 import ModalMessage from '../../components/ModalMessages/ModalMessages';
 import { ModalTasksProps } from '../../interfaces/interfaces';
 
-import $ from "jquery";
-
 const Modal: React.FC<ModalTasksProps> = ({props, onClose}) => {
-    const { user } = useContext(AuthContext);
     const { setTasks, updateTask } = useContext(TaskContext);
     const [isModalMessageVisible, setIsModalMessageVisible] = useState(false);
     const [message, setMessage] = useState<string>('');
     const [done, setDone] = useState(false);
+    const [summary, setSummary] = useState<string>('');
+    const [description, setDescription] = useState<string>('');
+
+    function handleChange(summa: string | null, descri: string | null) {
+        if (summa) {
+            setSummary(summa);
+        } else if (descri) {
+            setDescription(descri);
+        }
+    }
 
     async function handleSubmit(event: FormEvent) {
-        const formData = {
-            summaryNotes: $("input[type=summary][name=summary]").val() as string,
-            descNotes: $("textarea[id=description][name=desc]").val() as string
-        }  
         event.preventDefault();
-        if (formData.descNotes === '') {
+        if (description === '') {
             setMessage('Você deve Preencher o campo de Descrição!');
             setIsModalMessageVisible(true);
-        } else if (formData.summaryNotes === '') {
+        } else if (summary === '') {
             setMessage('Você deve preencher o campo de Titulo!');
             setIsModalMessageVisible(true);
         } else {
             if(props.id === -1) {
-                const reply = await setTasks(props.idCheck, formData.summaryNotes, formData.descNotes);
+                const reply = await setTasks(props.idCheck, summary, description);
                 setMessage(reply.message);
             } else {
-                const reply = await updateTask(props.id, formData.summaryNotes, formData.descNotes);
+                const reply = await updateTask(props.id, summary, description);
                 setMessage(reply.message);
             }
             setDone(true);
             setIsModalMessageVisible(true);
         }
-        console.log("Userid: " + (user ? user.id as number : -1) + "\n Desc:" + formData.descNotes + "\n Summary:" + formData.summaryNotes);
     };
+
     const overlayRef = React.useRef(null);
     const handleOverlayClick = (e : React.MouseEvent<HTMLElement, MouseEvent>) => {
         if(e.target === overlayRef.current){
@@ -65,11 +68,11 @@ const Modal: React.FC<ModalTasksProps> = ({props, onClose}) => {
                                 <label htmlFor="recipient-name" className="col-form-label">
                                     Titulo da Task:
                                 </label>
-                                <input type="summary" name="summary" className="form-control" id="summary" defaultValue={props.summary}></input>
+                                <input type="summary" name="summary" className="form-control" id="summary" defaultValue={props.summary} onChange={event => handleChange(event.target.value, null)}></input>
                                 <label htmlFor="message-text" className='col-form-label'>
                                     Descrição:
                                 </label>
-                                <textarea id="description" name="desc" className='form-control' defaultValue={props.description}></textarea>
+                                <textarea id="description" name="desc" className='form-control' defaultValue={props.description} onChange={event => handleChange(null, event.target.value)}></textarea>
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" onClick={onClose}>Fechar</button>

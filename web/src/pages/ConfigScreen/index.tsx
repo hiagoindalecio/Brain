@@ -2,8 +2,6 @@ import React, { useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import './styles.css';
 
-import $ from "jquery";
-
 import logo from '../../assets/logo.png';
 import pointsImage from '../../assets/point.png';
 
@@ -53,7 +51,6 @@ const ConfigScreen: React.FC = () => {
                     setProfilePic(
                         <Dropzone onFileUploaded={setSelectedfile} />
                     )
-                    //$("button[type=button][id=cancelPic]").css("visibility", "visible");
                     setCancelPicVisibility('visible');
                     setBtnPic('Salvar foto');
                 } else if(btnPic === 'Salvar foto') {
@@ -63,7 +60,6 @@ const ConfigScreen: React.FC = () => {
                             <img src={user ? user.image_url as string : ''} alt="Profile picture"/>
                         </div>    
                     );
-                    //$("button[type=button][id=cancelPic]").css("visibility", "hidden");
                     setCancelPicVisibility('hidden');
                     setBtnPic('Editar foto');
                     setMessage(result);
@@ -73,16 +69,12 @@ const ConfigScreen: React.FC = () => {
             case 'name':
                 if(btnName === 'Editar nome') {
                     setBtnName('Salvar nome');
-                    //$("input[type=text][id=InputName]").prop("disabled", false);
                     setInputNameDisabled(false);
-                    //$("button[type=button][id=cancelName]").css("visibility", "visible");
                     setCancelNameVisibility('visible');
                 } else if (btnName === 'Salvar nome') {
                     var result = await updateUser(user ? user.id as number : -1, inputNameValue, null, null);
                     setBtnName('Editar nome');
-                    //$("input[type=text][id=InputName]").prop("disabled", true);
                     setInputNameDisabled(true);
-                    //$("button[type=button][id=cancelName]").css("visibility", "hidden");
                     setCancelNameVisibility('hidden');
                     setMessage(result);
                     setIsModalMessageVisible(true);
@@ -98,23 +90,24 @@ const ConfigScreen: React.FC = () => {
                         </div>
                     )
                     setBtnPassword('Salvar senha');
-                    //$("button[type=button][id=cancelPassword]").css("visibility", "visible");
                     setCancelPasswordVisibility('visible');
-                    //$("input[type=password][id=InputPassword]").prop("disabled", false);
                     setDisabledInputPassword(false);
                 } else if(btnPassword === "Salvar senha") {
                     if (inputPasswordValue === inputPassword2Value) {
                         var result = await updateUser(user ? user.id as number : -1, null, inputPasswordValue, null);
-                        setSecondPassword(
-                            <div></div>
-                        );
-                        //$("button[type=button][id=cancelPassword]").css("visibility", "hidden");
-                        setCancelPasswordVisibility('hidden');
-                        //$("input[type=password][id=InputPassword]").prop("disabled", true);
-                        setDisabledInputPassword(true);
-                        setBtnPassword('Editar senha');
-                        setMessage(result);
-                        setIsModalMessageVisible(true);
+                        if (result != null && result != undefined && result != '') {
+                            setSecondPassword(
+                                <div></div>
+                            );
+                            setCancelPasswordVisibility('hidden');
+                            setDisabledInputPassword(true);
+                            setBtnPassword('Editar senha');
+                            setMessage(result);
+                            setIsModalMessageVisible(true);
+                        } else {
+                            setMessage('Erro');
+                            setIsModalMessageVisible(true);
+                        }
                     } else {
                         setMessage('As senhas fornecidas não são iguais!');
                         setIsModalMessageVisible(true);
@@ -132,16 +125,12 @@ const ConfigScreen: React.FC = () => {
                         <img src={user ? user.image_url as string : ''} alt="Profile picture"/>
                     </div>    
                 );
-                //$("button[type=button][id=cancelPic]").css("visibility", "hidden");
                 setCancelPicVisibility('hidden');
                 setBtnPic('Editar foto');
             break;
             case 'name':
-                //$("input[type=text][id=InputName]").prop("disabled", true);
                 setInputNameDisabled(true);
-                //$("input[type=text][id=InputName]").prop("value", user ? user.name as string : '' );
                 setInputNameValue(user ? user.name as string : '')
-                //$("button[type=button][id=cancelName]").css("visibility", "hidden");
                 setCancelNameVisibility('hidden');
                 setBtnName('Editar nome');
             break;
@@ -149,11 +138,8 @@ const ConfigScreen: React.FC = () => {
                 setSecondPassword(
                     <div></div>
                 );
-                //$("button[type=button][id=cancelPassword]").css("visibility", "hidden");
                 setCancelPasswordVisibility('hidden');
-                //$("input[type=password][id=InputPassword]").prop("disabled", true);
                 setDisabledInputPassword(true);
-                //$("input[type=password][id=InputPassword]").prop("value", user ? user.password as string : '' );
                 setInputPasswordValue(user ? user.password as string : '');
                 setBtnPassword('Editar senha');
             break;
@@ -183,7 +169,7 @@ const ConfigScreen: React.FC = () => {
                     <div className="btns-group">
                         <button type="button" className="btn-edit btn-primary btn-lg" onClick={() => handleChange('profilePic')} >{btnPic}</button>
                         &nbsp;
-                        <button type="button" id="cancelPic" className="btn-edit btn-primary btn-lg" style={{ visibility: { cancelPicVisibility } } as unknown as React.CSSProperties} onClick={() => cancel('profilePic')} >Cancelar</button>
+                        <button type="button" id="cancelPic" className="btn-edit btn-primary btn-lg" style={{ visibility: cancelPicVisibility } as unknown as React.CSSProperties} onClick={() => cancel('profilePic')} >Cancelar</button>
                     </div>
                 </div>
                 <div className="form-group">
@@ -193,7 +179,7 @@ const ConfigScreen: React.FC = () => {
                     <div className="btns-group">
                         <button type="button" className="btn-edit btn-primary btn-lg" onClick={() => handleChange('name')} >{btnName}</button>
                         &nbsp;
-                        <button type="button" id="cancelName" className="btn-edit btn-primary btn-lg" style={{ visibility: { cancelNameVisibility } } as unknown as React.CSSProperties} onClick={() => cancel('name')} >Cancelar</button>
+                        <button type="button" id="cancelName" className="btn-edit btn-primary btn-lg" style={{ visibility: cancelNameVisibility } as unknown as React.CSSProperties} onClick={() => cancel('name')} >Cancelar</button>
                     </div>
                 </div>
                 <div className="form-group">
@@ -204,7 +190,7 @@ const ConfigScreen: React.FC = () => {
                     <div className="btns-group">
                         <button type="button" className="btn-edit btn-primary btn-lg" onClick={() => handleChange('password')} >{btnPassword}</button>
                         &nbsp;
-                        <button type="button" id="cancelPassword" className="btn-edit btn-primary btn-lg" style={{ visibility: { cancelPasswordVisibility } } as unknown as React.CSSProperties} onClick={() => cancel('password')} >Cancelar</button>
+                        <button type="button" id="cancelPassword" className="btn-edit btn-primary btn-lg" style={{ visibility: cancelPasswordVisibility } as unknown as React.CSSProperties} onClick={() => cancel('password')} >Cancelar</button>
                     </div>
                 </div>
             </form>

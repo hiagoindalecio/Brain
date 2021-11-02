@@ -13,6 +13,8 @@ import AuthContext from '../../contexts/auth';
 
 import { useHistory } from 'react-router-dom';
 
+import './styles.css';
+
 const StyledMenu = withStyles({
   paper: {
     border: '1px solid #d3d4d5',
@@ -61,7 +63,10 @@ export default function CustomizedMenus() {
       <Button
         onClick={handleClick}
       >
-        <img src={user ? user.image_url : 'blank-profile.webp'} alt="profile" className='profile-picture'/>
+      <div className='profile-picture'>
+        <img src={user ? user.image_url : 'blank-profile.webp'} alt="profile" />
+      </div>
+        
       </Button>
       <StyledMenu
         id="customized-menu"

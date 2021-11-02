@@ -1,5 +1,5 @@
 import React, {createContext, useEffect, useState } from 'react';
-import { AuthContextData, User } from '../interfaces/interfaces';
+import { AuthContextData, FindUsersResponse, messageResponse, User } from '../interfaces/interfaces';
 import * as auth from '../services/auth';
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
@@ -22,7 +22,10 @@ export const AuthProvider: React.FC = ({ children }) => {
             }
             setLoading(false);
         }
-        loadStorageData();
+        
+        if (!user) {
+            loadStorageData();
+        }
     }, [])
 
     async function singIn(email: string, password: string): Promise<string> {
@@ -52,16 +55,33 @@ export const AuthProvider: React.FC = ({ children }) => {
     }
 
     async function updateUser(id: number, name: string | null, password: string | null, image: File | null): Promise<string> {
-        setLoading(true);
-        const response = await auth.updateUser(id, name, password, image);
-        response.userReply.password = password as string;
-        if(response.message === 'The user has been modified') {
-            setUser({...response.userReply, email: user? user.email : '', points: user ? user.points : 0});
-            localStorage.setItem('@RNAuth:user', JSON.stringify(user));
-        }
         return new Promise(async (resolve) => {
+            //setLoading(true);
+            const response = await auth.updateUser(id, name, password, image);
+            response.userReply.password = password ? password : user ? user.password as string : '';
+
+            if(response.message === 'O usuário foi modificado com sucesso') {
+                var newUser = {
+                    ...response.userReply, 
+                    email: user ? user.email : '', 
+                    points: user ? user.points : 0
+                }
+                setUser(newUser);
+
+                localStorage.clear();
+                localStorage.setItem('@RNAuth:user', JSON.stringify(newUser));
+            }
+            //setLoading(false);
             resolve(response.message);
-            setLoading(false);
+        });
+    }
+
+    async function findUser(name: string): Promise<FindUsersResponse[] | messageResponse> {
+        return new Promise(async (resolve) => {
+            //setLoading(true);
+            const response = await auth.showByName(name, user ? user.id as number : 0);
+            //setLoading(false);
+            resolve(response);
         });
     }
 
@@ -70,7 +90,7 @@ export const AuthProvider: React.FC = ({ children }) => {
             setLoading(true);
             const response = await auth.singOut(email, password);
             
-            if(response.message == 'Usuário deslogado.' && response !== undefined) {
+            if(response.message === 'Usuário deslogado.' && response !== undefined) {
                 localStorage.clear();
                 setUser(null);
                 setCurrentScreen('Home');
@@ -93,7 +113,6 @@ export const AuthProvider: React.FC = ({ children }) => {
             image_url: user ? user.image_url as string : ''
         }
         localStorage.setItem('@RNAuth:user', JSON.stringify(userAll));
-        console.log(userAll.points);
         setUser(userAll);
     }
 
@@ -105,7 +124,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     }
 
     return (
-        <AuthContext.Provider value={{signed: !!user, user, loading, currentScreen, singIn, createUser, updateUser, singOut, setPoints, selectScreen}}>
+        <AuthContext.Provider value={{signed: !!user, user, loading, currentScreen, singIn, createUser, updateUser, singOut, setPoints, selectScreen, findUser}}>
             {children}
         </AuthContext.Provider>
     );

@@ -159,7 +159,10 @@ const ConfigScreen: React.FC = () => {
                     <h4>&nbsp;{user ? user.points : '0'}</h4>
                 </div>
             </header>
-            {isModalMessageVisible ? <ModalMessage props={{message}} onClose={() => {setIsModalMessageVisible(false);}}></ModalMessage> : null}
+            {isModalMessageVisible ? <ModalMessage props={{message}} onClose={() => {
+                setIsModalMessageVisible(false); 
+                back();
+            }}></ModalMessage> : null}
             <ArrowBackIcon fontSize="default" className="back-button" onClick={back}/>
             <form className="form-config">
                 <div className="form-group">

@@ -4,3 +4,16 @@
   min-width: 350px;
   border-radius: 5px;
 }
+
+.picture {
+  border-radius: 50%;
+  height: 50px;
+  width: 50px;
+  object-fit: cover;
+  object-position: center;
+  margin-right: 5%;
+}
+
+.list-group-item {
+  cursor: pointer;
+}

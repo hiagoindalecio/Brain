@@ -1,4 +1,4 @@
-import { singOutResponse, UserEditResponse, UserUpdateResponse, userValidationResponse } from '../interfaces/interfaces';
+import { FindUsersResponse, messageResponse, singOutResponse, UserEditResponse, UserUpdateResponse, userValidationResponse } from '../interfaces/interfaces';
 import api from './api';
 
 export async function singIn(email: string, password: string): Promise<userValidationResponse> {
@@ -51,6 +51,17 @@ export async function updateUser(id: number, name: string | null, password: stri
     return new Promise((resolve) => {
         api.put<UserUpdateResponse>('/users/update', data).then(response => {
             resolve(response.data as UserUpdateResponse);
+        });
+    });
+}
+
+export async function showByName(name: string, id: number): Promise<FindUsersResponse[] | messageResponse> {
+    return new Promise((resolve) => {
+        api.get<FindUsersResponse[] | messageResponse>(`/users/byname/${name}/${id}`).then(response => {
+            if (response.status === 200)
+                resolve(response.data as FindUsersResponse[]);
+            else
+                resolve(response.data as messageResponse);
         });
     });
 }

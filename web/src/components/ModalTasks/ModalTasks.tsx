@@ -1,7 +1,6 @@
 import React,{ useContext, FormEvent, useState } from 'react'
 import './Modal.css'
 
-import AuthContext from '../../contexts/auth';
 import TaskContext from '../../contexts/tasks';
 
 import ModalMessage from '../../components/ModalMessages/ModalMessages';

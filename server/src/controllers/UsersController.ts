@@ -4,7 +4,7 @@ import bcrypt  from 'bcrypt';
 
 class UsersControllerr {
     async index(request: Request, response: Response){
-        const users = await knex('user_table').select('*'); //Select no banco SELECT * FROM tb_items
+        const users = await knex('user_table').select('*'); //Select no banco SELECT * FROM user_table
         const serializedItems  = users.map( item => { // Percorre e reorganiza o que sera retornado
             return {
                 cod: item.COD_USER,
@@ -19,8 +19,9 @@ class UsersControllerr {
     async show(request: Request, response: Response) {
         const { id } = request.params;
         const user = await knex('user_table').where('COD_USER', id).first();
+
         if(!user) {
-            return response.status(203).json({ message: 'User not found.'});
+            return response.status(203).json({ message: 'Usuário não encontrado'});
         } else {
             const serialized = {
                 cod: user.COD_USER,
@@ -31,6 +32,25 @@ class UsersControllerr {
                 image_url: `http://localhost:3334/uploads/${user.IMAGE}`
             }
             return response.status(200).json(serialized);
+        }
+    };
+
+    async showByName(request: Request, response: Response) {
+        const { name, myId } = request.params;
+        const users = await knex('user_table').where('NAME_USER', 'rlike', name).whereNot('COD_USER', myId);
+
+        if(!users || users.length == 0) {
+            return response.status(203).json({ message: 'Usuário não encontrado'});
+        } else {
+            const serializedItems  = users.map( item => { // Percorre e reorganiza o que sera retornado
+                return {
+                    cod: item.COD_USER,
+                    name: item.NAME_USER,
+                    email: item.MAIL_USER,
+                    profile_pic: `http://localhost:3334/uploads/${item.IMAGE}`
+                };
+            } );
+            return response.status(200).json(serializedItems);
         }
     };
 
@@ -166,18 +186,18 @@ class UsersControllerr {
                     userReply.image_url = `http://localhost:3334/uploads/${user.IMAGE}`
                 });
                 return response.status(200).json({
-                    message: 'The user has been modified',
+                    message: 'O usuário foi modificado com sucesso',
                     userReply
                 });
             } catch {
                 return response.status(500).json({
-                        message: 'Queries error',
+                        message: 'Erro de querie, por favor contacte o suporte',
                         userReply
                 });
             }
         } else {
             return response.status(400).json({
-                message: 'User not found',
+                message: 'Usuário não encontrado',
                 userReply
             });
         }

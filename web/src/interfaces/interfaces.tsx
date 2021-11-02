@@ -140,6 +140,13 @@ export interface activityResponse {
     updateTime: Date,
     profilePic: string
 }
+
+export interface FindUsersResponse {
+    cod: string,
+    name: string,
+    email: string,
+    profile_pic: string
+}
 //#endregion
 
 //#region contexts
@@ -175,6 +182,7 @@ export interface AuthContextData {
     singOut(email: string, password: string): Promise<string>;
     setPoints(pointsUser: number): void;
     selectScreen(eleme: string): void;
+    findUser(name: string): Promise<FindUsersResponse[] | messageResponse>;
 }
 
 export interface CheckpointsContextData {

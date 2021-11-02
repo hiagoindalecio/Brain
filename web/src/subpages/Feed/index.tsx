@@ -41,7 +41,11 @@ const Feed : React.FC = () => {
         <fieldset>
             <div className="feed-page">
                 <div className="feed-content">
-                    {divs}
+                    {
+                        [...divs].map((elem,  index: number)=> 
+                        <div key={index}>{elem}</div>
+                    )
+                    }
                 </div>
             </div>
         </fieldset>

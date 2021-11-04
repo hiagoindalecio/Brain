@@ -2,7 +2,7 @@ import React from 'react'
 import { ModalMessagesProps } from '../../interfaces/interfaces';
 import './Modal.css'
 
-const ModalMessage: React.FC<ModalMessagesProps> = ({props, onClose}) => {
+const ModalMessage: React.FC<ModalMessagesProps> = ({props, onClose, children}) => {
     const overlayRef = React.useRef(null);
     const handleOverlayClick = (e : React.MouseEvent<HTMLElement, MouseEvent>) => {
         if(e.target === overlayRef.current){
@@ -24,6 +24,7 @@ const ModalMessage: React.FC<ModalMessagesProps> = ({props, onClose}) => {
                         </div>
                         <div className="modal-body">
                             <h5>{props.message}</h5>
+                            { children }
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" onClick={onClose}>Entendi</button>

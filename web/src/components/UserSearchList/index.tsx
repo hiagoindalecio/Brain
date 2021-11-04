@@ -43,9 +43,13 @@ const UserSearchList: React.FC<{pesquisa: string}> = (props) => {
                     )
                 })
             }
-            {isModalMessageVisible ? <ModalMessage props={{message}} onClose={() => {
-                setIsModalMessageVisible(false); 
-            }}></ModalMessage> : null}
+            {
+                isModalMessageVisible ? 
+                <ModalMessage props={{message}} onClose={() => {
+                    setIsModalMessageVisible(false); 
+                }}></ModalMessage> 
+                : null
+            }
         </ul>
     )
 }

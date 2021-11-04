@@ -1,0 +1,43 @@
+#config-page header {
+  margin: 1em;
+}
+
+.header-logo {
+  display: grid;
+  align-items: center;
+  grid-template-columns: 10vh 13vh;
+  grid-template-areas: 
+  "gimg-logo gheader-text";
+}
+
+.header-information {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.back-button {
+  margin: 30px 30px;
+  cursor: pointer;
+}
+
+.form-profile {
+  margin: 60px auto;
+  padding: 24px;
+  max-width: 1030px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  grid-area: gheader;
+}
+
+.img-logo {
+  max-width:73px;
+  max-height:73px;
+  width: auto;
+  height: auto;
+  grid-area: gimg-logo;
+}

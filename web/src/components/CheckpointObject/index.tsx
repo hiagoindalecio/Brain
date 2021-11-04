@@ -44,12 +44,12 @@ const Checkpoint: React.FC<{
         }
         
         convertData();
-    }, []);
+    }, [limitdate]);
 
     useEffect(() => {
         if(buttonText2 === '- Fechar tasks finalizadas') {
             var quantos = 0;
-            [...finalizedCheckTasks].map((task) => {
+            [...finalizedCheckTasks].forEach(task => {
                 if(!task.status) {
                     quantos++;
                 }
@@ -64,12 +64,12 @@ const Checkpoint: React.FC<{
                 }])
             }
         }
-    }, [finalizedCheckTasks]);
+    }, [finalizedCheckTasks, buttonText2]);
 
     useEffect(() => {
         if(buttonText === '- Fechar tasks') {
             var quantos = 0;
-            [...checkTasks].map((task) => {
+            [...checkTasks].forEach((task) => {
                 if(task.status) {
                     quantos++;
                 }
@@ -84,7 +84,7 @@ const Checkpoint: React.FC<{
                 }])
             }
         }
-    }, [checkTasks]);
+    }, [checkTasks, buttonText]);
 
     async function getAllTasks(event: FormEvent) {
         event.preventDefault();
@@ -118,17 +118,17 @@ const Checkpoint: React.FC<{
             <div className="card-body">
             <button className="btn-getTasks" onClick={getAllTasks}><h6>{buttonText}</h6></button>
                 {
-                    [...checkTasks].map((task, index: number) => {
+                    [...checkTasks].forEach((task, index: number) => {
                         if(task.status) {
                             return <div key={index}><br/><TaskComp idTask={task.idTask} idCheck={cod} summary={task.summary} desc={task.desc} status={task.status} /></div>
-                        }
+                        } 
                     })
                 }
             </div>
             <div className="card-body">
             <button className="btn-getTasks" onClick={getFinalizedTasks}><h6>{buttonText2}</h6></button>
                 {
-                    [...finalizedCheckTasks].map((task, index: number) => {
+                    [...finalizedCheckTasks].forEach((task, index: number) => {
                         if(!task.status) {
                             return <div key={index}><br/><TaskComp idTask={task.idTask} idCheck={cod} summary={task.summary} desc={task.desc} status={task.status} /></div>
                         }

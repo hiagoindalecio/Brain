@@ -53,7 +53,7 @@ const FriendUpdate: React.FC<{
         }
 
         setFormatDate(takeTime());
-    }, [])
+    }, [activity.updateTime])
 
     return (
         <div className="card" key={activity.codActivity}>

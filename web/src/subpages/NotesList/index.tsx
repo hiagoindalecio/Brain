@@ -23,7 +23,7 @@ const NotesList: React.FC<{notesResponse: Array<NotesData>}> = ({notesResponse})
                 )
             );
         }
-    }, []);
+    }, [notesResponse]);
 
     return (
         <fieldset>

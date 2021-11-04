@@ -1,11 +1,10 @@
-import React, { useState, useContext, useLayoutEffect, FormEvent, ChangeEvent } from 'react';
+import React, { useState, useContext, useLayoutEffect } from 'react';
 import './styles.css';
 import { FaBars, FaTimes } from 'react-icons/fa';
 
 import AuthContext from '../../contexts/auth';
 import CheckpointsContext from '../../contexts/checkpoints';
 import NotesContext from '../../contexts/notes';
-import FriendsContex from '../../contexts/friends';
 
 import logo from '../../assets/logo.png';
 import pointsImage from '../../assets/point.png';
@@ -28,23 +27,40 @@ const Home: React.FC = () =>  {
     const [userSearch, setUserSearch] = useState('');
 
     useLayoutEffect(() => {
-        handleSelectedField(currentScreen);
-    }, []);
-
-    function clearSelection() {
-        let navButtons: HTMLCollectionOf<Element> = document.getElementsByClassName('nav-item');
-
-        for (let i = 0; i < navButtons.length; i++) {
-            navButtons[i].classList.remove('clicked-button');
+        async function handleSelectedField(componentName: string) {
+            selectScreen(componentName);
+            clearSelection();
+            switch(componentName) {
+                case 'Home': {
+                    selectItemById('btnHome');
+                    setComponent(<Initial />);
+                    break;
+                }
+                case 'Feed': {
+                    selectItemById('btnFeed');
+                    setComponent(<Feed />);
+                    break;
+                }
+                case 'Checkpoints': {
+                    selectItemById('btnCheckpoints');
+                    setComponent(<CheckpointsList checkpointsResponse={ await getCheckpoints(user ? user.id as number : -1) } />);
+                    break;
+                }
+                case 'AboutBrain': {
+                    selectItemById('btnAbout');
+                    setComponent(<AboutBrain />);
+                    break;
+                }
+                case 'Notes': {
+                    selectItemById('btnNotes');
+                    setComponent(<NotesList notesResponse={ await getNotes(user ? user.id as number : -1) } />);
+                    break;
+                }
+            }
         }
-    }
 
-    function selectItemById(idElement:string) {
-        let buttonSelected: Element | null = document.getElementById(idElement);
-
-        if (buttonSelected != null)
-            buttonSelected.classList.add('clicked-button');
-    }
+        handleSelectedField(currentScreen);
+    }, [currentScreen, getCheckpoints, getNotes, selectScreen, user]);
 
     async function handleSelectedField(componentName: string) {
         selectScreen(componentName);
@@ -77,6 +93,22 @@ const Home: React.FC = () =>  {
             }
         }
     }
+
+    function clearSelection() {
+        let navButtons: HTMLCollectionOf<Element> = document.getElementsByClassName('nav-item');
+
+        for (let i = 0; i < navButtons.length; i++) {
+            navButtons[i].classList.remove('clicked-button');
+        }
+    }
+
+    function selectItemById(idElement:string) {
+        let buttonSelected: Element | null = document.getElementById(idElement);
+
+        if (buttonSelected != null)
+            buttonSelected.classList.add('clicked-button');
+    }
+
     function handleLogoff() {
         singOut(user? user.email as string : '', user? user.password as string : '');
     }

@@ -26,7 +26,7 @@ export const AuthProvider: React.FC = ({ children }) => {
         if (!user) {
             loadStorageData();
         }
-    }, [])
+    }, [user])
 
     async function singIn(email: string, password: string): Promise<string> {
         return new Promise(async (resolve) => {

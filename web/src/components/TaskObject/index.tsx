@@ -39,7 +39,7 @@ const Task: React.FC<{
                 </div>
             )
         }
-    }, []);
+    }, [desc, idTask, status, summary]);
 
     return (
         isModalVisible ? <Modal props={{id: idTask, idCheck, summary, description: desc}} onClose={() => {setIsModalVisible(false); window.location.reload();}}></Modal> : (isModalCompleteVisible ? <ModalComplete props={{idTask, title: summary}} onClose={() => {setIsModalCompleteVisible(false); window.location.reload();}}></ModalComplete> : taskObject)

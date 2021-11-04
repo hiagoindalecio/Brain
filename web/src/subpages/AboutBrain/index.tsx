@@ -9,25 +9,6 @@ import imageTwo from '../../assets/imageTwo.jpg';
 import imageThree from '../../assets/imageThree.jpg';
 import imageFour from '../../assets/imageFour.jpg';
 
-/*<Carousel>
-    <div>
-        <img src={imageOne} />
-        <p className="legend">Na sociedade atual somos sufocados com informações diáriamente.</p>
-    </div>
-    <div>
-        <img src={imageTwo} />
-        <p className="legend">Nós sabemos que seu dia é extremamente ocupado.</p>
-    </div>
-    <div>
-        <img src={imageThree} />
-        <p className="legend">E quase sempre fica difícil se organizar para alcançar seus objetivos.</p>
-    </div>
-    <div>
-        <img src={imageFour} />
-        <p className="legend">A Brain está aqui para auxiliá-lo a se organizar e alcançar seus objetivos.</p>
-    </div>
-</Carousel>*/
-
 const AboutBrain: React.FC = () =>  {
     return (
         <fieldset>
@@ -46,6 +27,24 @@ const AboutBrain: React.FC = () =>  {
                         melhor, a cada checkpoint completo você receberá pontos que liberaram surpresinhas no futuro 😊.
                     </p>
                 </div>
+                <Carousel>
+                    <div>
+                        <img src={imageOne} alt="Homem observando a vasta cidade pela janela" />
+                        <p className="legend">Na sociedade atual somos sufocados com informações diáriamente.</p>
+                    </div>
+                    <div>
+                        <img src={imageTwo} alt="Garoto estudando em um notebook sentado em uma escadaria pública" />
+                        <p className="legend">Nós sabemos que seu dia é extremamente ocupado.</p>
+                    </div>
+                    <div>
+                        <img src={imageThree} alt="Homem aparentemente aflito sentado em um café com um notebook sobre a mesa" />
+                        <p className="legend">E quase sempre fica difícil se organizar para alcançar seus objetivos.</p>
+                    </div>
+                    <div>
+                        <img src={imageFour} alt="Óculos sob um caderno de anotações" />
+                        <p className="legend">A Brain está aqui para auxiliá-lo a se organizar e alcançar seus objetivos.</p>
+                    </div>
+                </Carousel>
             </div>
         </fieldset>
     );

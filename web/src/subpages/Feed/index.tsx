@@ -19,23 +19,23 @@ const Feed : React.FC = () => {
     );
 
     useLayoutEffect(() => {
-        findFriendsActivity();
-    }, [])
-
-    async function findFriendsActivity() {
-        const act = await getFriendsActivity(user ? user.id as number : -1);
-
-        if(act.length > 0) {
-            var elements: [JSX.Element] = [<p></p>];
-            act.map((acti) => {
-                elements.push(
-                    <><FriendUpdate activity={acti} /><br /></>
-                )
-            })
-
-            setDivs(elements);
+        async function findFriendsActivity() {
+            const act = await getFriendsActivity(user ? user.id as number : -1);
+    
+            if(act.length > 0) {
+                var elements: [JSX.Element] = [<p></p>];
+                act.forEach((acti) => {
+                    elements.push(
+                        <><FriendUpdate activity={acti} /><br /></>
+                    )
+                })
+    
+                setDivs(elements);
+            }
         }
-    }
+
+        findFriendsActivity();
+    }, [getFriendsActivity, user])
 
     return (
         <fieldset>

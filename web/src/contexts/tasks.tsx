@@ -5,7 +5,7 @@ import * as task from '../services/tasks';
 const TaskContext = createContext<TasksContextData>({} as TasksContextData);
 
 export const TasksProvider: React.FC = ({ children }) => {
-    const [loading, setLoading] = useState(false);
+    const [loading] = useState(false);
     let responseArray: Array<Task> = [];
     
     async function getTasks(idCheckpoint: number): Promise<Array<Task>> {

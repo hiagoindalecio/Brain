@@ -25,7 +25,7 @@ const ConfigScreen: React.FC = () => {
     const [message, setMessage] = useState<string>('');
     const [profilePic, setProfilePic] = useState<JSX.Element>(
         <div className="profPic">
-            <img src={user ? user.image_url as string : ''} alt="Profile picture"/>
+            <img src={user ? user.image_url as string : ''} alt="Profile"/>
         </div>
     );
     const [secondPassword, setSecondPassword] = useState<JSX.Element>(
@@ -57,7 +57,7 @@ const ConfigScreen: React.FC = () => {
                     var result = await updateUser(user ? user.id as number : -1, null, null, selectedFile as File);
                     setProfilePic(
                         <div className="profPic">
-                            <img src={user ? user.image_url as string : ''} alt="Profile picture"/>
+                            <img src={user ? user.image_url as string : ''} alt="Profile"/>
                         </div>    
                     );
                     setCancelPicVisibility('hidden');
@@ -72,11 +72,11 @@ const ConfigScreen: React.FC = () => {
                     setInputNameDisabled(false);
                     setCancelNameVisibility('visible');
                 } else if (btnName === 'Salvar nome') {
-                    var result = await updateUser(user ? user.id as number : -1, inputNameValue, null, null);
+                    var resultUpdate = await updateUser(user ? user.id as number : -1, inputNameValue, null, null);
                     setBtnName('Editar nome');
                     setInputNameDisabled(true);
                     setCancelNameVisibility('hidden');
-                    setMessage(result);
+                    setMessage(resultUpdate);
                     setIsModalMessageVisible(true);
                 }
             break;
@@ -94,15 +94,15 @@ const ConfigScreen: React.FC = () => {
                     setDisabledInputPassword(false);
                 } else if(btnPassword === "Salvar senha") {
                     if (inputPasswordValue === inputPassword2Value) {
-                        var result = await updateUser(user ? user.id as number : -1, null, inputPasswordValue, null);
-                        if (result != null && result != undefined && result != '') {
+                        var resultUpdate2 = await updateUser(user ? user.id as number : -1, null, inputPasswordValue, null);
+                        if (resultUpdate2 !== null && resultUpdate2 !== undefined && resultUpdate2 !== '') {
                             setSecondPassword(
                                 <div></div>
                             );
                             setCancelPasswordVisibility('hidden');
                             setDisabledInputPassword(true);
                             setBtnPassword('Editar senha');
-                            setMessage(result);
+                            setMessage(resultUpdate2);
                             setIsModalMessageVisible(true);
                         } else {
                             setMessage('Erro');
@@ -122,7 +122,7 @@ const ConfigScreen: React.FC = () => {
             case 'profilePic':
                 setProfilePic(
                     <div className="profPic">
-                        <img src={user ? user.image_url as string : ''} alt="Profile picture"/>
+                        <img src={user ? user.image_url as string : ''} alt="Profile"/>
                     </div>    
                 );
                 setCancelPicVisibility('hidden');
@@ -151,11 +151,11 @@ const ConfigScreen: React.FC = () => {
             <header className="header">
                 <div className="header-logo">
                     <h1 className="header-text">Brain</h1>
-                    <img src={logo} alt="logo" className="img-logo"/>
+                    <img src={logo} alt="Logo" className="img-logo"/>
                 </div>
                 <div className="header-information">
                     <SMenu />
-                    &nbsp;&nbsp;<img src={pointsImage} alt="score" className="img-logo"/>
+                    &nbsp;&nbsp;<img src={pointsImage} alt="Score" className="img-logo"/>
                     <h4>&nbsp;{user ? user.points : '0'}</h4>
                 </div>
             </header>

@@ -18,7 +18,7 @@ const UserSearchList: React.FC<{pesquisa: string}> = (props) => {
                 setIsModalMessageVisible(true);
             } else {
                 var userArray: JSX.Element[] = [];
-                result.map((user) => {
+                result.forEach((user) => {
                     userArray.push(
                         <li className="list-group-item" key={user.cod}>
                             <img src={user.profile_pic} alt="User" className='picture'/>
@@ -30,7 +30,7 @@ const UserSearchList: React.FC<{pesquisa: string}> = (props) => {
         }
 
         receiveUsers();
-    }, []);
+    }, [findUser, props.pesquisa]);
 
     return (
         <ul className="list-group list-group-flush">

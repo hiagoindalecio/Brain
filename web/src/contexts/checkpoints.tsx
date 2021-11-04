@@ -5,7 +5,7 @@ import * as checkpoint from '../services/checkpoints';
 const CheckpointsContext = createContext<CheckpointsContextData>({} as CheckpointsContextData);
 
 export const CheckpointsProvider: React.FC = ({ children }) => {
-    const [loading, setLoading] = useState(false);
+    const [loading] = useState(false);
     let responseArray: Array<CheckpointsData> = [];
 
     async function getCheckpoints(idUser: number): Promise<Array<CheckpointsData>> {

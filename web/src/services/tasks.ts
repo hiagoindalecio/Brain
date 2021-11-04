@@ -1,4 +1,3 @@
-import { response } from 'express';
 import { completeResponse, createTasksResponse, messageResponse, tasksResponse } from '../interfaces/interfaces';
 import api from './api';
 

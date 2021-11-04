@@ -1,11 +1,11 @@
-import React, {createContext, useEffect, useState} from 'react';
+import React, {createContext, useState} from 'react';
 import { createNotesResponse, messageResponse, NotesContexData, NotesData } from '../interfaces/interfaces';
 import * as note from '../services/notes';
 
 const NotesContext = createContext<NotesContexData>({} as NotesContexData);
 
 export const NotesProvider: React.FC = ({ children }) => {
-    const [loading, setLoading] = useState(false);
+    const [loading] = useState(false);
     let responseArray: Array<NotesData> = [];
 
     async function getNotes(idUser: number): Promise<Array<NotesData>> {

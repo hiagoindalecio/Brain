@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './styles.css';
 import Checkpoint from '../../components/CheckpointObject';
 import Modal from '../../components/ModalCheckpoint/Modal';
@@ -15,7 +15,7 @@ const CheckpointsList: React.FC<{checkpointsResponse: Array<CheckpointsData>}> =
         </div>
     ]);
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         if(checkpointsResponse.length > 0) {
             var ativeCheckpoints = [...checkpointsResponse].filter((c) => c.status === 1);
             
@@ -35,7 +35,7 @@ const CheckpointsList: React.FC<{checkpointsResponse: Array<CheckpointsData>}> =
                     </div>
                 ]);
         }
-    }, []);
+    }, [checkpointsResponse]);
 
     return (
         <fieldset>

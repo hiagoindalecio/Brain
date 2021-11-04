@@ -5,7 +5,7 @@ import * as friends from '../services/friends';
 const FriendsContext = createContext<FriendsContextData>({} as FriendsContextData);
 
 export const FriendsProvider: React.FC = ({ children }) => {
-    const [loading, setLoading] = useState(false);
+    const [loading] = useState(false);
     let responseArray: Array<FriendsData> = [];
 
     async function getFriends(idUser: number): Promise<Array<FriendsData>> {

@@ -6,9 +6,9 @@ import Medium from '../../assets/medium-level.png';
 import Master from '../../assets/master-level.png';
 import MasterBlaster from '../../assets/masterblaster-level.png';
 
-import ModalFriendsList from '../../components/FriendsList/index';
+//import ModalFriendsList from '../../components/FriendsList/index';
 
-import FriendsContex from '../../contexts/friends';
+//import FriendsContex from '../../contexts/friends';
 import AuthContext from '../../contexts/auth';
 
 import './styles.css';
@@ -16,8 +16,8 @@ import './styles.css';
 const Initial: React.FC = () => {
     const { user } = useContext(AuthContext);
     const [level, setLevel] = useState<JSX.Element>(<div />);
-    const [friendsComponent, setFriendsComponent] = useState<JSX.Element>();
-    const { getFriends } = useContext(FriendsContex);
+    const [friendsComponent] = useState<JSX.Element>();
+    //const { getFriends } = useContext(FriendsContex);
     const pointsUser = user ? user.points as number : 0;
     
     useLayoutEffect(() => {
@@ -25,28 +25,28 @@ const Initial: React.FC = () => {
             setLevel(
                 <div className="level-user">
                     <h2 className="levelText">Beginner</h2>
-                    <img src={Beginner} className="img-level" alt="Beginner image."/>
+                    <img src={Beginner} className="img-level" alt="Beginner"/>
                 </div>
             );
         } else if (pointsUser as number >= 50 && pointsUser as number < 150) {
             setLevel(
                 <div className="level-user">
                     <h2 className="levelText">Medium</h2>
-                    <img src={Medium} className="img-level" alt="Medium image."/>
+                    <img src={Medium} className="img-level" alt="Medium"/>
                 </div>
             );
         } else if (pointsUser as number >= 150 && pointsUser as number < 300) {
             setLevel(
                 <div className="level-user">
                     <h2 className="levelText">Master</h2>
-                    <img src={Master} className="img-level" alt="Master image."/>
+                    <img src={Master} className="img-level" alt="Master"/>
                 </div>
             );
         } else if (pointsUser as number >= 300) {
             setLevel(
                 <div className="level-user">
                     <h2 className="levelText">Master Blaster</h2>
-                    <img src={MasterBlaster} className="img-level" alt="Master Blaster image."/>
+                    <img src={MasterBlaster} className="img-level" alt="Master Blaster"/>
                 </div>
             );
         }
@@ -58,7 +58,7 @@ const Initial: React.FC = () => {
 
         findFriends();
         setInterval(async () => {findFriends()}, 10000);*/
-    }, []);
+    }, [pointsUser]);
     
     return (
         <fieldset>

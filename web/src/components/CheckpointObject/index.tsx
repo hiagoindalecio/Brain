@@ -84,7 +84,7 @@ const Checkpoint: React.FC<{
                 }])
             }
         }
-    }, [checkTasks]);
+    }, [checkTasks, buttonText]);
 
     async function getAllTasks(event: FormEvent) {
         event.preventDefault();
@@ -118,26 +118,28 @@ const Checkpoint: React.FC<{
             <div className="card-body">
             <button className="btn-getTasks" onClick={getAllTasks}><h6>{buttonText}</h6></button>
                 {
-                    [...checkTasks].forEach((task, index: number) => {
+                    [...checkTasks].map((task, index: number) => {
                         if(task.status) {
                             return <div key={index}><br/><TaskComp idTask={task.idTask} idCheck={cod} summary={task.summary} desc={task.desc} status={task.status} /></div>
-                        } 
+                        } else
+                            return <div key={index}></div>
                     })
                 }
             </div>
             <div className="card-body">
             <button className="btn-getTasks" onClick={getFinalizedTasks}><h6>{buttonText2}</h6></button>
                 {
-                    [...finalizedCheckTasks].forEach((task, index: number) => {
+                    [...finalizedCheckTasks].map((task, index: number) => {
                         if(!task.status) {
                             return <div key={index}><br/><TaskComp idTask={task.idTask} idCheck={cod} summary={task.summary} desc={task.desc} status={task.status} /></div>
-                        }
+                        } else 
+                            return <div key={index}></div>
                     })
                 }
             </div><br/><br/>
             <div className="btns">
                 <button type="button" className="btn btn-primary btn-sm" onClick={() => (setIsModalCheckVisible(true))}>Editar</button>
-                {isModalCheckVisible ? <ModalCheck props={{id: cod, summary, description, date: limitdate}} onClose={() => {setIsModalTaskVisible(false); window.location.reload();}}></ModalCheck> : null}
+                {isModalCheckVisible ? <ModalCheck props={{id: cod, summary, description, date: limitdate}} onClose={() => {setIsModalCheckVisible(false); window.location.reload();}}></ModalCheck> : null}
                 <button type="button" className="btn btn-primary btn-sm" onClick={() => (setIsModalTaskVisible(true))}>Adicionar Task</button>
                 {isModalTaskVisible ? <ModalTask props={{id: -1, idCheck: cod, summary: '', description: ''}} onClose={() => {setIsModalTaskVisible(false); window.location.reload();}}></ModalTask> : null}
                 <button type="button" className="btn btn-primary btn-sm btn-drop" onClick={() => (setIsModalDeleteVisible(true))}>Excluir</button>

@@ -145,6 +145,7 @@ export interface FindUsersResponse {
     cod: string,
     name: string,
     email: string,
+    points: number,
     profile_pic: string
 }
 //#endregion
@@ -198,6 +199,7 @@ export interface CheckpointsContextData {
 export interface ActivityContextData {
     loading: boolean;
     getFriendsActivity: (idUser: number) => Promise<Array<activityResponse>>;
+    getActivityByUser: (idUser: string) => Promise<Array<activityResponse>>;
 }
 //#endregion
 

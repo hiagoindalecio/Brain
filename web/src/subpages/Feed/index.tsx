@@ -43,8 +43,8 @@ const Feed : React.FC = () => {
                 <div className="feed-content">
                     {
                         [...divs].map((elem,  index: number)=> 
-                        <div key={index}>{elem}</div>
-                    )
+                            <div key={index}>{elem}</div>
+                        )
                     }
                 </div>
             </div>

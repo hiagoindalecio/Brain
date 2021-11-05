@@ -11,8 +11,19 @@ export const ActivityProvider: React.FC = ({ children }) => {
     async function getFriendsActivity(idUser: number): Promise<Array<activityResponse>> {
         return new Promise(async (resolve) => {
             responseArray = [];
-            const actiitiesReply = await activity.getFriendsActiity(idUser);
-            actiitiesReply.map(async oneAct => {
+            const activitiesReply = await activity.getFriendsActivity(idUser);
+            activitiesReply.map(async oneAct => {
+                responseArray.push(oneAct);
+            });
+            resolve(responseArray);
+        });
+    };
+    
+    async function getActivityByUser(idUser: string): Promise<Array<activityResponse>> {
+        return new Promise(async (resolve) => {
+            responseArray = [];
+            const activitiesReply = await activity.getByUser(idUser);
+            activitiesReply.map(async oneAct => {
                 responseArray.push(oneAct);
             });
             resolve(responseArray);
@@ -20,7 +31,7 @@ export const ActivityProvider: React.FC = ({ children }) => {
     };
 
     return (
-        <ActivityContext.Provider value={{ loading, getFriendsActivity }}>
+        <ActivityContext.Provider value={{ loading, getFriendsActivity, getActivityByUser }}>
             {children}
         </ActivityContext.Provider>
     );

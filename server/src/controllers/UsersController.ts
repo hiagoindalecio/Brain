@@ -47,6 +47,7 @@ class UsersControllerr {
                     cod: item.COD_USER,
                     name: item.NAME_USER,
                     email: item.MAIL_USER,
+                    points: item.POINTS_USER,
                     profile_pic: `http://localhost:3334/uploads/${item.IMAGE}`
                 };
             } );
@@ -61,11 +62,12 @@ class UsersControllerr {
         if(!user) {
             return response.status(203).json({ message: 'Usuário não encontrado'});
         } else {
-            const serializedItem  = (user: { COD_USER: any; NAME_USER: any; MAIL_USER: any; IMAGE: any; }) => { // Percorre e reorganiza o que sera retornado
+            const serializedItem  = (user: { COD_USER: any; NAME_USER: any; MAIL_USER: any; IMAGE: any; POINTS_USER: any; }) => { // Percorre e reorganiza o que sera retornado
                 return {
                     cod: user.COD_USER,
                     name: user.NAME_USER,
                     email: user.MAIL_USER,
+                    points: user.POINTS_USER,
                     profile_pic: `http://localhost:3334/uploads/${user.IMAGE}`
                 };
             };

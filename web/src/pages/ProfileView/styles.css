@@ -1,4 +1,4 @@
-#config-page header {
+#profile-page header {
   margin: 1em;
 }
 
@@ -8,6 +8,15 @@
   grid-template-columns: 10vh 13vh;
   grid-template-areas: 
   "gimg-logo gheader-text";
+}
+
+.user-updates {
+  margin-top: 64px;
+}
+
+.level-user {
+  text-align: end;
+  margin-top: -104px;
 }
 
 .header-information {
@@ -24,7 +33,7 @@
 .form-profile {
   margin: 60px auto;
   padding: 24px;
-  max-width: 1030px;
+  max-width: 1330px;
   border-radius: 8px;
   display: flex;
   flex-direction: column;

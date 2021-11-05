@@ -41,6 +41,7 @@ routes.get('/friends/:userId', friendsController.show);
 //activity
 routes.get('/activity', activityController.index);
 routes.get('/activity/:userId', activityController.getFriendsActivity);
+routes.get('/activity/getByUser/:userId', activityController.getUserActivity);
 
 //checkpoint
 routes.post('/checkpoint',

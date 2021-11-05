@@ -41,3 +41,16 @@
   height: auto;
   grid-area: gimg-logo;
 }
+
+.user-profile-picture img {
+  border-radius: 50%;
+  height: 300px;
+  width: 300px;
+  object-fit: cover;
+  object-position: center;
+  margin-bottom: 64px;
+}
+
+.user-banner {
+  text-align: center;
+}

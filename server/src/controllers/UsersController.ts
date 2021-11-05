@@ -54,6 +54,25 @@ class UsersControllerr {
         }
     };
 
+    async showByCod(request: Request, response: Response) {
+        const { cod } = request.params;
+        const user = await knex('user_table').where('COD_USER', cod).first();
+
+        if(!user) {
+            return response.status(203).json({ message: 'Usuário não encontrado'});
+        } else {
+            const serializedItem  = (user: { COD_USER: any; NAME_USER: any; MAIL_USER: any; IMAGE: any; }) => { // Percorre e reorganiza o que sera retornado
+                return {
+                    cod: user.COD_USER,
+                    name: user.NAME_USER,
+                    email: user.MAIL_USER,
+                    profile_pic: `http://localhost:3334/uploads/${user.IMAGE}`
+                };
+            };
+            return response.status(200).json(serializedItem(user));
+        }
+    };
+
     async create(request: Request, response: Response) {
         const { name, email, password } = request.body;
         const findEmail = await knex('user_table').where('MAIL_USER', email);

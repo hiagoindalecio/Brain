@@ -12,17 +12,36 @@ import AuthContext from '../../contexts/auth';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 import ModalMessage from '../../components/ModalMessages/ModalMessages';
+import { FindUsersResponse, messageResponse } from '../../interfaces/interfaces';
 
 const ProfileView: React.FC = () => {
     const params = useParams<{id?: string | undefined;}>();
-    const { user } = useContext(AuthContext);
+    const { user, findByCod } = useContext(AuthContext);
     let history = useHistory();
     const [isModalMessageVisible, setIsModalMessageVisible] = useState(false);
-    const [message] = useState<string>('');
+    const [message, setMessage] = useState<string>('');
+    const [userFound, setUserFound] = useState<FindUsersResponse>();
 
     useEffect(() => {
-        console.log(params.id);
-    }, [params]);
+        async function getUserSelected() {
+            if (params.id) {
+                try {
+                    const userF = await findByCod(params.id as unknown as string);
+                    if ((userF as messageResponse).message) {
+                        setMessage((userF as messageResponse).message);
+                        setIsModalMessageVisible(true);
+                    }
+                    else
+                        setUserFound((userF as FindUsersResponse));
+                } catch (e) {
+                    setMessage(`Erro ao coletar id do usuário!\n${e}`);
+                    setIsModalMessageVisible(true);
+                }
+            }
+        }
+        
+        getUserSelected();
+    }, [params, findByCod]);
     
     function back() {
         history.push("/");
@@ -55,7 +74,14 @@ const ProfileView: React.FC = () => {
             }
             <ArrowBackIcon fontSize="default" className="back-button" onClick={back}/>
             <form className="form-profile">
-                <img src="" alt="" />
+                <div className="user-banner">
+                    <div className="user-profile-picture">
+                        <img src={userFound?.profile_pic} alt={userFound?.name} />
+                    </div>
+                    <h1>{userFound?.name}</h1>
+                    <small>{userFound?.email}</small>
+                </div>
+                
             </form>
         </fieldset>
     )

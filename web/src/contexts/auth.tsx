@@ -85,6 +85,15 @@ export const AuthProvider: React.FC = ({ children }) => {
         });
     }
 
+    async function findByCod(cod: string): Promise<FindUsersResponse | messageResponse> {
+        return new Promise(async (resolve) => {
+            //setLoading(true);
+            const response = await auth.showByCod(cod);
+            //setLoading(false);
+            resolve(response);
+        });
+    }
+
     function singOut(email: string, password: string): Promise<string> {
         return new Promise(async (resolve) => {
             setLoading(true);
@@ -124,7 +133,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     }
 
     return (
-        <AuthContext.Provider value={{signed: !!user, user, loading, currentScreen, singIn, createUser, updateUser, singOut, setPoints, selectScreen, findUser}}>
+        <AuthContext.Provider value={{signed: !!user, user, loading, currentScreen, singIn, createUser, updateUser, singOut, setPoints, selectScreen, findUser, findByCod}}>
             {children}
         </AuthContext.Provider>
     );

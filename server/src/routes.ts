@@ -25,6 +25,7 @@ routes.use(express.json());
 routes.get('/users', usersController.index);
 routes.get('/users/:id', usersController.show);
 routes.get('/users/byname/:name/:myId', usersController.showByName);
+routes.get('/users/bycod/:cod', usersController.showByCod);
 routes.get('/uservalidate/:email/:password', usersController.validateUser);
 routes.get('/usersingout/:email/:password', usersController.logoff);
 //checkpoint

@@ -65,3 +65,14 @@ export async function showByName(name: string, id: number): Promise<FindUsersRes
         });
     });
 }
+
+export async function showByCod(cod: string): Promise<FindUsersResponse | messageResponse> {
+    return new Promise((resolve) => {
+        api.get<FindUsersResponse | messageResponse>(`/users/bycod/${cod}`).then(response => {
+            if (response.status === 200)
+                resolve(response.data as FindUsersResponse);
+            else
+                resolve(response.data as messageResponse);
+        });
+    });
+}

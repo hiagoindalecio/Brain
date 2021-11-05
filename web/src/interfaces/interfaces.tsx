@@ -183,6 +183,7 @@ export interface AuthContextData {
     setPoints(pointsUser: number): void;
     selectScreen(eleme: string): void;
     findUser(name: string): Promise<FindUsersResponse[] | messageResponse>;
+    findByCod(cod: string): Promise<FindUsersResponse | messageResponse>;
 }
 
 export interface CheckpointsContextData {

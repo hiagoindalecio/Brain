@@ -84,7 +84,7 @@ const Checkpoint: React.FC<{
                 }])
             }
         }
-    }, [checkTasks, buttonText]);
+    }, [checkTasks]);
 
     async function getAllTasks(event: FormEvent) {
         event.preventDefault();

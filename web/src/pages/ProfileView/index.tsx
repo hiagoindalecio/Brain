@@ -150,6 +150,7 @@ const ProfileView: React.FC = () => {
                 isModalMessageVisible ? 
                 <ModalMessage props={{message}} onClose={() => {
                     setIsModalMessageVisible(false); 
+                    back();
                 }}>
                     
                 </ModalMessage> 
@@ -168,6 +169,15 @@ const ProfileView: React.FC = () => {
                         }
                     </div>
                     <small>{userFound?.email}</small>
+                    {
+                        user &&
+                        <>
+                        <br />
+                        <button className="add-friend btn btn-primary btn-sm" >
+                            Adicionar Amigo
+                        </button>
+                        </>
+                    }
                 </div>
                 <div className="user-updates">
                     {

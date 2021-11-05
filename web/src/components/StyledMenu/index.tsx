@@ -53,6 +53,10 @@ export default function CustomizedMenus() {
     history.push("/config");
   }
 
+  function goProfile() {
+    history.push(`/profile/${user?.id}`);
+  }
+
   function handleLogoff() {
     singOut(user? user.email as string : '', user? user.password as string : '');
     history.push("/");
@@ -75,6 +79,12 @@ export default function CustomizedMenus() {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
+        <MenuItem onClick={goProfile}>
+          <ListItemIcon>
+            <AssignmentIndIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="Ver meu perfil" />
+        </MenuItem >
         <MenuItem onClick={goConfig}>
           <ListItemIcon>
             <AssignmentIndIcon fontSize="small" />

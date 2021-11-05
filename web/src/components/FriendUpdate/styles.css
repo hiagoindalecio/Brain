@@ -5,10 +5,10 @@
 }
 
 .friend-picture {
-  max-width: 53px;
-  max-height: 53px;
-
   border-radius: 50%;
-
+  height: 53px;
+  width: 53px;
+  object-fit: cover;
+  object-position: center;
   margin-right: 20px;
 }

@@ -34,7 +34,12 @@ const ProfileView: React.FC = () => {
             <div style={{ padding: 50 }} key={'user-actJa'}>
                 <h3>
                     Parece que as coisas estão meio vazias por aqui :( <br/>
-                    Este usuário ainda não posssui atividades
+                    {
+                        user?.id as unknown as string !== userFound?.cod ?
+                        'Este usuário ainda não posssui atividades'
+                        :
+                        'Você ainda não possui atividades'
+                    }
                 </h3>
             </div>
         ]
@@ -78,7 +83,12 @@ const ProfileView: React.FC = () => {
                             <div style={{ padding: 50 }} key={'user-actJa'}>
                                 <h3>
                                     Parece que as coisas estão meio vazias por aqui :( <br/>
-                                    Este usuário ainda não posssui atividades
+                                        {
+                                            user?.id as unknown as string !== userFound?.cod ?
+                                            'Este usuário ainda não posssui atividades'
+                                            :
+                                            'Você ainda não possui atividades'
+                                        }
                                 </h3>
                             </div>
                         ]
@@ -91,28 +101,28 @@ const ProfileView: React.FC = () => {
             if (userFound) {
                 if(userFound?.points as number < 50) {
                     setLevel(
-                        <div className="level-user">
+                        <div className="level-userProfile">
                             <h2 className="levelText">Beginner</h2>
                             <img src={Beginner} className="img-level" alt="Beginner"/>
                         </div>
                     );
                 } else if (userFound?.points as number >= 50 && userFound?.points as number < 150) {
                     setLevel(
-                        <div className="level-user">
+                        <div className="level-userProfile">
                             <h2 className="levelText">Medium</h2>
                             <img src={Medium} className="img-level" alt="Medium"/>
                         </div>
                     );
                 } else if (userFound?.points as number >= 150 && userFound?.points as number < 300) {
                     setLevel(
-                        <div className="level-user">
+                        <div className="level-userProfile">
                             <h2 className="levelText">Master</h2>
                             <img src={Master} className="img-level" alt="Master"/>
                         </div>
                     );
                 } else if (userFound?.points as number >= 300) {
                     setLevel(
-                        <div className="level-user">
+                        <div className="level-userProfile">
                             <h2 className="levelText">Master Blaster</h2>
                             <img src={MasterBlaster} className="img-level" alt="Master Blaster"/>
                         </div>
@@ -124,7 +134,7 @@ const ProfileView: React.FC = () => {
         getUserSelected();
         getActivity();
         getLevel();
-    }, [params, findByCod, getActivityByUser, userFound]);
+    }, [params, findByCod, getActivityByUser, userFound, user?.id]);
     
     function back() {
         history.push("/");
@@ -170,7 +180,7 @@ const ProfileView: React.FC = () => {
                     </div>
                     <small>{userFound?.email}</small>
                     {
-                        user &&
+                        user && user.id !== userFound?.cod &&
                         <>
                         <br />
                         <button className="add-friend btn btn-primary btn-sm" >

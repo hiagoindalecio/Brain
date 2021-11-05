@@ -8,10 +8,10 @@ const NotesList: React.FC<{notesResponse: Array<NotesData>}> = ({notesResponse})
     const [isModalVsisble, setIsModalVisible] = useState(false);
     const [screen, setScreen] = useState<Array<JSX.Element>>([
         <div style={{ padding: 50 }}>
-            <h1>
+            <h3>
                 Parece que você ainda não possui notas salvas :( <br/>
                 Vamos lá, adicione uma nova nota!
-            </h1>
+            </h3>
         </div>
     ]);
 

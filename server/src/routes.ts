@@ -38,6 +38,7 @@ routes.get('/notes/:userId', notesController.show);
 //friend
 routes.get('/friends', friendsController.index);
 routes.get('/friends/:userId', friendsController.show);
+routes.get('/friends/:userId/:friendId', friendsController.checkFriend);
 //activity
 routes.get('/activity', activityController.index);
 routes.get('/activity/:userId', activityController.getFriendsActivity);

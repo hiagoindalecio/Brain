@@ -1,21 +1,24 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import './styles.css';
 
-import logo from '../../assets/logo.png';
-import pointsImage from '../../assets/point.png';
+import './styles.css';
 
 import SMenu from '../../components/StyledMenu';
 import FriendUpdate from '../../components/FriendUpdate';
+import ModalMessage from '../../components/ModalMessages/ModalMessages';
 
 import AuthContext from '../../contexts/auth';
+import ActivityContext from '../../contexts/activity';
+import FriendsContext from '../../contexts/friends';
 
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import ArrowDownwardRoundedIcon from '@material-ui/icons/ArrowDownwardRounded';
+import ArrowUpwardRoundedIcon from '@material-ui/icons/ArrowUpwardRounded';
 
-import ModalMessage from '../../components/ModalMessages/ModalMessages';
 import { FindUsersResponse, messageResponse } from '../../interfaces/interfaces';
-import ActivityContext from '../../contexts/activity';
 
+import logo from '../../assets/logo.png';
+import pointsImage from '../../assets/point.png';
 import Beginner from '../../assets/beginner-level.png';
 import Medium from '../../assets/medium-level.png';
 import Master from '../../assets/master-level.png';
@@ -45,6 +48,10 @@ const ProfileView: React.FC = () => {
         ]
     );
     const [level, setLevel] = useState<JSX.Element>(<div />);
+    const { getFriendship } = useContext(FriendsContext);
+    const [isFriend, setIsfriend] = useState(false);
+    const [isFriendPending, setIsfriendPending] = useState(false);
+    const [isOptionVisible, setIsOptionVisible] = useState(false);
 
     useEffect(() => {
         async function getUserSelected() {
@@ -131,10 +138,27 @@ const ProfileView: React.FC = () => {
             }
         }
 
+        async function getIsFriend() {
+            if(user && userFound && user.id !== userFound.cod as unknown as number) {
+                var friendship = await getFriendship(user.id as unknown as number, userFound.cod as unknown as number);
+                if (friendship.cod_friend === -1)
+                    setIsfriend(false);
+                else {
+                    if (friendship.accepted)
+                        setIsfriend(true);
+                    else {
+                        setIsfriend(false);
+                        setIsfriendPending(true);
+                    }
+                }
+            }
+        }
+
         getUserSelected();
         getActivity();
         getLevel();
-    }, [params, findByCod, getActivityByUser, userFound, user?.id]);
+        getIsFriend();
+    }, [params, findByCod, getActivityByUser, userFound, getFriendship, user]);
     
     function back() {
         history.push("/");
@@ -180,12 +204,48 @@ const ProfileView: React.FC = () => {
                     </div>
                     <small>{userFound?.email}</small>
                     {
-                        user && user.id !== userFound?.cod &&
+                        userFound && user && user.id !== userFound.cod as unknown as number ?
+                            !isFriend ? // caso não seja amigo
+                                <>
+                                    <br />
+                                    <button className="add-friend btn btn-primary btn-sm" >
+                                        Adicionar amigo
+                                    </button>
+                                </>
+                            :
+                                isFriendPending ? // caso tenha um pedido de amizade pendente 
+                                <>
+                                    <br />
+                                    <small className='friendship-explanation'>Pedido de amizade pendente</small>
+                                    <br />
+                                    <div className="options">
+                                        <div className='more-button' >
+                                            <ArrowDownwardRoundedIcon fontSize='small' className={isOptionVisible ? 'notVisible' : 'visible'} onClick={() => setIsOptionVisible(true)} />
+                                            <ArrowUpwardRoundedIcon fontSize='small' className={`close-options-button ${isOptionVisible ? 'visible' : 'notVisible'}`} onClick={() => setIsOptionVisible(false)} />
+                                        </div>
+                                        <button className={`cancel-friend btn btn-primary btn-sm btn-drop ${isOptionVisible ? 'visible' : 'notVisible'}`} >
+                                            Cancelar pedido de amizade
+                                        </button>
+                                    </div>
+                                </>
+                                : // caso seja amigos e não seja o próprio usuário 
+                                <>
+                                    <br />
+                                    <small className='friendship-explanation' >Amigos</small>
+                                    <br />
+                                    <div className="options">
+                                        <div className='more-button' >
+                                            <small>Opções</small>
+                                            <ArrowDownwardRoundedIcon fontSize='small' className={isOptionVisible ? 'notVisible' : 'visible'} onClick={() => setIsOptionVisible(true)} />
+                                            <ArrowUpwardRoundedIcon fontSize='small' className={`close-options-button ${isOptionVisible ? 'visible' : 'notVisible'}`} onClick={() => setIsOptionVisible(false)} />
+                                        </div>
+                                        <button className={`cancel-friend btn btn-primary btn-sm btn-drop ${isOptionVisible ? 'visible' : 'notVisible'}`} >
+                                            Cancelar amizade
+                                        </button>
+                                    </div>
+                                </>
+                        : 
                         <>
-                        <br />
-                        <button className="add-friend btn btn-primary btn-sm" >
-                            Adicionar Amigo
-                        </button>
                         </>
                     }
                 </div>

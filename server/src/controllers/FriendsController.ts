@@ -49,6 +49,35 @@ class FriendsController {
             });
         }
     }
+
+    async checkFriend(request: Request, response: Response) {
+        const { userId, friendId } = request.params;
+        const friendUser = await knex ('friends_user')
+            .where('friends_user.COD_USER', userId)
+            .where('COD_FRIEND', friendId)
+            .first()
+            .leftJoin('user_table', 'user_table.COD_USER', 'friends_user.COD_FRIEND');
+
+        try {
+            const friend = {
+                cod_friend: friendUser.COD_FRIEND,
+                name_friend: friendUser.NAME_USER,
+                pic_friend: `http://localhost:3334/uploads/${friendUser.IMAGE as string}`,
+                accepted: friendUser.ACCEPTED,
+                user_online: friendUser.USER_ONLINE
+            };
+
+            response.status(200).send(friend);    
+        } catch (e) {
+            response.status(200).json({
+                cod_friend: -1,
+                name_friend: '',
+                cod_user: -1,
+                pic_friend: '',
+                accepted: -1
+            });
+        }
+    }
 }
 
 export default FriendsController;

@@ -10,6 +10,10 @@
   "gimg-logo gheader-text";
 }
 
+.friendship-explanation {
+  color: rgb(55, 55, 255);
+}
+
 .user-updates {
   margin-top: 64px;
 }
@@ -21,6 +25,18 @@
 .level-userProfile {
   text-align: end;
   margin-top: -104px;
+}
+
+.options {
+  text-align: end;
+}
+
+.notVisible {
+  visibility: hidden;
+}
+
+.close-options-button {
+  margin-left: -20px;
 }
 
 .header-information {

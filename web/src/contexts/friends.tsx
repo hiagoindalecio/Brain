@@ -20,8 +20,16 @@ export const FriendsProvider: React.FC = ({ children }) => {
         });
     };
 
+    async function getFriendship(idUser: number, idFriend: number): Promise<FriendsData> {
+        return new Promise(async (resolve) => {
+            const friendReply = await friends.getFriendship(idUser, idFriend);
+            
+            resolve(friendReply);
+        });
+    };
+
     return (
-        <FriendsContext.Provider value={{ loading, getFriends }}>
+        <FriendsContext.Provider value={{ loading, getFriends, getFriendship }}>
             {children}
         </FriendsContext.Provider>
     );

@@ -48,10 +48,11 @@ const ProfileView: React.FC = () => {
         ]
     );
     const [level, setLevel] = useState<JSX.Element>(<div />);
-    const { getFriendship, addNewFriend } = useContext(FriendsContext);
+    const { getFriendship, addNewFriend, getFriendshipRequest } = useContext(FriendsContext);
     const [isFriend, setIsfriend] = useState(false);
     const [isFriendPending, setIsfriendPending] = useState(false);
     const [isOptionVisible, setIsOptionVisible] = useState(false);
+    const [isAcceptFriendPending, setIsAcceptfriendPending] = useState(false);
 
     useEffect(() => {
         async function getUserSelected() { // Pega o usuário
@@ -154,11 +155,26 @@ const ProfileView: React.FC = () => {
             }
         }
 
+        async function getIsThereAFriendRequest() { // Verifica se está requisitando amizade
+            if(user && userFound && user.id !== userFound.cod as unknown as number) {
+                var friendship = await getFriendshipRequest(user.id as unknown as string, userFound.cod as unknown as string);
+                if (friendship.cod_friend === -1)
+                    setIsAcceptfriendPending(false);
+                else {
+                    if (!friendship.accepted)
+                        setIsAcceptfriendPending(true);
+                    else
+                        setIsAcceptfriendPending(false);
+                }
+            }
+        }
+
         getUserSelected();
         getActivity();
         getLevel();
         getIsFriend();
-    }, [params, findByCod, getActivityByUser, userFound, getFriendship, user]);
+        getIsThereAFriendRequest();
+    }, [params, findByCod, getActivityByUser, userFound, getFriendship, user, getFriendshipRequest]);
     
     function back() {
         history.push("/");
@@ -212,7 +228,7 @@ const ProfileView: React.FC = () => {
                     <small>{userFound?.email}</small>
                     {
                         userFound && user && user.id !== userFound.cod as unknown as number ? // Se tiver user logado, encontrou o user selecionado e não é o próprio user logado
-                            !isFriend && !isFriendPending ? // caso não seja amigo e em teha pedido pendente
+                            !isFriend && !isFriendPending && !isAcceptFriendPending ? // caso não seja amigo e em teha pedido pendente
                                 <>
                                     <br />
                                     <button className="add-friend btn btn-primary btn-sm" onClick={(event) => handleAddFriend(event)}>
@@ -221,36 +237,47 @@ const ProfileView: React.FC = () => {
                                 </>
                             :
                                 isFriendPending ? // caso tenha um pedido de amizade pendente 
-                                <>
-                                    <br />
-                                    <small className='friendship-explanation'>Pedido de amizade pendente</small>
-                                    <br />
-                                    <div className="options">
-                                        <div className='more-button' >
-                                            <ArrowDownwardRoundedIcon fontSize='small' className={isOptionVisible ? 'notVisible' : 'visible'} onClick={() => setIsOptionVisible(true)} />
-                                            <ArrowUpwardRoundedIcon fontSize='small' className={`close-options-button ${isOptionVisible ? 'visible' : 'notVisible'}`} onClick={() => setIsOptionVisible(false)} />
+                                    <>
+                                        <br />
+                                        <small className='friendship-explanation'>Pedido de amizade pendente</small>
+                                        <br />
+                                        <div className="options">
+                                            <div className='more-button' >
+                                                    <small>Opções</small>
+                                                    <ArrowDownwardRoundedIcon fontSize='small' className={isOptionVisible ? 'notVisible' : 'visible'} onClick={() => setIsOptionVisible(true)} />
+                                                    <ArrowUpwardRoundedIcon fontSize='small' className={`close-options-button ${isOptionVisible ? 'visible' : 'notVisible'}`} onClick={() => setIsOptionVisible(false)} />
+                                            </div>
+                                            <button className={`cancel-friend btn btn-primary btn-sm btn-drop ${isOptionVisible ? 'visible' : 'notVisible'}`} >
+                                                Cancelar pedido de amizade
+                                            </button>
                                         </div>
-                                        <button className={`cancel-friend btn btn-primary btn-sm btn-drop ${isOptionVisible ? 'visible' : 'notVisible'}`} >
-                                            Cancelar pedido de amizade
-                                        </button>
-                                    </div>
-                                </>
-                                : // caso seja amigos e não seja o próprio usuário 
-                                <>
-                                    <br />
-                                    <small className='friendship-explanation' >Amigos</small>
-                                    <br />
-                                    <div className="options">
-                                        <div className='more-button' >
-                                            <small>Opções</small>
-                                            <ArrowDownwardRoundedIcon fontSize='small' className={isOptionVisible ? 'notVisible' : 'visible'} onClick={() => setIsOptionVisible(true)} />
-                                            <ArrowUpwardRoundedIcon fontSize='small' className={`close-options-button ${isOptionVisible ? 'visible' : 'notVisible'}`} onClick={() => setIsOptionVisible(false)} />
-                                        </div>
-                                        <button className={`cancel-friend btn btn-primary btn-sm btn-drop ${isOptionVisible ? 'visible' : 'notVisible'}`} >
-                                            Cancelar amizade
-                                        </button>
-                                    </div>
-                                </>
+                                    </>
+                                : 
+                                    isAcceptFriendPending ? // Caso tenha uma slicitaçã pendente
+                                        <>
+                                            <br />
+                                            <small className='friendship-explanation' >Solicitação pedente</small>
+                                            <br />
+                                            <button className="add-friend btn btn-primary btn-sm" onClick={(event) => handleAddFriend(event)}>
+                                                Aceitar solicitação
+                                            </button>
+                                        </>
+                                    : // caso seja amigos e não seja o próprio usuário 
+                                        <>
+                                            <br />
+                                            <small className='friendship-explanation' >Amigos</small>
+                                            <br />
+                                            <div className="options">
+                                                <div className='more-button' >
+                                                    <small>Opções</small>
+                                                    <ArrowDownwardRoundedIcon fontSize='small' className={isOptionVisible ? 'notVisible' : 'visible'} onClick={() => setIsOptionVisible(true)} />
+                                                    <ArrowUpwardRoundedIcon fontSize='small' className={`close-options-button ${isOptionVisible ? 'visible' : 'notVisible'}`} onClick={() => setIsOptionVisible(false)} />
+                                                </div>
+                                                <button className={`cancel-friend btn btn-primary btn-sm btn-drop ${isOptionVisible ? 'visible' : 'notVisible'}`} >
+                                                    Cancelar amizade
+                                                </button>
+                                            </div>
+                                        </>
                         : 
                         <>
                         </>

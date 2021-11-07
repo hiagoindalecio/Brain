@@ -70,6 +70,7 @@ export default function CustomizedNotificationMenus() {
                 <ListItemText primary="Pedidos de amizade" className='header-text' />
               </MenuItem >
             ];
+
             requests.forEach(request => {
               elements.push(
                 <MenuItem onClick={() => {goProfile(request.cod_friend)}}>
@@ -86,8 +87,10 @@ export default function CustomizedNotificationMenus() {
                 </MenuItem >
               );
             });
+
             setFriendRequest(elements);
           }
+
           setHowMuch(requests.length);
         } else {
           setFriendRequest([
@@ -103,10 +106,14 @@ export default function CustomizedNotificationMenus() {
     }
 
     getRequests();
-
-    setInterval(() => {
+    
+    var interv: NodeJS.Timeout = setInterval(() => {
       getRequests();
-    }, 10000)
+    }, 10000);
+
+    return () => {
+      clearInterval(interv);
+    }
   }, [getFriendshipRequests, user?.id, history, anchorEl])
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {

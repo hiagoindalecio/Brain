@@ -25,6 +25,14 @@ export function getFriendshipRequests(userId: string): Promise<friendsResponse[]
     });
 }
 
+export function getFriendshipRequest(userId: string, friendId: string): Promise<friendsResponse> {
+    return new Promise(async (resolve) => {
+        api.get<friendsResponse>(`/friends/request/${userId}/${friendId}`).then(response => {
+            resolve(response.data as friendsResponse);
+        });
+    });
+}
+
 export async function addFriend(userId: string, friendId: string): Promise<messageResponse> {
     var data = {
         userId,

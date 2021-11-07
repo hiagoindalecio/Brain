@@ -157,6 +157,7 @@ export interface FriendsContextData {
     getFriendship: (idUser: number, idFriend: number) => Promise<FriendsData>;
     addNewFriend: (idUser: string, idFriend: string) => Promise<messageResponse>;
     getFriendshipRequests: (idUser: string) => Promise<FriendsData[]>;
+    getFriendshipRequest: (idUser: string, idFriend: string) => Promise<FriendsData>;
 }
 
 export interface TasksContextData {

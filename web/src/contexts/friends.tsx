@@ -36,6 +36,14 @@ export const FriendsProvider: React.FC = ({ children }) => {
         });
     };
 
+    async function getFriendshipRequest(idUser: string, idFriend: string): Promise<FriendsData> {
+        return new Promise(async (resolve) => {
+            const friendReply = await friends.getFriendshipRequest(idUser, idFriend);
+            
+            resolve(friendReply);
+        });
+    };
+
     async function addNewFriend(idUser: string, idFriend: string): Promise<messageResponse> {
         return new Promise(async (resolve) => {
             const friendReply = await friends.addFriend(idUser, idFriend);
@@ -45,7 +53,7 @@ export const FriendsProvider: React.FC = ({ children }) => {
     };
 
     return (
-        <FriendsContext.Provider value={{ loading, getFriends, getFriendship, addNewFriend, getFriendshipRequests }}>
+        <FriendsContext.Provider value={{ loading, getFriends, getFriendship, addNewFriend, getFriendshipRequests, getFriendshipRequest }}>
             {children}
         </FriendsContext.Provider>
     );

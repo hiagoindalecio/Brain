@@ -40,6 +40,7 @@ routes.get('/friends', friendsController.index);
 routes.get('/friends/:userId', friendsController.show);
 routes.get('/friends/verify/:userId/:friendId', friendsController.checkFriend);
 routes.get('/friends/requests/:userId', friendsController.friendRequests);
+routes.get('/friends/request/:userId/:friendId', friendsController.friendRequests);
 //activity
 routes.get('/activity', activityController.index);
 routes.get('/activity/:userId', activityController.getFriendsActivity);

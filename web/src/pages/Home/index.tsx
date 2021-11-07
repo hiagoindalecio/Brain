@@ -1,5 +1,6 @@
 import React, { useState, useContext, useLayoutEffect } from 'react';
 import './styles.css';
+
 import { FaBars, FaTimes } from 'react-icons/fa';
 
 import AuthContext from '../../contexts/auth';
@@ -13,9 +14,11 @@ import Initial from '../../subpages/Initial';
 import CheckpointsList from '../../subpages/CheckpointsList';
 import AboutBrain from '../../subpages/AboutBrain';
 import NotesList from '../../subpages/NotesList';
-import SMenu from '../../components/StyledMenu';
 import Feed from '../../subpages/Feed';
+
 import SearchList from '../../components/UserSearchList';
+import SMenu from '../../components/StyledMenu';
+import FriendsNotifications from '../../components/FriendshipRequests';
 
 const Home: React.FC = () =>  {
     const { singOut, user, currentScreen, selectScreen } = useContext(AuthContext);
@@ -141,6 +144,7 @@ const Home: React.FC = () =>  {
                             }
                         </div>
                         <div className="header-information">
+                            <FriendsNotifications />
                             <SMenu />
                             &nbsp;&nbsp;<img src={pointsImage} alt="score" className="img-logo"/>
                             <h4>&nbsp;{user ? user.points : '0'}</h4>

@@ -38,7 +38,8 @@ routes.get('/notes/:userId', notesController.show);
 //friend
 routes.get('/friends', friendsController.index);
 routes.get('/friends/:userId', friendsController.show);
-routes.get('/friends/:userId/:friendId', friendsController.checkFriend);
+routes.get('/friends/verify/:userId/:friendId', friendsController.checkFriend);
+routes.get('/friends/requests/:userId', friendsController.friendRequests);
 //activity
 routes.get('/activity', activityController.index);
 routes.get('/activity/:userId', activityController.getFriendsActivity);
@@ -176,6 +177,17 @@ routes.post('/notes/update',
         abortEarly: false
     }),
     notesController.update);
+//friends
+routes.post('/friends/add',
+    celebrate({
+        body: Joi.object().keys({
+            userId: Joi.number().required(),
+            friendId: Joi.number().required()
+        })
+    }, {
+        abortEarly: false
+    }),
+    friendsController.addFriend);
 
 export default routes;
 //                     ..,,/#&@@@@@@&%##%%%%&&&@@@@@#//*.            ..  .........

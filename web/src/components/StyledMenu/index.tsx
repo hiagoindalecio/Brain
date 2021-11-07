@@ -8,6 +8,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 
 import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import BuildIcon from '@material-ui/icons/Build';
 
 import AuthContext from '../../contexts/auth';
 
@@ -87,7 +88,7 @@ export default function CustomizedMenus() {
         </MenuItem >
         <MenuItem onClick={goConfig}>
           <ListItemIcon>
-            <AssignmentIndIcon fontSize="small" />
+            <BuildIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText primary="Editar perfil" />
         </MenuItem >

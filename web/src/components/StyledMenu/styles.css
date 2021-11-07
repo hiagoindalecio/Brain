@@ -5,3 +5,11 @@
   object-fit: cover;
   object-position: center;
 }
+
+button:active {
+  outline: none;
+}
+
+button:focus {
+  outline: none;
+}

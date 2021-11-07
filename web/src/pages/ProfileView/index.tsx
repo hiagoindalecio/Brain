@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, FormEvent } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 
 import './styles.css';
@@ -48,13 +48,13 @@ const ProfileView: React.FC = () => {
         ]
     );
     const [level, setLevel] = useState<JSX.Element>(<div />);
-    const { getFriendship } = useContext(FriendsContext);
+    const { getFriendship, addNewFriend } = useContext(FriendsContext);
     const [isFriend, setIsfriend] = useState(false);
     const [isFriendPending, setIsfriendPending] = useState(false);
     const [isOptionVisible, setIsOptionVisible] = useState(false);
 
     useEffect(() => {
-        async function getUserSelected() {
+        async function getUserSelected() { // Pega o usuário
             if (params.id && !userFound) {
                 try {
                     const userF = await findByCod(params.id as unknown as string);
@@ -71,7 +71,7 @@ const ProfileView: React.FC = () => {
             }
         }
 
-        async function getActivity() {
+        async function getActivity() { // Pega a atividade do usuário
             if (userFound) {
                 const activities = await getActivityByUser(userFound.cod);
 
@@ -104,7 +104,7 @@ const ProfileView: React.FC = () => {
             }
         }
         
-        function getLevel() {
+        function getLevel() { // Pega o level do usuário
             if (userFound) {
                 if(userFound?.points as number < 50) {
                     setLevel(
@@ -138,7 +138,7 @@ const ProfileView: React.FC = () => {
             }
         }
 
-        async function getIsFriend() {
+        async function getIsFriend() { // Verifica se é amigo
             if(user && userFound && user.id !== userFound.cod as unknown as number) {
                 var friendship = await getFriendship(user.id as unknown as number, userFound.cod as unknown as number);
                 if (friendship.cod_friend === -1)
@@ -162,6 +162,13 @@ const ProfileView: React.FC = () => {
     
     function back() {
         history.push("/");
+    }
+
+    async function handleAddFriend(event: FormEvent) {
+        event.preventDefault();
+        const result = await addNewFriend(user?.id as unknown as string, userFound?.cod as unknown as string);
+        setMessage(result.message);
+        setIsModalMessageVisible(true);
     }
 
     return (
@@ -204,11 +211,11 @@ const ProfileView: React.FC = () => {
                     </div>
                     <small>{userFound?.email}</small>
                     {
-                        userFound && user && user.id !== userFound.cod as unknown as number ?
-                            !isFriend ? // caso não seja amigo
+                        userFound && user && user.id !== userFound.cod as unknown as number ? // Se tiver user logado, encontrou o user selecionado e não é o próprio user logado
+                            !isFriend && !isFriendPending ? // caso não seja amigo e em teha pedido pendente
                                 <>
                                     <br />
-                                    <button className="add-friend btn btn-primary btn-sm" >
+                                    <button className="add-friend btn btn-primary btn-sm" onClick={(event) => handleAddFriend(event)}>
                                         Adicionar amigo
                                     </button>
                                 </>

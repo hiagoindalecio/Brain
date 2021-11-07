@@ -1,5 +1,5 @@
 import React, {createContext, useState} from 'react';
-import { FriendsContextData, FriendsData } from '../interfaces/interfaces';
+import { FriendsContextData, FriendsData, messageResponse } from '../interfaces/interfaces';
 import * as friends from '../services/friends';
 
 const FriendsContext = createContext<FriendsContextData>({} as FriendsContextData);
@@ -28,8 +28,24 @@ export const FriendsProvider: React.FC = ({ children }) => {
         });
     };
 
+    async function getFriendshipRequests(idUser: string): Promise<FriendsData[]> {
+        return new Promise(async (resolve) => {
+            const friendReply = await friends.getFriendshipRequests(idUser);
+            
+            resolve(friendReply);
+        });
+    };
+
+    async function addNewFriend(idUser: string, idFriend: string): Promise<messageResponse> {
+        return new Promise(async (resolve) => {
+            const friendReply = await friends.addFriend(idUser, idFriend);
+            
+            resolve(friendReply);
+        });
+    };
+
     return (
-        <FriendsContext.Provider value={{ loading, getFriends, getFriendship }}>
+        <FriendsContext.Provider value={{ loading, getFriends, getFriendship, addNewFriend, getFriendshipRequests }}>
             {children}
         </FriendsContext.Provider>
     );

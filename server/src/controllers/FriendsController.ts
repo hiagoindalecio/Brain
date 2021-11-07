@@ -4,6 +4,7 @@ import { friends } from '../interfaces/interfaces';
 
 class FriendsController {
     async index(request: Request, response: Response){
+        
         const friends = await knex('friends_user').select('*'); //Select no banco SELECT * FROM tb_items
         const serializedItems  = friends.map( item => { // Percorre e reorganiza o que sera retornado
             return {
@@ -16,6 +17,7 @@ class FriendsController {
     };
 
     async show(request: Request, response: Response) {
+        
         const { userId } = request.params;
         const friendsUser = knex ('friends_user').where('COD_USER', userId)
         try {
@@ -50,7 +52,49 @@ class FriendsController {
         }
     }
 
+    async friendRequests(request: Request, response: Response) {
+        
+        const { userId } = request.params;
+        const friendRequests = await knex ('friends_user')
+            .where('friends_user.COD_FRIEND', userId)
+            .leftJoin('user_table', 'user_table.COD_USER', 'friends_user.COD_USER')
+            .where('friends_user.ACCEPTED', false);
+
+        try {
+            const friend = friendRequests.map(friend => {
+                return {
+                    cod_friend: friend.COD_USER,
+                    name_friend: friend.NAME_USER,
+                    pic_friend: `http://localhost:3334/uploads/${friend.IMAGE as string}`,
+                    accepted: friend.ACCEPTED,
+                    user_online: friend.USER_ONLINE
+                }
+            })
+
+            if (friend.length > 0)
+                response.status(200).send(friend);
+            else
+                response.status(200).json({
+                    cod_friend: -1,
+                    name_friend: '',
+                    cod_user: -1,
+                    pic_friend: '',
+                    accepted: -1
+                });
+        } catch (e) {
+            console.log(e)
+            response.status(400).json({
+                cod_friend: -1,
+                name_friend: '',
+                cod_user: -1,
+                pic_friend: '',
+                accepted: -1
+            });
+        }
+    }
+
     async checkFriend(request: Request, response: Response) {
+
         const { userId, friendId } = request.params;
         const friendUser = await knex ('friends_user')
             .where('friends_user.COD_USER', userId)
@@ -76,6 +120,28 @@ class FriendsController {
                 pic_friend: '',
                 accepted: -1
             });
+        }
+    }
+
+    async addFriend(request: Request, response: Response) {
+        const { userId, friendId } = request.body;
+        try {
+            const friendship = {
+                COD_FRIEND: friendId,
+                COD_USER: userId,
+                ACCEPTED: false
+            }
+            await knex('friends_user').insert(friendship);
+
+            const serializedResponse = {
+                message: 'Pedido de amizade enviado com sucesso.'
+            }
+            return response.status(201).json(serializedResponse);
+        } catch (e) {
+            const serializedResponse = {
+                message: 'Erro ao enviar pedido de amizade.\n' + e
+            }
+            return response.status(400).json(serializedResponse);
         }
     }
 }

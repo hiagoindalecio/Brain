@@ -45,3 +45,55 @@ export async function addFriend(userId: string, friendId: string): Promise<messa
         });
     });
 }
+
+export async function cancelRequest(userId: string, friendId: string): Promise<messageResponse> {
+    var data = {
+        userId,
+        friendId
+    };
+
+    return new Promise((resolve) => {
+        api.post<messageResponse>('/friends/cancelRequest', data).then(response => {
+            resolve(response.data as messageResponse);
+        });
+    });
+}
+
+export async function declineRequest(userId: string, friendId: string): Promise<messageResponse> {
+    var data = {
+        userId,
+        friendId
+    };
+
+    return new Promise((resolve) => {
+        api.post<messageResponse>('/friends/declineRequest', data).then(response => {
+            resolve(response.data as messageResponse);
+        });
+    });
+}
+
+export async function acceptRequest(userId: string, friendId: string): Promise<messageResponse> {
+    var data = {
+        userId,
+        friendId
+    };
+
+    return new Promise((resolve) => {
+        api.post<messageResponse>('/friends/acceptRequest', data).then(response => {
+            resolve(response.data as messageResponse);
+        });
+    });
+}
+
+export async function endFriendship(userId: string, friendId: string): Promise<messageResponse> {
+    var data = {
+        userId,
+        friendId
+    };
+
+    return new Promise((resolve) => {
+        api.post<messageResponse>('/friends/endFriendship', data).then(response => {
+            resolve(response.data as messageResponse);
+        });
+    });
+}

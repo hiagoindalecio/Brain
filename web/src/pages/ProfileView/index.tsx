@@ -48,13 +48,17 @@ const ProfileView: React.FC = () => {
         ]
     );
     const [level, setLevel] = useState<JSX.Element>(<div />);
-    const { getFriendship, addNewFriend, getFriendshipRequest } = useContext(FriendsContext);
+    const { getFriendship, addNewFriend, getFriendshipRequest, cancelFriendRequest, declineFriendRequest, acceptFriendRequest, endFriendship } = useContext(FriendsContext);
     const [isFriend, setIsfriend] = useState(false);
     const [isFriendPending, setIsfriendPending] = useState(false);
     const [isOptionVisible, setIsOptionVisible] = useState(false);
     const [isAcceptFriendPending, setIsAcceptfriendPending] = useState(false);
 
     useEffect(() => {
+        setIsfriend(false);
+        setIsfriendPending(false);
+        setIsAcceptfriendPending(false);
+        
         async function getUserSelected() { // Pega o usuário
             if (params.id && !userFound) {
                 try {
@@ -174,7 +178,7 @@ const ProfileView: React.FC = () => {
         getLevel();
         getIsFriend();
         getIsThereAFriendRequest();
-    }, [params, findByCod, getActivityByUser, userFound, getFriendship, user, getFriendshipRequest]);
+    }, [params, findByCod, getActivityByUser, userFound, getFriendship, user, getFriendshipRequest, isModalMessageVisible]);
     
     function back() {
         history.push("/");
@@ -183,6 +187,34 @@ const ProfileView: React.FC = () => {
     async function handleAddFriend(event: FormEvent) {
         event.preventDefault();
         const result = await addNewFriend(user?.id as unknown as string, userFound?.cod as unknown as string);
+        setMessage(result.message);
+        setIsModalMessageVisible(true);
+    }
+
+    async function handleCancelFriendRequest(event: FormEvent) {
+        event.preventDefault();
+        const result = await cancelFriendRequest(user?.id as unknown as string, userFound?.cod as unknown as string);
+        setMessage(result.message);
+        setIsModalMessageVisible(true);
+    }
+
+    async function handleDeclineFriendRequest(event: FormEvent) {
+        event.preventDefault();
+        const result = await declineFriendRequest(user?.id as unknown as string, userFound?.cod as unknown as string);
+        setMessage(result.message);
+        setIsModalMessageVisible(true);
+    }
+
+    async function handleAcceptFriendRequest(event: FormEvent) {
+        event.preventDefault();
+        const result = await acceptFriendRequest(user?.id as unknown as string, userFound?.cod as unknown as string);
+        setMessage(result.message);
+        setIsModalMessageVisible(true);
+    }
+
+    async function handleEndFriendship(event: FormEvent) {
+        event.preventDefault();
+        const result = await endFriendship(user?.id as unknown as string, userFound?.cod as unknown as string);
         setMessage(result.message);
         setIsModalMessageVisible(true);
     }
@@ -206,8 +238,7 @@ const ProfileView: React.FC = () => {
             {
                 isModalMessageVisible ? 
                 <ModalMessage props={{message}} onClose={() => {
-                    setIsModalMessageVisible(false); 
-                    back();
+                    setIsModalMessageVisible(false);
                 }}>
                     
                 </ModalMessage> 
@@ -247,7 +278,7 @@ const ProfileView: React.FC = () => {
                                                     <ArrowDownwardRoundedIcon fontSize='small' className={isOptionVisible ? 'notVisible' : 'visible'} onClick={() => setIsOptionVisible(true)} />
                                                     <ArrowUpwardRoundedIcon fontSize='small' className={`close-options-button ${isOptionVisible ? 'visible' : 'notVisible'}`} onClick={() => setIsOptionVisible(false)} />
                                             </div>
-                                            <button className={`cancel-friend btn btn-primary btn-sm btn-drop ${isOptionVisible ? 'visible' : 'notVisible'}`} >
+                                            <button className={`cancel-friend btn btn-primary btn-sm btn-drop ${isOptionVisible ? 'visible' : 'notVisible'}`} onClick={(event) => handleCancelFriendRequest(event)} >
                                                 Cancelar pedido de amizade
                                             </button>
                                         </div>
@@ -258,8 +289,11 @@ const ProfileView: React.FC = () => {
                                             <br />
                                             <small className='friendship-explanation' >Solicitação pedente</small>
                                             <br />
-                                            <button className="add-friend btn btn-primary btn-sm" onClick={(event) => handleAddFriend(event)}>
+                                            <button className="add-friend btn btn-primary btn-sm" onClick={(event) => handleAcceptFriendRequest(event)}>
                                                 Aceitar solicitação
+                                            </button>
+                                            <button className="add-friend btn btn-primary btn-sm btn-drop" onClick={(event) => handleDeclineFriendRequest(event)}>
+                                                Rejeitar solicitação
                                             </button>
                                         </>
                                     : // caso seja amigos e não seja o próprio usuário 
@@ -273,7 +307,7 @@ const ProfileView: React.FC = () => {
                                                     <ArrowDownwardRoundedIcon fontSize='small' className={isOptionVisible ? 'notVisible' : 'visible'} onClick={() => setIsOptionVisible(true)} />
                                                     <ArrowUpwardRoundedIcon fontSize='small' className={`close-options-button ${isOptionVisible ? 'visible' : 'notVisible'}`} onClick={() => setIsOptionVisible(false)} />
                                                 </div>
-                                                <button className={`cancel-friend btn btn-primary btn-sm btn-drop ${isOptionVisible ? 'visible' : 'notVisible'}`} >
+                                                <button className={`cancel-friend btn btn-primary btn-sm btn-drop ${isOptionVisible ? 'visible' : 'notVisible'}`} onClick={(event) => handleEndFriendship(event)} >
                                                     Cancelar amizade
                                                 </button>
                                             </div>

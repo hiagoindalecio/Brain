@@ -154,6 +154,7 @@ class FriendsController {
     }
 
     async addFriend(request: Request, response: Response) {
+
         const { userId, friendId } = request.body;
         try {
             const friendship = {
@@ -170,6 +171,103 @@ class FriendsController {
         } catch (e) {
             const serializedResponse = {
                 message: 'Erro ao enviar pedido de amizade.\n' + e
+            }
+            return response.status(400).json(serializedResponse);
+        }
+    }
+
+    async cancelRequest(request: Request, response: Response) {
+        
+        const { userId, friendId } = request.body;
+        try {
+            await knex('friends_user')
+                .where('COD_USER', userId)
+                .where('COD_FRIEND', friendId)
+                .delete();
+
+            const serializedResponse = {
+                message: 'Pedido de amizade cancelado com sucesso.'
+            }
+            return response.status(201).json(serializedResponse);
+        } catch (e) {
+            const serializedResponse = {
+                message: 'Erro ao cancelar pedido de amizade.\n' + e
+            }
+            return response.status(400).json(serializedResponse);
+        }
+    }
+
+    async declineRequest(request: Request, response: Response) {
+        
+        const { userId, friendId } = request.body;
+        try {
+            await knex('friends_user')
+                .where('COD_FRIEND', userId)
+                .where('COD_USER', friendId)
+                .delete();
+
+            const serializedResponse = {
+                message: 'Pedido de amizade negado com sucesso.'
+            }
+            return response.status(201).json(serializedResponse);
+        } catch (e) {
+            const serializedResponse = {
+                message: 'Erro ao negar pedido de amizade.\n' + e
+            }
+            return response.status(400).json(serializedResponse);
+        }
+    }
+
+    async acceptRequest(request: Request, response: Response) {
+        
+        const { userId, friendId } = request.body;
+        try {
+            await knex('friends_user') // aceita amizade
+                .where('COD_FRIEND', userId)
+                .where('COD_USER', friendId)
+                .update({
+                    accepted: true
+                });
+
+            const friendship = { // gera amizade para quem está aceitando
+                COD_FRIEND: friendId,
+                COD_USER: userId,
+                ACCEPTED: true
+            }
+            await knex('friends_user').insert(friendship);
+
+            const serializedResponse = {
+                message: 'Pedido de amizade aceito com sucesso.'
+            }
+            return response.status(201).json(serializedResponse);
+        } catch (e) {
+            const serializedResponse = {
+                message: 'Erro ao aceitar pedido de amizade.\n' + e
+            }
+            return response.status(400).json(serializedResponse);
+        }
+    }
+
+    async endFriendship(request: Request, response: Response) {
+        
+        const { userId, friendId } = request.body;
+        try {
+            await knex('friends_user')
+                .where('COD_FRIEND', userId)
+                .where('COD_USER', friendId)
+                .delete();
+            await knex('friends_user')
+                .where('COD_FRIEND', friendId)
+                .where('COD_USER', userId)
+                .delete();
+
+            const serializedResponse = {
+                message: 'Amizade encerrada com sucesso.'
+            }
+            return response.status(201).json(serializedResponse);
+        } catch (e) {
+            const serializedResponse = {
+                message: 'Erro ao encerrar amizade.\n' + e
             }
             return response.status(400).json(serializedResponse);
         }

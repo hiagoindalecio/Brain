@@ -52,8 +52,40 @@ export const FriendsProvider: React.FC = ({ children }) => {
         });
     };
 
+    async function cancelFriendRequest(idUser: string, idFriend: string): Promise<messageResponse> {
+        return new Promise(async (resolve) => {
+            const friendReply = await friends.cancelRequest(idUser, idFriend);
+            
+            resolve(friendReply);
+        });
+    };
+
+    async function declineFriendRequest(idUser: string, idFriend: string): Promise<messageResponse> {
+        return new Promise(async (resolve) => {
+            const friendReply = await friends.declineRequest(idUser, idFriend);
+            
+            resolve(friendReply);
+        });
+    };
+
+    async function acceptFriendRequest(idUser: string, idFriend: string): Promise<messageResponse> {
+        return new Promise(async (resolve) => {
+            const friendReply = await friends.acceptRequest(idUser, idFriend);
+            
+            resolve(friendReply);
+        });
+    };
+
+    async function endFriendship(idUser: string, idFriend: string): Promise<messageResponse> {
+        return new Promise(async (resolve) => {
+            const friendReply = await friends.endFriendship(idUser, idFriend);
+            
+            resolve(friendReply);
+        });
+    };
+
     return (
-        <FriendsContext.Provider value={{ loading, getFriends, getFriendship, addNewFriend, getFriendshipRequests, getFriendshipRequest }}>
+        <FriendsContext.Provider value={{ loading, getFriends, getFriendship, addNewFriend, getFriendshipRequests, getFriendshipRequest, cancelFriendRequest, declineFriendRequest, acceptFriendRequest, endFriendship }}>
             {children}
         </FriendsContext.Provider>
     );

@@ -40,7 +40,7 @@ routes.get('/friends', friendsController.index);
 routes.get('/friends/:userId', friendsController.show);
 routes.get('/friends/verify/:userId/:friendId', friendsController.checkFriend);
 routes.get('/friends/requests/:userId', friendsController.friendRequests);
-routes.get('/friends/request/:userId/:friendId', friendsController.friendRequests);
+routes.get('/friends/request/:userId/:friendId', friendsController.findFriendRequest);
 //activity
 routes.get('/activity', activityController.index);
 routes.get('/activity/:userId', activityController.getFriendsActivity);
@@ -179,7 +179,7 @@ routes.post('/notes/update',
     }),
     notesController.update);
 //friends
-routes.post('/friends/add',
+routes.post('/friends/add', // Manda solicitação
     celebrate({
         body: Joi.object().keys({
             userId: Joi.number().required(),
@@ -189,6 +189,42 @@ routes.post('/friends/add',
         abortEarly: false
     }),
     friendsController.addFriend);
+routes.post('/friends/cancelRequest', // Cancela solicitação
+    celebrate({
+        body: Joi.object().keys({
+            userId: Joi.number().required(),
+            friendId: Joi.number().required()
+        })
+    }, {
+        abortEarly: false
+    }), friendsController.cancelRequest);
+routes.post('/friends/declineRequest', // Nega solicitação
+    celebrate({
+        body: Joi.object().keys({
+            userId: Joi.number().required(),
+            friendId: Joi.number().required()
+        })
+    }, {
+        abortEarly: false
+    }), friendsController.declineRequest);
+routes.post('/friends/acceptRequest', // Aceita solicitação
+    celebrate({
+        body: Joi.object().keys({
+            userId: Joi.number().required(),
+            friendId: Joi.number().required()
+        })
+    }, {
+        abortEarly: false
+    }), friendsController.acceptRequest);
+routes.post('/friends/endFriendship', // Aceita solicitação
+    celebrate({
+        body: Joi.object().keys({
+            userId: Joi.number().required(),
+            friendId: Joi.number().required()
+        })
+    }, {
+        abortEarly: false
+    }), friendsController.endFriendship);
 
 export default routes;
 //                     ..,,/#&@@@@@@&%##%%%%&&&@@@@@#//*.            ..  .........

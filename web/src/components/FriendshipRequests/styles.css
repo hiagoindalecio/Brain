@@ -2,6 +2,10 @@
     cursor: default !important;
 }
 
+.cursor-pointer {
+    cursor: pointer;
+}
+
 .header-text {
     text-align: center;
 }

@@ -1,15 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import moment from 'moment';
 import { activityResponse } from '../../interfaces/interfaces';
 import './styles.css';
 
 const FriendUpdate: React.FC<{
     activity: activityResponse
+    children?: ReactNode
 }> = ({
-    activity
+    activity,
+    children
 }) => {
     
     const [formatDate, setFormatDate] = useState<string>();
+    const [icon, setIcon] = useState<JSX.Element>(<div></div>);
 
     useEffect(() => {
         function SplitTime(numberOfHours: number){
@@ -52,6 +55,17 @@ const FriendUpdate: React.FC<{
             return (timeAgo);
         }
 
+        function getIcon() {
+            if (activity.descriType.includes('adicionou')) {
+
+            } else if (activity.descriType.includes('excluiu')) {
+
+            } else if (activity.descriType.includes('criou')) {
+
+            }
+        }
+        
+        getIcon();
         setFormatDate(takeTime());
     }, [activity.updateTime])
 
@@ -65,6 +79,12 @@ const FriendUpdate: React.FC<{
                 <h6 className="card-subtitle mb-2 text-muted">{formatDate}</h6><br/>
                 <div className="card" key={`obj-${activity.codActivity}`}>
                     <h5 className="card-header">{activity.description}</h5><br/>
+                    {
+                        children
+                    } 
+                    {
+                        icon
+                    }
                 </div>
             </div>
         </div>

@@ -70,12 +70,14 @@ export default function CustomizedNotificationMenus() {
       const result = await declineFriendRequest(user?.id as unknown as string, codFriend.toString());
       setMessage(result.message);
       setIsModalMessageVisible(true);
+      handleClose();
     }
   
     async function handleAcceptFriendRequest(codFriend: number) {
       const result = await acceptFriendRequest(user?.id as unknown as string, codFriend.toString());
       setMessage(result.message);
       setIsModalMessageVisible(true);
+      handleClose();
     }
 
     async function getRequests() {

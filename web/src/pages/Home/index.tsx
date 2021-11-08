@@ -2,6 +2,7 @@ import React, { useState, useContext, useLayoutEffect } from 'react';
 import './styles.css';
 
 import { FaBars, FaTimes } from 'react-icons/fa';
+import { AiOutlineSearch } from "react-icons/ai";
 
 import AuthContext from '../../contexts/auth';
 import CheckpointsContext from '../../contexts/checkpoints';
@@ -19,6 +20,7 @@ import Feed from '../../subpages/Feed';
 import SearchList from '../../components/UserSearchList';
 import SMenu from '../../components/StyledMenu';
 import FriendsNotifications from '../../components/FriendshipRequests';
+import FriendsList from '../../components/Friends';
 
 const Home: React.FC = () =>  {
     const { singOut, user, currentScreen, selectScreen } = useContext(AuthContext);
@@ -129,7 +131,7 @@ const Home: React.FC = () =>  {
                             <img src={logo} alt="logo" className="img-logo"/>
                         </div>
                         <div className="search-bar">
-                            <label htmlFor="search"><h5>Buscar pessoas &#128270;</h5></label>
+                            <label htmlFor="search"><h5>Buscar pessoas <AiOutlineSearch fontSize='large' /></h5></label>
                             <br />
                             <input type="text" 
                                 name="search" 
@@ -144,6 +146,7 @@ const Home: React.FC = () =>  {
                             }
                         </div>
                         <div className="header-information">
+                            <FriendsList />
                             <FriendsNotifications />
                             <SMenu />
                             &nbsp;&nbsp;<img src={pointsImage} alt="score" className="img-logo"/>

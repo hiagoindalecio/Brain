@@ -35,10 +35,6 @@ button {
   align-items: center;
 }
 
-.add-icon {
-  margin-right: 10px; 
-}
-
 .header {
   display: flex;
   flex-direction: row;

@@ -19,7 +19,8 @@ class FriendsController {
     async show(request: Request, response: Response) {
         
         const { userId } = request.params;
-        const friendsUser = knex ('friends_user').where('COD_USER', userId)
+        const friendsUser = knex ('friends_user')
+                .where('COD_USER', userId);
         try {
             const serializedItems = (await friendsUser).map( item => { // Percorre e reorganiza o que sera retornado
                 return {
@@ -40,8 +41,14 @@ class FriendsController {
                 }));
             }
 
+            allFriends.sort(function(x, y) { //sorting by user_online first
+                // true values first
+                return (x.user_online === y.user_online)? 0 : x.user_online? -1 : 1;
+            })
+
             response.status(200).send(allFriends);    
         } catch (e) {
+            console.log(e)
             response.status(400).json({
                 cod_friend: -1,
                 name_friend: '',

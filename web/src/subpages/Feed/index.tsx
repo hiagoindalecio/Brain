@@ -29,7 +29,11 @@ const Feed : React.FC = () => {
                         <><FriendUpdate activity={acti} /><br /></>
                     )
                 })
-    
+                
+                elements.push(
+                    <div className="artist-attribute">Ícones criados por <a href="https://www.freepik.com" title="Freepik">Freepik</a> em <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+                )
+
                 setDivs(elements);
             }
         }
@@ -47,7 +51,7 @@ const Feed : React.FC = () => {
                         )
                     }
                 </div>
-            </div>
+            </div> 
         </fieldset>
     )
 }

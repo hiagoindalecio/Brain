@@ -12,3 +12,8 @@
   object-position: center;
   margin-right: 20px;
 }
+
+.update-icon {
+  max-width: 500px;
+  align-self: center;
+}

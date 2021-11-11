@@ -3,6 +3,11 @@ import moment from 'moment';
 import { activityResponse } from '../../interfaces/interfaces';
 import './styles.css';
 
+import cancelBrain from '../../assets/cancel-brain.png';
+import completeBrain from '../../assets/complete-brain.png';
+import editBrain from '../../assets/edit-brain.png';
+import addBrain from '../../assets/add-brain.png';
+
 const FriendUpdate: React.FC<{
     activity: activityResponse
     children?: ReactNode
@@ -35,7 +40,7 @@ const FriendUpdate: React.FC<{
                 timeAgo = `${convertedTime.Days} ${convertedTime.Days > 1 ? 'dias' : 'dia'} 
                     ${convertedTime.Hours > 0 ? `e ${convertedTime.Hours} ${convertedTime.Hours > 1 ? 'horas' : 'hora'}` : ''} 
                      atrás`
-            } else if (timeAgo === '0:00') { // Num um minuto
+            } else if (timeAgo === '0:00') { // Nem um minuto
                 timeAgo = 'Alguns segundos atrás'
             } else { // Menos de 24 horas
                 timeAgo = `${timeAgo.split(':')[0] as unknown as number > 0 ? //dias
@@ -57,17 +62,19 @@ const FriendUpdate: React.FC<{
 
         function getIcon() {
             if (activity.descriType.includes('adicionou')) {
-
+                setIcon(<img src={addBrain} alt='Added' className='update-icon' ></img>);
             } else if (activity.descriType.includes('excluiu')) {
-
-            } else if (activity.descriType.includes('criou')) {
-
-            }
+                setIcon(<img src={cancelBrain} alt='Cancelled' className='update-icon' ></img>);   
+            } else if (activity.descriType.includes('completou')) {
+                setIcon(<img src={completeBrain} alt='Completed' className='update-icon' ></img>);
+            } else if (activity.descriType.includes('editou')) {
+                setIcon(<img src={editBrain} alt='Editted' className='update-icon' ></img>);
+            } 
         }
         
         getIcon();
         setFormatDate(takeTime());
-    }, [activity.updateTime])
+    }, [activity.updateTime, activity.descriType])
 
     return (
         <div className="card" key={activity.codActivity}>

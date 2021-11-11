@@ -2,3 +2,8 @@
   margin: auto;
   padding: 25px;
 }
+
+.artist-attribute {
+  text-align: center;
+  font-size: 10px;
+}

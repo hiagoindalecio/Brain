@@ -1,5 +1,5 @@
 {
-  "name": "web",
+  "name": "Web Brain",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -35,8 +35,8 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "start": "react-scripts start --allowSyntheticDefaultImports",
-    "build": "react-scripts build",
+    "start": "env-cmd -f ./.env.dev react-scripts start --allowSyntheticDefaultImports",
+    "build": "env-cmd -f ./.env.prod react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -62,6 +62,7 @@
     "@types/express": "^4.17.9",
     "@types/jquery": "^3.5.5",
     "@types/react-html-parser": "^2.0.1",
-    "@types/styled-components": "^5.1.7"
+    "@types/styled-components": "^5.1.7",
+    "env-cmd": "^10.1.0"
   }
 }
